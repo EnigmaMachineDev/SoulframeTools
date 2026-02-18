@@ -1,0 +1,211 @@
+// Pact data sourced from wiki.avakot.org
+// Each Pact provides: Arcanics (3 abilities), Passive Abilities (2), Virtue Bonuses, base Virtue increase
+// Pact Arts tree: 30 points per pact (60 if Wyld variant exists)
+// Virtue Bonuses: Mora's Pride (Courage), Iridis' Favour (Spirit), Saphene's Gift (Grace)
+//   Each costs 1/3/6/10 points and provides 1/3/6/10 virtue points
+
+export const PACTS = [
+  {
+    name: 'Tethren',
+    type: 'Normal',
+    alignedVirtue: 'courage',
+    bonusLife: 180,
+    bonusVirtue: { courage: 5 },
+    unarmedDmg: 54,
+    physicalDefense: 3,
+    description: 'Aggressive melee combat pact centered around the Fey warrior Tethren.',
+    arcanics: [
+      { name: 'Fellust', virtue: 'courage', description: 'Consecutive melee strikes deal accumulative damage. Damage: Strike × (0.01 × Courage + 1) × previous strikes.' },
+      { name: 'Call of the Ancients', virtue: 'spirit', description: 'Warsong that multiplies weapon damage by (1.3 + Courage × 0.003). 50% damage reduction. 21s duration.' },
+      { name: 'Clash', virtue: 'grace', description: 'Stagger and stun enemies in a shockwave. Stagger reduction buff for 26s.' },
+    ],
+    passives: ['Conquerer', 'Last Stand'],
+    passiveDescriptions: ['Absorb Life from enemies you fell.', 'Low Life triggers increased attack speed.'],
+  },
+  {
+    name: 'Sirin',
+    type: 'Normal',
+    alignedVirtue: 'grace',
+    bonusLife: 120,
+    bonusVirtue: { grace: 5 },
+    unarmedDmg: 42,
+    physicalDefense: 2,
+    description: 'Stealth and subterfuge pact focused on evasion and critical strikes.',
+    arcanics: [
+      { name: 'Picktrix Powder', virtue: 'courage', description: 'Throw a blinding powder that disorients enemies.' },
+      { name: 'Trick of the Light', virtue: 'spirit', description: 'Create a decoy that draws enemy attention and explodes.' },
+      { name: 'Glamour', virtue: 'grace', description: 'Become invisible. Next attack from stealth deals bonus damage.' },
+    ],
+    passives: ['Shrouded', 'Pickpocket'],
+    passiveDescriptions: ['Reduced detection while sneaking.', 'Chance to steal items from enemies on hit.'],
+  },
+  {
+    name: 'Oscelda',
+    type: 'Normal',
+    alignedVirtue: 'spirit',
+    bonusLife: 150,
+    bonusVirtue: { spirit: 5 },
+    unarmedDmg: 48,
+    physicalDefense: 2,
+    description: 'Nature-themed pact with healing and crowd control abilities.',
+    arcanics: [
+      { name: 'Bestone', virtue: 'courage', description: 'Petrify enemies. Damage multiplied by [2 + Courage × 0.02]. Duration: [Spirit + 20]s. AoE scales with Grace.' },
+      { name: 'Elderbloom', virtue: 'spirit', description: 'Plant a healing bloom. Heals ~25 life per tick. Duration: 18s.' },
+      { name: 'Phantom Flock', virtue: 'grace', description: 'Summon phantom songbirds that attack your target. Duration: ~[0.1 × Spirit + 11]s. Transfers on kill.' },
+    ],
+    passives: ['Tendril', 'Vernal Pool'],
+    passiveDescriptions: ['Enemy attacks may trigger creeping Tendrils that slow and damage.', 'Arcanic cooldowns recharge faster when standing in water.'],
+  },
+  {
+    name: 'Orengall',
+    type: 'Normal',
+    alignedVirtue: 'grace',
+    bonusLife: 200,
+    bonusVirtue: { courage: 5 },
+    unarmedDmg: 56,
+    physicalDefense: 4,
+    description: 'Beast pact with an Omen Wolf companion and aggressive combat style.',
+    arcanics: [
+      { name: 'Werewalker', virtue: 'courage', description: 'Transform into a beast form, gaining increased speed and damage.' },
+      { name: 'Packhunter', virtue: 'spirit', description: 'Command your Omen Wolf to attack a target.' },
+      { name: 'Howl', virtue: 'grace', description: 'Unleash a howl that fears and staggers nearby enemies.' },
+    ],
+    passives: ['Soulbound', 'Feral'],
+    passiveDescriptions: ['Omen Wolf companion fights alongside you.', 'Increased damage when near your Omen Wolf.'],
+  },
+  {
+    name: "Mora's Hand",
+    type: 'Normal',
+    alignedVirtue: 'courage',
+    bonusLife: 160,
+    bonusVirtue: { courage: 5 },
+    unarmedDmg: 52,
+    physicalDefense: 3,
+    description: 'Fire-themed pact channeling the power of the red sun Mora.',
+    arcanics: [
+      { name: 'Ignus Wroth', virtue: 'courage', description: 'Unleash a devastating fire attack that deals massive Flame damage.' },
+      { name: 'Ember', virtue: 'spirit', description: 'Hurl a fireball that deals Flame damage on impact.' },
+      { name: 'Inferno', virtue: 'grace', description: 'Unleash a wave of flame damage in a cone.' },
+    ],
+    passives: ['Hungry Flame', 'Smolder'],
+    passiveDescriptions: ['Melee attacks have a chance to ignite enemies.', 'Fire damage over time on burning enemies.'],
+  },
+  {
+    name: 'Garren Rood',
+    type: 'Normal',
+    alignedVirtue: 'grace',
+    bonusLife: 190,
+    bonusVirtue: { courage: 5 },
+    unarmedDmg: 55,
+    physicalDefense: 4,
+    description: 'Holy warrior pact focused on righteous combat and healing.',
+    arcanics: [
+      { name: 'Torment', virtue: 'courage', description: 'Summon the Torment Stag to charge and devastate enemies.' },
+      { name: 'Behest', virtue: 'spirit', description: 'Command allies and bolster their combat effectiveness.' },
+      { name: 'Stampede', virtue: 'grace', description: 'Charge forward, knocking enemies aside with devastating force.' },
+    ],
+    passives: ['Healheart', 'Righteous'],
+    passiveDescriptions: ['Passive life regeneration in combat.', 'Bonus damage against corrupted enemies.'],
+  },
+  {
+    name: 'Bromius',
+    type: 'Normal',
+    alignedVirtue: 'courage',
+    bonusLife: 300,
+    bonusVirtue: { courage: 5 },
+    unarmedDmg: 54,
+    physicalDefense: 4,
+    description: 'Tanky pact with high Life and defensive abilities.',
+    arcanics: [
+      { name: 'Rump Thump', virtue: 'courage', description: 'Powerful ground pound that deals massive AoE stagger damage.' },
+      { name: 'Wevetroot', virtue: 'spirit', description: 'Summon roots from the ground to entangle and damage enemies.' },
+      { name: 'Song of Growth', virtue: 'grace', description: 'Heal yourself and nearby allies over time.' },
+    ],
+    passives: ['Barkbare', "Canopy's Blessing"],
+    passiveDescriptions: ['Increased stagger resistance and armour utilisation.', 'Damage reduction when below 50% Life.'],
+  },
+  {
+    name: 'Ode Tempest',
+    type: 'Normal',
+    alignedVirtue: 'spirit',
+    bonusLife: 140,
+    bonusVirtue: { spirit: 5 },
+    unarmedDmg: 50,
+    physicalDefense: 3,
+    description: 'Voltaic-themed pact harnessing Ode technology.',
+    arcanics: [
+      { name: 'Seismor', virtue: 'courage', description: 'Slam the ground, dealing AoE Voltaic damage and staggering enemies.' },
+      { name: 'Astra Sphere', virtue: 'spirit', description: 'Launch a voltaic projectile that chains between enemies.' },
+      { name: 'Atmos Sphere', virtue: 'grace', description: 'Create an electric field that damages nearby enemies.' },
+    ],
+    passives: ['Lightning Strike', 'Gravitate'],
+    passiveDescriptions: ['Chance to proc Voltaic damage on hit.', 'Pull enemies toward you on heavy attack.'],
+  },
+  // Wyld Variants
+  {
+    name: 'Wyld Tethren',
+    type: 'Wyld',
+    alignedVirtue: 'courage',
+    bonusLife: 220,
+    bonusVirtue: { courage: 7 },
+    unarmedDmg: 58,
+    physicalDefense: 4,
+    description: 'Wyld variant of Tethren with enhanced aggressive capabilities.',
+    arcanics: [
+      { name: 'Fellust', virtue: 'courage', description: 'Enhanced consecutive strike damage scaling.' },
+      { name: 'Call of the Ancients', virtue: 'spirit', description: 'Enhanced warsong with greater damage multiplier.' },
+      { name: 'Clash', virtue: 'grace', description: 'Enhanced shockwave with larger radius.' },
+    ],
+    passives: ['Conquerer', 'Last Stand'],
+    passiveDescriptions: ['Enhanced Life absorption on kill.', 'Enhanced attack speed at low Life.'],
+  },
+  {
+    name: 'Wyld Sirin',
+    type: 'Wyld',
+    alignedVirtue: 'grace',
+    bonusLife: 150,
+    bonusVirtue: { grace: 7 },
+    unarmedDmg: 46,
+    physicalDefense: 2,
+    description: 'Wyld variant of Sirin with enhanced stealth capabilities.',
+    arcanics: [
+      { name: 'Picktrix Powder', virtue: 'courage', description: 'Enhanced blinding powder with wider area.' },
+      { name: 'Trick of the Light', virtue: 'spirit', description: 'Enhanced decoy with counterattack.' },
+      { name: 'Glamour', virtue: 'grace', description: 'Enhanced invisibility with longer duration.' },
+    ],
+    passives: ['Shrouded', 'Pickpocket'],
+    passiveDescriptions: ['Enhanced stealth detection reduction.', 'Enhanced steal chance.'],
+  },
+  {
+    name: 'Wyld Oscelda',
+    type: 'Wyld',
+    alignedVirtue: 'spirit',
+    bonusLife: 180,
+    bonusVirtue: { spirit: 7 },
+    unarmedDmg: 52,
+    physicalDefense: 3,
+    description: 'Wyld variant of Oscelda with enhanced nature abilities.',
+    arcanics: [
+      { name: 'Bestone', virtue: 'courage', description: 'Enhanced petrification with increased damage multiplier.' },
+      { name: 'Elderbloom', virtue: 'spirit', description: 'Enhanced healing bloom with greater output.' },
+      { name: 'Phantom Flock', virtue: 'grace', description: 'Enhanced phantom songbirds with more damage and duration.' },
+    ],
+    passives: ['Tendril', 'Vernal Pool'],
+    passiveDescriptions: ['Enhanced Tendril proc range.', 'Enhanced water cooldown recharge.'],
+  },
+];
+
+// Pact Art Virtue Bonus costs and values
+// Each rank costs cumulative: rank 1 = 1pt, rank 2 = 3pts, rank 3 = 6pts, rank 4 = 10pts
+// Each rank provides cumulative virtue: rank 1 = 1, rank 2 = 3, rank 3 = 6, rank 4 = 10
+export const PACT_ART_VIRTUE_COSTS = [1, 3, 6, 10];
+export const PACT_ART_VIRTUE_VALUES = [1, 3, 6, 10];
+
+// General Pact Arts (standardized across all pacts)
+export const GENERAL_ARTS = [
+  { name: 'Healer', description: 'Regain Life more efficiently.', values: [1, 2, 3, 4], maxRank: 4 },
+  { name: 'Rooted', description: 'Defence against Stagger is heightened.', values: [1, 2, 3, 4], maxRank: 4 },
+  { name: 'Sympathy', description: 'Regain Life on Smite.', values: [1, 2, 3, 4], maxRank: 4 },
+  { name: 'Voided', description: 'Deal damage on Smite.', values: [1, 2, 3, 4], maxRank: 4 },
+  { name: 'Wingspan', description: 'Sparrow Soul has more time to return.', values: [1, 2, 3, 4], maxRank: 4 },
+];
