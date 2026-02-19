@@ -200,7 +200,33 @@ export default function BuildPlanner() {
     } catch { return false; }
   }
 
-  function handleCopyBuild() { const code = exportBuild(); navigator.clipboard.writeText(code).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000); }); }
+  function handleCopyBuild() {
+    const code = exportBuild();
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(code).then(() => {
+        setCopied(true); setTimeout(() => setCopied(false), 2000);
+      }).catch(() => {
+        fallbackCopy(code);
+      });
+    } else {
+      fallbackCopy(code);
+    }
+  }
+  function fallbackCopy(text) {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    try {
+      document.execCommand('copy');
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch { alert('Copy failed — please copy this code manually:\n\n' + text); }
+    document.body.removeChild(ta);
+  }
   function handleImportBuild() { const code = prompt('Paste your build code:'); if (code && !importBuild(code.trim())) alert('Invalid build code.'); }
 
   function formatTotemBonus(totem, slotKey) {

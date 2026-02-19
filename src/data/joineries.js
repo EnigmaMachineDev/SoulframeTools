@@ -24,10 +24,10 @@ export const JOINERIES = [
     description: 'Magick joinery — powerful conductor for magick weapons.',
     weaponTypes: ['Magick'],
     tiers: [
-      { tier: 'Rusted', rarity: 'Common', stats: { consecutiveDamage: 10 } },
-      { tier: 'Tempered', rarity: 'Uncommon', stats: { consecutiveDamage: 15, parryStabilityCost: -20 } },
-      { tier: 'Polished', rarity: 'Rare', stats: { consecutiveDamage: 20, parryStabilityCost: -25, throwDistance: 5 } },
-      { tier: 'Blessed', rarity: 'Rare', stats: { consecutiveDamage: 20, parryStabilityCost: -25, throwDistance: 5 }, blessed: true },
+      { tier: 'Rusted', rarity: 'Common', stats: { consecutiveDamage: 5 } },
+      { tier: 'Tempered', rarity: 'Uncommon', stats: { consecutiveDamage: 5, parryStabilityCost: -20 } },
+      { tier: 'Polished', rarity: 'Rare', stats: { consecutiveDamage: 10, parryStabilityCost: -25, throwDistance: 5 } },
+      { tier: 'Blessed', rarity: 'Rare', stats: { consecutiveDamage: 10, parryStabilityCost: -25, throwDistance: 5 }, blessed: true },
     ],
   },
   {
@@ -37,8 +37,8 @@ export const JOINERIES = [
     tiers: [
       { tier: 'Rusted', rarity: 'Common', stats: { damage: 10 } },
       { tier: 'Tempered', rarity: 'Uncommon', stats: { damage: 15, weaponChargeRate: 10 } },
-      { tier: 'Polished', rarity: 'Rare', stats: { damage: 20, weaponChargeRate: 20, headshotMultiplier: 10 } },
-      { tier: 'Blessed', rarity: 'Rare', stats: { damage: 20, weaponChargeRate: 20, headshotMultiplier: 10 }, blessed: true },
+      { tier: 'Polished', rarity: 'Rare', stats: { damage: 20, weaponChargeRate: 20, headshotMultiplier: 25 } },
+      { tier: 'Blessed', rarity: 'Rare', stats: { damage: 20, weaponChargeRate: 20, headshotMultiplier: 25 }, blessed: true },
     ],
   },
   {

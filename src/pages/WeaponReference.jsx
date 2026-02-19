@@ -16,6 +16,7 @@ const COLUMNS = [
   { key: 'staggerDamage', label: 'Stagger', align: 'right', sortable: true },
   { key: 'attunement', label: 'Attunement', align: 'left', sortable: false },
   { key: 'virtueReq', label: 'Req', align: 'left', sortable: false },
+  { key: 'location', label: 'Location', align: 'left', sortable: false },
   { key: 'wiki', label: '', align: 'left', sortable: false },
 ];
 
@@ -131,6 +132,7 @@ export default function WeaponReference() {
                   <td className="py-2 px-2 text-right text-sf-text">{w.staggerDamage}</td>
                   <td className="py-2 px-2 text-sf-muted text-xs">{attStr}</td>
                   <td className="py-2 px-2 text-sf-muted text-xs">{reqStr}</td>
+                  <td className="py-2 px-2 text-sf-muted text-xs max-w-[220px]">{w.location || '—'}</td>
                   <td className="py-2 px-1">
                     <a href={`https://wiki.avakot.org/${wikiSlug}`} target="_blank" rel="noopener noreferrer" className="text-sf-dim hover:text-sf-bright transition-colors"><ExternalLink size={12} /></a>
                   </td>

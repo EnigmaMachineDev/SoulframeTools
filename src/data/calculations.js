@@ -111,16 +111,6 @@ export function calculateTotalDefense(armourPieces, virtues) {
   return { totalPhys, totalMag, totalStab, bonusPhys, bonusMag, bonusStab };
 }
 
-export function calculateEHP(totalLife, totalPhysDef, totalMagDef) {
-  // EHP model: defense provides flat damage reduction per hit
-  // EHP(physical) = Life / (1 - min(physDef * 0.02, 0.8))
-  // EHP(magick) = Life / (1 - min(magDef * 0.02, 0.8))
-  const physReduction = Math.min(totalPhysDef * 0.02, 0.8);
-  const magReduction = Math.min(totalMagDef * 0.02, 0.8);
-  const physEHP = Math.round(totalLife / (1 - physReduction));
-  const magEHP = Math.round(totalLife / (1 - magReduction));
-  return { physEHP, magEHP, physReduction: Math.round(physReduction * 100), magReduction: Math.round(magReduction * 100) };
-}
 
 export function calculateCooldownReduction(spirit) {
   if (spirit <= 2) return 0;

@@ -102,6 +102,7 @@ export default function ArmourReference() {
               <th className="py-2 px-2 text-left">Mag Attune</th>
               <th className="py-2 px-2 text-left">Stab Attune</th>
               <th className="py-2 px-2 text-left">Req</th>
+              <th className="py-2 px-2 text-left">Location</th>
               <th className="py-2 px-1"></th>
             </tr>
           </thead>
@@ -123,6 +124,7 @@ export default function ArmourReference() {
                   <td className="py-2 px-2 text-sf-muted text-xs">{fmtAttune(p.attunement?.magick)}</td>
                   <td className="py-2 px-2 text-sf-muted text-xs">{fmtAttune(p.attunement?.stability)}</td>
                   <td className="py-2 px-2 text-sf-muted text-xs">{reqStr}</td>
+                  <td className="py-2 px-2 text-sf-muted text-xs max-w-[220px]">{p.location || '—'}</td>
                   <td className="py-2 px-1">
                     <a href={`https://wiki.avakot.org/${wikiSlug}`} target="_blank" rel="noopener noreferrer" className="text-sf-dim hover:text-sf-bright transition-colors"><ExternalLink size={12} /></a>
                   </td>
