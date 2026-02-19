@@ -12,7 +12,7 @@ export const ARMOUR_LEGGINGS = [];
 export const ARMOUR_SETS = [
   {
     name: 'Arbearer',
-    location: 'Bromius pact — Gourdo, Kabocha, Wares of Zenith',
+    location: 'Collector Crate, Gourdo, Kabocha, Vadagar Bear, Wares of Zenith',
     pieces: [
       { name: "Arbearer's Mask", slot: 'Helm', physDef: 7, magDef: 0, stability: 3, attunement: { physical: { courage: 3, spirit: 0, grace: 0 }, magick: { courage: 1, spirit: 0, grace: 0 }, stability: { courage: 2, spirit: 0, grace: 0 } }, virtueReq: { courage: 22 } },
       { name: "Arbearer's Pauncher", slot: 'Cuirass', physDef: 7, magDef: 2, stability: 4, attunement: { physical: { courage: 3, spirit: 0, grace: 0 }, magick: { courage: 1, spirit: 0, grace: 0 }, stability: { courage: 2, spirit: 0, grace: 0 } }, virtueReq: { courage: 22 } },
@@ -21,7 +21,7 @@ export const ARMOUR_SETS = [
   },
   {
     name: 'Circade',
-    location: 'Festival of The Circade event — The Circade boss',
+    location: 'Festival of The Circade — Circade Sarcophagus',
     pieces: [
       { name: "Circade's Helm of Deceit", slot: 'Helm', physDef: 4, magDef: 0, stability: 2, attunement: { physical: { courage: 4, spirit: 0, grace: 0 }, magick: { courage: 0, spirit: 0, grace: 0 }, stability: { courage: 2, spirit: 0, grace: 0 } }, virtueReq: { courage: 14 } },
       { name: "Circade's Gutguard", slot: 'Cuirass', physDef: 6, magDef: 0, stability: 4, attunement: { physical: { courage: 3, spirit: 0, grace: 0 }, magick: { courage: 0, spirit: 0, grace: 0 }, stability: { courage: 2, spirit: 0, grace: 0 } }, virtueReq: { courage: 14 } },
@@ -30,7 +30,7 @@ export const ARMOUR_SETS = [
   },
   {
     name: 'Fire King',
-    location: 'Kith of Kings enclave — Kith of Kings',
+    location: 'Kith of Kings enclave (Tier 3)',
     pieces: [
       { name: "Great Helm of The Fire King", slot: 'Helm', physDef: 3, magDef: 2, stability: 2, attunement: { physical: { courage: 2, spirit: 0, grace: 2 }, magick: { courage: 1, spirit: 0, grace: 0 }, stability: { courage: 1, spirit: 0, grace: 2 } }, virtueReq: { courage: 15 } },
       { name: "Fire King's Plackart", slot: 'Cuirass', physDef: 5, magDef: 2, stability: 3, attunement: { physical: { courage: 2, spirit: 0, grace: 2 }, magick: { courage: 1, spirit: 0, grace: 0 }, stability: { courage: 1, spirit: 0, grace: 2 } }, virtueReq: { courage: 15 } },
@@ -39,7 +39,7 @@ export const ARMOUR_SETS = [
   },
   {
     name: 'Forgetfire',
-    location: 'Sinecure enemies (Soldier, Banneret, Knight, etc.), Wares of Zenith',
+    location: 'Enclave Tales Tier 1–2 (all enclaves)',
     pieces: [
       { name: "Forgetfire Visard", slot: 'Helm', physDef: 3, magDef: 0, stability: 3, attunement: { physical: { courage: 2, spirit: 0, grace: 0 }, magick: { courage: 0, spirit: 0, grace: 0 }, stability: { courage: 2, spirit: 0, grace: 0 } }, virtueReq: { courage: 12 } },
       { name: "Brazen Lung", slot: 'Helm', physDef: 2, magDef: 4, stability: 0, attunement: { physical: { courage: 0, spirit: 1, grace: 0 }, magick: { courage: 0, spirit: 2, grace: 0 }, stability: { courage: 0, spirit: 0, grace: 0 } }, virtueReq: {} },
@@ -49,7 +49,7 @@ export const ARMOUR_SETS = [
   },
   {
     name: 'Garren',
-    location: 'Garren Rood pact — Vadagar Stag, Wares of Zenith',
+    location: 'Collector Crate, Vadagar Stag, Wares of Zenith',
     pieces: [
       { name: "Garren's Crown of Grace", slot: 'Helm', physDef: 2, magDef: 2, stability: 3, attunement: { physical: { courage: 0, spirit: 1, grace: 2 }, magick: { courage: 0, spirit: 2, grace: 1 }, stability: { courage: 0, spirit: 1, grace: 2 } }, virtueReq: { grace: 15 } },
       { name: "Regalia of Garren Rood", slot: 'Cuirass', physDef: 3, magDef: 3, stability: 3, attunement: { physical: { courage: 0, spirit: 1, grace: 2 }, magick: { courage: 0, spirit: 2, grace: 1 }, stability: { courage: 0, spirit: 1, grace: 2 } }, virtueReq: { grace: 15 } },
@@ -58,7 +58,7 @@ export const ARMOUR_SETS = [
   },
   {
     name: 'Mendicant King',
-    location: 'The Mendicant King boss, Wares of Zenith',
+    location: 'Collector Crate, The Mendicant King, Wares of Zenith',
     pieces: [
       { name: "Bascinet of The Mendicant King", slot: 'Helm', physDef: 3, magDef: 1, stability: 3, attunement: { physical: { courage: 3, spirit: 1, grace: 0 }, magick: { courage: 1, spirit: 2, grace: 0 }, stability: { courage: 1, spirit: 1, grace: 0 } }, virtueReq: { courage: 20 } },
       { name: "Mendicant King's Suit of Rancor", slot: 'Cuirass', physDef: 6, magDef: 3, stability: 4, attunement: { physical: { courage: 3, spirit: 1, grace: 0 }, magick: { courage: 1, spirit: 2, grace: 0 }, stability: { courage: 1, spirit: 1, grace: 0 } }, virtueReq: { courage: 20 } },
@@ -67,7 +67,7 @@ export const ARMOUR_SETS = [
   },
   {
     name: 'Mockery',
-    location: 'Mockery, Impidh Mockery, Wares of Zenith',
+    location: 'Thrice-bound Impidh, Wares of Zenith',
     pieces: [
       { name: "Mockery Ilk", slot: 'Helm', physDef: 3, magDef: 3, stability: 2, attunement: { physical: { courage: 0, spirit: 2, grace: 1 }, magick: { courage: 0, spirit: 2, grace: 1 }, stability: { courage: 0, spirit: 1, grace: 2 } }, virtueReq: { grace: 20 } },
       { name: "Mockery Binds", slot: 'Cuirass', physDef: 4, magDef: 4, stability: 4, attunement: { physical: { courage: 0, spirit: 2, grace: 1 }, magick: { courage: 0, spirit: 2, grace: 1 }, stability: { courage: 0, spirit: 1, grace: 2 } }, virtueReq: { grace: 20 } },
@@ -76,7 +76,7 @@ export const ARMOUR_SETS = [
   },
   {
     name: 'Orengall',
-    location: 'Orengall pact — Wares of Zenith',
+    location: "Collector Crate, Alca's Children enclave (Tier 3), Wares of Zenith",
     pieces: [
       { name: "Armet of Orengall", slot: 'Helm', physDef: 3, magDef: 2, stability: 3, attunement: { physical: { courage: 1, spirit: 1, grace: 3 }, magick: { courage: 1, spirit: 1, grace: 1 }, stability: { courage: 0, spirit: 0, grace: 3 } }, virtueReq: { grace: 20 } },
       { name: "Orengall's Cuirass", slot: 'Cuirass', physDef: 5, magDef: 3, stability: 4, attunement: { physical: { courage: 1, spirit: 1, grace: 3 }, magick: { courage: 1, spirit: 1, grace: 1 }, stability: { courage: 1, spirit: 1, grace: 2 } }, virtueReq: { grace: 20 } },
@@ -94,7 +94,7 @@ export const ARMOUR_SETS = [
   },
   {
     name: 'Regent',
-    location: 'Lady Deora — Sinecure enemies, Wares of Zenith',
+    location: 'Silent Rose enclave (Tier 3)',
     pieces: [
       { name: "Regent's Veil", slot: 'Helm', physDef: 3, magDef: 1, stability: 1, attunement: { physical: { courage: 2, spirit: 2, grace: 0 }, magick: { courage: 1, spirit: 2, grace: 0 }, stability: { courage: 2, spirit: 0, grace: 0 } }, virtueReq: { courage: 15 } },
       { name: "Regent's Shell", slot: 'Cuirass', physDef: 6, magDef: 3, stability: 2, attunement: { physical: { courage: 2, spirit: 2, grace: 0 }, magick: { courage: 1, spirit: 2, grace: 0 }, stability: { courage: 2, spirit: 0, grace: 0 } }, virtueReq: { courage: 15 } },
@@ -112,7 +112,7 @@ export const ARMOUR_SETS = [
   },
   {
     name: 'Steelsinger',
-    location: 'The Steelsinger quest — Tuvalkane',
+    location: 'Collector Crate, Ode\'n Bisulcam, Wares of Zenith',
     pieces: [
       { name: "Steelsinger's Circlet", slot: 'Helm', physDef: 2, magDef: 2, stability: 1, attunement: { physical: { courage: 0, spirit: 2, grace: 0 }, magick: { courage: 0, spirit: 2, grace: 0 }, stability: { courage: 0, spirit: 2, grace: 0 } }, virtueReq: { spirit: 14 } },
       { name: "Steelsinger's Stithywicks", slot: 'Cuirass', physDef: 3, magDef: 5, stability: 3, attunement: { physical: { courage: 0, spirit: 2, grace: 0 }, magick: { courage: 0, spirit: 2, grace: 0 }, stability: { courage: 0, spirit: 2, grace: 0 } }, virtueReq: { spirit: 14 } },
@@ -121,7 +121,7 @@ export const ARMOUR_SETS = [
   },
   {
     name: 'Tempest',
-    location: 'Sinecure enemies (Tempest variant), Wares of Zenith',
+    location: 'Dendrit Chest, Enclave Tales Tier 2–3, Avakot Favour',
     pieces: [
       { name: "Tempest Visard", slot: 'Helm', physDef: 3, magDef: 0, stability: 3, attunement: { physical: { courage: 0, spirit: 0, grace: 2 }, magick: { courage: 0, spirit: 0, grace: 0 }, stability: { courage: 0, spirit: 0, grace: 2 } }, virtueReq: { grace: 10 } },
       { name: "Tempest Leathers", slot: 'Cuirass', physDef: 3, magDef: 0, stability: 4, attunement: { physical: { courage: 0, spirit: 0, grace: 2 }, magick: { courage: 0, spirit: 0, grace: 0 }, stability: { courage: 0, spirit: 0, grace: 2 } }, virtueReq: { grace: 10 } },
@@ -139,7 +139,7 @@ export const ARMOUR_SETS = [
   },
   {
     name: 'Thawtide',
-    location: 'Thawtide event — Thawtide Hunter, Banneret, Kabocha, The Mendicant King',
+    location: 'Thawtide event — Thawtide Hunter',
     pieces: [
       { name: "Thawtide Grimguise", slot: 'Helm', physDef: 4, magDef: 2, stability: 1, attunement: { physical: { courage: 2, spirit: 0, grace: 0 }, magick: { courage: 2, spirit: 0, grace: 0 }, stability: { courage: 2, spirit: 0, grace: 0 } }, virtueReq: { courage: 16 } },
       { name: "Thawtide Meltcap", slot: 'Helm', physDef: 3, magDef: 1, stability: 2, attunement: { physical: { courage: 2, spirit: 0, grace: 2 }, magick: { courage: 0, spirit: 0, grace: 0 }, stability: { courage: 2, spirit: 0, grace: 2 } }, virtueReq: { grace: 17 } },
@@ -158,7 +158,7 @@ export const ARMOUR_SETS = [
   },
   {
     name: 'Wazzard',
-    location: 'Wazzard of Wastes / Wraith of Wastes, Collector Crate, Wares of Zenith',
+    location: 'The Organ, Wares of Zenith',
     pieces: [
       { name: "Wazzard's Bycoket", slot: 'Helm', physDef: 2, magDef: 3, stability: 2, attunement: { physical: { courage: 0, spirit: 2, grace: 0 }, magick: { courage: 0, spirit: 3, grace: 0 }, stability: { courage: 0, spirit: 1, grace: 0 } }, virtueReq: { spirit: 22 } },
       { name: "Wazzard's Robes", slot: 'Cuirass', physDef: 3, magDef: 5, stability: 4, attunement: { physical: { courage: 0, spirit: 2, grace: 0 }, magick: { courage: 0, spirit: 3, grace: 0 }, stability: { courage: 0, spirit: 1, grace: 0 } }, virtueReq: { spirit: 22 } },
