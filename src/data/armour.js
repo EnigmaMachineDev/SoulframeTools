@@ -30,7 +30,7 @@ export const ARMOUR_SETS = [
   },
   {
     name: 'Fire King',
-    location: 'Kith of Kings enclave (Tier 3)',
+    location: 'Kith of Kings Tale Tier 3',
     pieces: [
       { name: "Great Helm of The Fire King", slot: 'Helm', physDef: 3, magDef: 2, stability: 2, attunement: { physical: { courage: 2, spirit: 0, grace: 2 }, magick: { courage: 1, spirit: 0, grace: 0 }, stability: { courage: 1, spirit: 0, grace: 2 } }, virtueReq: { courage: 15 } },
       { name: "Fire King's Plackart", slot: 'Cuirass', physDef: 5, magDef: 2, stability: 3, attunement: { physical: { courage: 2, spirit: 0, grace: 2 }, magick: { courage: 1, spirit: 0, grace: 0 }, stability: { courage: 1, spirit: 0, grace: 2 } }, virtueReq: { courage: 15 } },
@@ -76,7 +76,7 @@ export const ARMOUR_SETS = [
   },
   {
     name: 'Orengall',
-    location: "Collector Crate, Alca's Children enclave (Tier 3), Wares of Zenith",
+    location: "Collector Crate, Alca's Children Tale Tier 3, Wares of Zenith",
     pieces: [
       { name: "Armet of Orengall", slot: 'Helm', physDef: 3, magDef: 2, stability: 3, attunement: { physical: { courage: 1, spirit: 1, grace: 3 }, magick: { courage: 1, spirit: 1, grace: 1 }, stability: { courage: 0, spirit: 0, grace: 3 } }, virtueReq: { grace: 20 } },
       { name: "Orengall's Cuirass", slot: 'Cuirass', physDef: 5, magDef: 3, stability: 4, attunement: { physical: { courage: 1, spirit: 1, grace: 3 }, magick: { courage: 1, spirit: 1, grace: 1 }, stability: { courage: 1, spirit: 1, grace: 2 } }, virtueReq: { grace: 20 } },
@@ -94,7 +94,7 @@ export const ARMOUR_SETS = [
   },
   {
     name: 'Regent',
-    location: 'Silent Rose enclave (Tier 3)',
+    location: 'Silent Rose Tale Tier 3',
     pieces: [
       { name: "Regent's Veil", slot: 'Helm', physDef: 3, magDef: 1, stability: 1, attunement: { physical: { courage: 2, spirit: 2, grace: 0 }, magick: { courage: 1, spirit: 2, grace: 0 }, stability: { courage: 2, spirit: 0, grace: 0 } }, virtueReq: { courage: 15 } },
       { name: "Regent's Shell", slot: 'Cuirass', physDef: 6, magDef: 3, stability: 2, attunement: { physical: { courage: 2, spirit: 2, grace: 0 }, magick: { courage: 1, spirit: 2, grace: 0 }, stability: { courage: 2, spirit: 0, grace: 0 } }, virtueReq: { courage: 15 } },
