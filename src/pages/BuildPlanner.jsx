@@ -375,7 +375,7 @@ export default function BuildPlanner() {
                   <div key={a.label} className="flex items-center justify-between">
                     <span className={`text-xs ${a.cls}`}>{a.label}</span>
                     <select value={a.val} onChange={e => a.set(Number(e.target.value))} className="bg-sf-bg border border-sf-border rounded px-2 py-1 text-xs text-sf-text focus:outline-none focus:border-sf-accent">
-                      <option value={0}>None</option><option value={1}>Rank 1 (+1)</option><option value={2}>Rank 2 (+3)</option><option value={3}>Rank 3 (+6)</option><option value={4}>Rank 4 (+10)</option>
+                      <option value={0}>None</option>{PACT_ART_VIRTUE_VALUES.map((v, i) => (<option key={i + 1} value={i + 1}>Rank {i + 1} (+{v})</option>))}
                     </select>
                   </div>
                 ))}
