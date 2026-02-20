@@ -2,7 +2,7 @@
 // Each Pact provides: Arcanics (3 abilities), Passive Abilities (2), Virtue Bonuses, base Virtue increase
 // Pact Arts tree: 30 points per pact (60 if Wyld variant exists)
 // Virtue Bonuses: Mora's Pride (Courage), Iridis' Favour (Spirit), Saphene's Gift (Grace)
-//   Each costs 1/3/6/10 points and provides 1/3/6/10 virtue points
+//   Each costs 1/3/6/10 points and provides 1/2/3/4 virtue points (updated in Preludes 13)
 
 export const PACTS = [
   {
@@ -219,9 +219,9 @@ export const PACTS = [
 
 // Pact Art Virtue Bonus costs and values
 // Each rank costs cumulative: rank 1 = 1pt, rank 2 = 3pts, rank 3 = 6pts, rank 4 = 10pts
-// Each rank provides cumulative virtue: rank 1 = 1, rank 2 = 3, rank 3 = 6, rank 4 = 10
+// Each rank provides cumulative virtue: rank 1 = 1, rank 2 = 2, rank 3 = 3, rank 4 = 4 (as of Preludes 13)
 export const PACT_ART_VIRTUE_COSTS = [1, 3, 6, 10];
-export const PACT_ART_VIRTUE_VALUES = [1, 3, 6, 10];
+export const PACT_ART_VIRTUE_VALUES = [1, 2, 3, 4];
 
 // General Pact Arts (standardized across all pacts)
 export const GENERAL_ARTS = [
