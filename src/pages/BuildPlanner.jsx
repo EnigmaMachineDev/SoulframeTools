@@ -88,6 +88,8 @@ export default function BuildPlanner() {
   const [courageArtRank, setCourageArtRank] = useState(0);
   const [spiritArtRank, setSpiritArtRank] = useState(0);
   const [graceArtRank, setGraceArtRank] = useState(0);
+  const [fable1Virtue, setFable1Virtue] = useState('grace');
+  const [fable2Virtue, setFable2Virtue] = useState('grace');
 
   const prism = PRISMS[selectedPrismIdx];
   const pact = PACTS[selectedPactIdx];
@@ -124,12 +126,19 @@ export default function BuildPlanner() {
 
   const talisman = selectedTalismanIdx >= 0 ? TALISMANS[selectedTalismanIdx] : null;
 
+  const fableBonuses = useMemo(() => {
+    const b = { courage: 0, spirit: 0, grace: 0 };
+    b[fable1Virtue] = (b[fable1Virtue] || 0) + 1;
+    b[fable2Virtue] = (b[fable2Virtue] || 0) + 1;
+    return b;
+  }, [fable1Virtue, fable2Virtue]);
+
   const virtues = useMemo(() => {
-    const base = calculateVirtues(prism, envoyRank, pactArtBonuses);
+    const base = calculateVirtues(prism, envoyRank, pactArtBonuses, fableBonuses);
     if (pact.bonusVirtue) Object.entries(pact.bonusVirtue).forEach(([v, val]) => { base[v] = (base[v] || 0) + val; });
     if (talisman) { const s = talisman.stats; if (s.courage) base.courage = (base.courage || 0) + s.courage; if (s.spirit) base.spirit = (base.spirit || 0) + s.spirit; if (s.grace) base.grace = (base.grace || 0) + s.grace; }
     return base;
-  }, [prism, envoyRank, pactArtBonuses, pact, talisman]);
+  }, [prism, envoyRank, pactArtBonuses, fableBonuses, pact, talisman]);
 
   const primaryEquippedTotems = useMemo(() => {
     const slots = ['Attack', 'Defense', 'Utility'];
@@ -163,7 +172,7 @@ export default function BuildPlanner() {
   const maxVirtue = Math.max(virtues.courage, virtues.spirit, virtues.grace, 1);
 
   function exportBuild() {
-    const build = { envoyRank, selectedPrismIdx, selectedPactIdx, selectedHelmIdx, selectedCuirassIdx, selectedLeggingsIdx, selectedPrimaryIdx, selectedSidearmIdx, selectedPrimaryRuneIdx, selectedSidearmRuneIdx, primaryTotemSlots, sidearmTotemSlots, primaryRuneBonusTotemIdx, sidearmRuneBonusTotemIdx, selectedTalismanIdx, courageArtRank, spiritArtRank, graceArtRank, primaryWeaponRank, sidearmWeaponRank, primaryJoineryIdx, primaryJoineryTier, primaryBlessedPip, sidearmJoineryIdx, sidearmJoineryTier, sidearmBlessedPip };
+    const build = { envoyRank, selectedPrismIdx, selectedPactIdx, selectedHelmIdx, selectedCuirassIdx, selectedLeggingsIdx, selectedPrimaryIdx, selectedSidearmIdx, selectedPrimaryRuneIdx, selectedSidearmRuneIdx, primaryTotemSlots, sidearmTotemSlots, primaryRuneBonusTotemIdx, sidearmRuneBonusTotemIdx, selectedTalismanIdx, courageArtRank, spiritArtRank, graceArtRank, primaryWeaponRank, sidearmWeaponRank, primaryJoineryIdx, primaryJoineryTier, primaryBlessedPip, sidearmJoineryIdx, sidearmJoineryTier, sidearmBlessedPip, fable1Virtue, fable2Virtue };
     return btoa(JSON.stringify(build));
   }
 
@@ -188,6 +197,8 @@ export default function BuildPlanner() {
       if (build.courageArtRank != null) setCourageArtRank(build.courageArtRank);
       if (build.spiritArtRank != null) setSpiritArtRank(build.spiritArtRank);
       if (build.graceArtRank != null) setGraceArtRank(build.graceArtRank);
+      if (build.fable1Virtue) setFable1Virtue(build.fable1Virtue);
+      if (build.fable2Virtue) setFable2Virtue(build.fable2Virtue);
       if (build.primaryWeaponRank != null) setPrimaryWeaponRank(build.primaryWeaponRank);
       if (build.sidearmWeaponRank != null) setSidearmWeaponRank(build.sidearmWeaponRank);
       if (build.primaryJoineryIdx != null) setPrimaryJoineryIdx(build.primaryJoineryIdx);
@@ -358,6 +369,22 @@ export default function BuildPlanner() {
               <VirtueBar label="Courage" value={virtues.courage} max={maxVirtue + 5} color="bg-courage" icon={<Flame size={14} className="text-courage" />} />
               <VirtueBar label="Spirit" value={virtues.spirit} max={maxVirtue + 5} color="bg-spirit" icon={<Sparkles size={14} className="text-spirit" />} />
               <VirtueBar label="Grace" value={virtues.grace} max={maxVirtue + 5} color="bg-grace" icon={<Wind size={14} className="text-grace" />} />
+            </div>
+            <div className="mt-4 pt-3 border-t border-sf-border/50">
+              <h4 className="text-xs uppercase tracking-wider text-sf-muted mb-1">Fable Virtue Bonuses</h4>
+              <p className="text-[10px] text-sf-muted mb-2">2 fables grant +1 to a chosen virtue: The Shewolf Snared &amp; The Waste Bear.</p>
+              <div className="space-y-2">
+                {[{ label: 'The Shewolf Snared', val: fable1Virtue, set: setFable1Virtue }, { label: 'The Waste Bear', val: fable2Virtue, set: setFable2Virtue }].map(f => (
+                  <div key={f.label} className="flex items-center justify-between">
+                    <span className="text-xs text-sf-muted">{f.label}</span>
+                    <div className="flex gap-1">
+                      {['courage', 'spirit', 'grace'].map(v => (
+                        <button key={v} onClick={() => f.set(v)} className={`text-[10px] py-0.5 px-2 rounded border capitalize ${f.val === v ? (v === 'courage' ? 'bg-courage/20 border-courage text-courage' : v === 'spirit' ? 'bg-spirit/20 border-spirit text-spirit' : 'bg-grace/20 border-grace text-grace') : 'bg-sf-bg border-sf-border text-sf-muted hover:border-sf-accent/50'}`}>{v}</button>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </SectionCard>
 

@@ -12,10 +12,10 @@
 // In-game display: Attack (+bonus) total, where total = rank0 + bonus,
 //   and bonus = rankScaling + attunement + joineryDamage.
 //
-// Life per virtue: Courage=12, Spirit=3, Grace=4
-// Base Envoy Life: 100
+// Life per virtue: Courage=10, Spirit=1, Grace=4 (confirmed via 12 in-game data points)
+// Base Envoy Life: 2
 
-const BASE_ENVOY_LIFE = 100;
+const BASE_ENVOY_LIFE = 2;
 
 export function calculateWeaponAttunement(weapon, virtues, rank = 30, joineryDamage = 0, blessedPip = null) {
   const req = weapon.virtueReq || {};
@@ -72,7 +72,7 @@ export function calculateChargedAttack(weapon, virtues, rank = 30, joineryDamage
 }
 
 export function calculateTotalLife(pact, virtues) {
-  const virtueLife = (virtues.courage || 0) * 12 + (virtues.spirit || 0) * 3 + (virtues.grace || 0) * 4;
+  const virtueLife = (virtues.courage || 0) * 10 + (virtues.spirit || 0) * 1 + (virtues.grace || 0) * 4;
   const pactLife = pact ? (pact.bonusLife || 0) : 0;
   return BASE_ENVOY_LIFE + virtueLife + pactLife;
 }
