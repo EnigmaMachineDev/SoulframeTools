@@ -22,7 +22,7 @@ export const RUNES = [
   { name: 'The Mistgale', combatArt: 'Long Blade', effect: 'Attacks become ranged projectiles dealing 150 damage', bonusTotemSlot: 'Utility', description: 'Phantoms formed in mist turn your melee strikes into ranged projectiles.' },
 
   // === MAGICK ===
-  { name: 'Archstorm', combatArt: 'Magick', effect: '+125% Voltaic for 30s', bonusTotemSlot: 'Attack', description: 'The erst storm, the root of all rain, empowers your Magick weapon.' },
+  { name: 'Archstorm', combatArt: 'Magick', effect: '+125% Voltaic for 30s', bonusTotemSlot: 'Defense', description: 'The erst storm, the root of all rain, empowers your Magick weapon.' },
   { name: 'The Hollowing', combatArt: 'Magick', effect: 'Mark enemies; subsequent attacks explode for 125 damage', bonusTotemSlot: 'Utility', description: 'Held breath bursting free — marked enemies detonate on repeated strikes.' },
 
   // === POLEARM ===
