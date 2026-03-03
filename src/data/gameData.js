@@ -44,11 +44,12 @@ export const gameData = {
       bows: {
         label: "Bows",
         items: [
+          { id: "wep-avex", name: "Avex" },
           { id: "wep-blitzel", name: "Blitzel" },
           { id: "wep-juniper", name: "Juniper" },
           { id: "wep-maestro", name: "Maestro" },
           { id: "wep-the-starling", name: "The Starling" },
-          { id: "wep-thistle", name: "Thistle" },
+          { id: "wep-thistle", name: "Thistle" }
         ],
       },
       flyblades: {
@@ -71,6 +72,7 @@ export const gameData = {
         label: "Long Blades",
         items: [
           { id: "wep-dewelion", name: "Dewelion" },
+          { id: "wep-falx", name: "Falx" },
           { id: "wep-igne-mora", name: "Igne Mora" },
           { id: "wep-marrows-bane", name: "Marrow's Bane" },
           { id: "wep-nurash", name: "Nurash" },

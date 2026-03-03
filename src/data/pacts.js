@@ -218,10 +218,8 @@ export const PACTS = [
 ];
 
 // Pact Art Virtue Bonus costs and values
-// Each rank costs cumulative: rank 1 = 1pt, rank 2 = 3pts, rank 3 = 6pts, rank 4 = 10pts
-// Each rank provides cumulative virtue: rank 1 = 1, rank 2 = 2, rank 3 = 3, rank 4 = 4 (as of Preludes 13)
-export const PACT_ART_VIRTUE_COSTS = [1, 3, 6, 10];
-export const PACT_ART_VIRTUE_VALUES = [1, 2, 3, 4];
+export const PACT_ART_VIRTUE_COSTS = [1, 2, 3];
+export const PACT_ART_VIRTUE_VALUES = [1, 3, 6];
 
 // General Pact Arts (standardized across all pacts)
 export const GENERAL_ARTS = [
