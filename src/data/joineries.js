@@ -1,22 +1,23 @@
 // Joinery data sourced from wiki.avakot.org/Module:Data/Joineries
-// Joineries are weapon upgrades applied via Steelsinging.
+// Joineries are weapon upgrades applied via Reforging at Tuvalkane.
 // Each joinery type applies to specific weapon categories.
-// Tiers: Rusted (Common), Tempered (Uncommon), Polished (Rare), Blessed (Rare)
-// Blessed tier has same stats as Polished but also adds +1 Attunement pip via reforge.
-// The Gildaur "Polished" in the user's screenshot showed +25 Damage (not +20 as wiki says).
-// P13 patch notes: "Increased Damage bonus given by Gildaur Joineries."
-// We use the higher post-P13 values where confirmed by in-game screenshots.
+// Preludes 14 rework: Joineries now purely add Virtue Attunement pips.
+//   Blessed       = +1 Attunement pip
+//   Twice Blessed = +2 Attunement pips
+//   Thrice Blessed = +3 Attunement pips
+// Maximum of 5 pips in a single Virtue; 5+ pips grants a gold-trimmed icon.
+// Weapon damage (+25 at max rank) is now part of the weapon rank progression, not joineries.
+// Rapier weapons use the same joinery types as Long Blade (Verite + Gildaur).
 
 export const JOINERIES = [
   {
     name: 'Verite',
     description: 'Melee joinery — reliable for mending melee weapons.',
-    weaponTypes: ['Short Blade', 'Long Blade', 'Polearm', 'Shield', 'Greatsword'],
+    weaponTypes: ['Short Blade', 'Long Blade', 'Polearm', 'Shield', 'Greatsword', 'Rapier'],
     tiers: [
-      { tier: 'Rusted', rarity: 'Common', stats: { damage: 15 } },
-      { tier: 'Tempered', rarity: 'Uncommon', stats: { damage: 20, parryStabilityCost: -10 } },
-      { tier: 'Polished', rarity: 'Rare', stats: { damage: 25, parryStabilityCost: -15, perfectThrowDamage: 25 } },
-      { tier: 'Blessed', rarity: 'Rare', stats: { damage: 25, parryStabilityCost: -15, perfectThrowDamage: 25 }, blessed: true },
+      { tier: 'Blessed', rarity: 'Common', pips: 1 },
+      { tier: 'Twice Blessed', rarity: 'Uncommon', pips: 2 },
+      { tier: 'Thrice Blessed', rarity: 'Rare', pips: 3 },
     ],
   },
   {
@@ -24,10 +25,9 @@ export const JOINERIES = [
     description: 'Magick joinery — powerful conductor for magick weapons.',
     weaponTypes: ['Magick'],
     tiers: [
-      { tier: 'Rusted', rarity: 'Common', stats: { consecutiveDamage: 5 } },
-      { tier: 'Tempered', rarity: 'Uncommon', stats: { consecutiveDamage: 5, parryStabilityCost: -20 } },
-      { tier: 'Polished', rarity: 'Rare', stats: { consecutiveDamage: 10, parryStabilityCost: -25, throwDistance: 5 } },
-      { tier: 'Blessed', rarity: 'Rare', stats: { consecutiveDamage: 10, parryStabilityCost: -25, throwDistance: 5 }, blessed: true },
+      { tier: 'Blessed', rarity: 'Common', pips: 1 },
+      { tier: 'Twice Blessed', rarity: 'Uncommon', pips: 2 },
+      { tier: 'Thrice Blessed', rarity: 'Rare', pips: 3 },
     ],
   },
   {
@@ -35,21 +35,19 @@ export const JOINERIES = [
     description: 'Ranged joinery — ideal for mending ranged weapons.',
     weaponTypes: ['Bow', 'Flyblade'],
     tiers: [
-      { tier: 'Rusted', rarity: 'Common', stats: { damage: 10 } },
-      { tier: 'Tempered', rarity: 'Uncommon', stats: { damage: 15, weaponChargeRate: 10 } },
-      { tier: 'Polished', rarity: 'Rare', stats: { damage: 20, weaponChargeRate: 20, headshotMultiplier: 25 } },
-      { tier: 'Blessed', rarity: 'Rare', stats: { damage: 20, weaponChargeRate: 20, headshotMultiplier: 25 }, blessed: true },
+      { tier: 'Blessed', rarity: 'Common', pips: 1 },
+      { tier: 'Twice Blessed', rarity: 'Uncommon', pips: 2 },
+      { tier: 'Thrice Blessed', rarity: 'Rare', pips: 3 },
     ],
   },
   {
     name: 'Gildaur',
     description: 'Universal joinery — fine for any weapon that needs mending.',
-    weaponTypes: ['Short Blade', 'Long Blade', 'Polearm', 'Shield', 'Greatsword', 'Magick', 'Bow', 'Flyblade'],
+    weaponTypes: ['Short Blade', 'Long Blade', 'Polearm', 'Shield', 'Greatsword', 'Rapier', 'Magick', 'Bow', 'Flyblade'],
     tiers: [
-      { tier: 'Rusted', rarity: 'Common', stats: { damage: 10, parryStabilityCost: -20 } },
-      { tier: 'Tempered', rarity: 'Uncommon', stats: { damage: 15, parryStabilityCost: -40 } },
-      { tier: 'Polished', rarity: 'Rare', stats: { damage: 25, parryStabilityCost: -50, lifeSteal: 4 } },
-      { tier: 'Blessed', rarity: 'Rare', stats: { damage: 25, parryStabilityCost: -50, lifeSteal: 4 }, blessed: true },
+      { tier: 'Blessed', rarity: 'Common', pips: 1 },
+      { tier: 'Twice Blessed', rarity: 'Uncommon', pips: 2 },
+      { tier: 'Thrice Blessed', rarity: 'Rare', pips: 3 },
     ],
   },
 ];
@@ -61,16 +59,5 @@ export function getJoineriesForWeapon(combatArt) {
 
 // Format a joinery tier's stats for display
 export function formatJoineryStats(tierData) {
-  const lines = [];
-  const s = tierData.stats;
-  if (s.damage) lines.push(`+${s.damage} Damage`);
-  if (s.consecutiveDamage) lines.push(`+${s.consecutiveDamage} Consecutive damage`);
-  if (s.parryStabilityCost) lines.push(`${s.parryStabilityCost}% Parry stability cost`);
-  if (s.perfectThrowDamage) lines.push(`+${s.perfectThrowDamage} Perfect Throw damage`);
-  if (s.weaponChargeRate) lines.push(`+${s.weaponChargeRate}% Weapon charge rate`);
-  if (s.headshotMultiplier) lines.push(`+${s.headshotMultiplier}% Headshot multiplier`);
-  if (s.lifeSteal) lines.push(`+${s.lifeSteal}% Life steal`);
-  if (s.throwDistance) lines.push(`+${s.throwDistance} Throw distance`);
-  if (tierData.blessed) lines.push('+1 Attunement pip (reforge)');
-  return lines;
+  return [`+${tierData.pips} Virtue Attunement pip${tierData.pips > 1 ? 's' : ''}`];
 }

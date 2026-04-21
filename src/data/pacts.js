@@ -113,11 +113,30 @@ export const PACTS = [
     description: 'Holy warrior pact focused on righteous combat and healing.',
     arcanics: [
       { name: 'Torment', virtue: 'courage', description: 'Summon the Torment Stag to charge and devastate enemies.' },
-      { name: 'Behest', virtue: 'spirit', description: 'Command allies and bolster their combat effectiveness.' },
+      { name: 'Behest', virtue: 'spirit', description: 'Command allies and bolster their combat effectiveness. Alerts affected enemies. (P14: Sap no longer deals double damage against Agari struck by Behest.)' },
       { name: 'Stampede', virtue: 'grace', description: 'Charge forward, knocking enemies aside with devastating force.' },
     ],
     passives: ['Healheart', 'Righteous'],
     passiveDescriptions: ['Passive life regeneration in combat.', 'Bonus damage against corrupted enemies.'],
+  },
+  {
+    name: 'Duelo',
+    type: 'Normal',
+    alignedVirtue: 'grace',
+    bonusLife: 110, // TBD — assumed from wiki pending in-game confirmation
+    bonusVirtue: null,
+    unarmedDmg: null, // TBD
+    physicalDefense: null, // TBD
+    magickDefense: null, // TBD
+    stabilityIncrease: null, // TBD
+    description: 'Seafaring fencer pact of Mestra Carmo, the Siren of Coral Graves. Wield the swashbuckling skills of the Blue Ribbon\'s finest swordstress.',
+    arcanics: [
+      { name: 'Flintlock', virtue: 'courage', description: 'Break the rules of old. Fire a single shot from your flintlock pistol that pierces enemies and explodes on impact.' },
+      { name: 'Bravada', virtue: 'spirit', description: 'Invoke The Duelo. Boost allies\' highest virtue while slowing enemies in range.' },
+      { name: 'Duo Duelo', virtue: 'grace', description: 'Her past, his future, as one. Spawn a ghostly clone that matches every attack you make.' },
+    ],
+    passives: ['Olho por Olho', 'Chamariz'],
+    passiveDescriptions: ['Perfect dodge gives attacks a chance to cause enemies to bleed.', 'Spawn a decoy after a perfect dodge. Up to three decoys can be spawned.'],
   },
   {
     name: 'Bromius',

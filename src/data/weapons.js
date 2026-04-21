@@ -4,7 +4,7 @@
 // attuneCap: wiki VirtueAttuneCap field (NOT a bonus cap — see calculations.js)
 
 export const COMBAT_ARTS = [
-  'Bow', 'Flyblade', 'Greatsword', 'Long Blade', 'Magick', 'Polearm', 'Shield', 'Short Blade'
+  'Bow', 'Flyblade', 'Greatsword', 'Long Blade', 'Magick', 'Polearm', 'Rapier', 'Shield', 'Short Blade'
 ];
 
 export const WEAPONS = [
@@ -26,6 +26,10 @@ export const WEAPONS = [
   { name: 'Purity', combatArt: 'Greatsword', damageType: 'Sharp', rank0Damage: 68, baseDamage: 92, attackSpeed: 0.5, smiteChance: 6, staggerDamage: 100, attunement: { courage: 3, spirit: 2, grace: 0 }, virtueReq: { courage: 21 }, attuneCap: 36, slot: 'Primary', location: 'The Mendicant King, Collector Crate, Wares of Zenith' },
   { name: 'The Paragon', combatArt: 'Greatsword', damageType: 'Sharp', rank0Damage: 67, baseDamage: 91, attackSpeed: 0.5, smiteChance: 7, staggerDamage: 94, attunement: { courage: 2, spirit: 2, grace: 2 }, virtueReq: {}, attuneCap: 134, slot: 'Primary', location: 'Paragon Founders Pack' },
 
+  // === RAPIERS (Primary) — introduced in Preludes 14 ===
+  { name: 'Espadarte', combatArt: 'Rapier', damageType: 'Sharp', rank0Damage: null, baseDamage: null, attackSpeed: null, smiteChance: null, staggerDamage: null, attunement: { courage: null, spirit: null, grace: null }, virtueReq: {}, attuneCap: null, slot: 'Primary', location: 'Mirifuir Siege, Wares of Zenith' }, // TBD — stats not yet on wiki
+  { name: 'Navalha', combatArt: 'Rapier', damageType: 'Sharp', rank0Damage: null, baseDamage: null, attackSpeed: null, smiteChance: null, staggerDamage: null, attunement: { courage: null, spirit: null, grace: null }, virtueReq: {}, attuneCap: null, slot: 'Primary', location: 'The Wreck of Mestra Carmo, Wares of Zenith' }, // TBD — stats not yet on wiki
+
   // === LONG BLADES (Primary) ===
   { name: 'Falx', combatArt: 'Long Blade', damageType: 'Sharp', rank0Damage: 52, baseDamage: 76, attackSpeed: null, smiteChance: 5, staggerDamage: 34, attunement: { courage: 3, spirit: 0, grace: 0 }, virtueReq: { courage: 15 }, attuneCap: null, slot: 'Primary', location: 'The Organ' },
   { name: 'Dewelion', combatArt: 'Long Blade', damageType: 'Sharp', rank0Damage: 48, baseDamage: 72, attackSpeed: 0.55, smiteChance: 6, staggerDamage: 66, attunement: { courage: 0, spirit: 2, grace: 3 }, virtueReq: { grace: 22 }, attuneCap: 22, slot: 'Primary', location: 'Collector Crate, Fore-Feller Hewyl, Sinecure-errant Vella, Fort Kearnhold Siege, Wares of Zenith' },
@@ -38,12 +42,15 @@ export const WEAPONS = [
   { name: 'The Ivor', combatArt: 'Long Blade', damageType: 'Sharp', rank0Damage: 44, baseDamage: 68, attackSpeed: 0.6, smiteChance: 4, staggerDamage: 68, attunement: { courage: 2, spirit: 0, grace: 0 }, virtueReq: { courage: 10 }, attuneCap: 29, slot: 'Primary', location: 'Wyld Tethren / Paragon Founders Pack' },
   { name: 'Vetch', combatArt: 'Long Blade', damageType: 'Sharp', rank0Damage: 44, baseDamage: 68, attackSpeed: 0.6, smiteChance: 3, staggerDamage: 64, attunement: { courage: 2, spirit: 0, grace: 2 }, virtueReq: { courage: 15 }, attuneCap: 28, slot: 'Primary', location: "Collector Crate, Etheldred The Weaver, Seachnall The Widower, Enclave Tales Tier 1–2, Wares of Zenith" },
   { name: 'Wulder', combatArt: 'Long Blade', damageType: 'Sharp', rank0Damage: 38, baseDamage: 62, attackSpeed: 0.65, smiteChance: 3, staggerDamage: 62, attunement: { courage: 1, spirit: 0, grace: 0 }, virtueReq: {}, attuneCap: 36, slot: 'Primary', location: "Starter weapon (Tethren pact) — Alca's Children, Silent Rose faction shops" },
+  { name: 'Cenotaph', combatArt: 'Long Blade', damageType: 'Sharp', rank0Damage: null, baseDamage: null, attackSpeed: null, smiteChance: null, staggerDamage: null, attunement: { courage: null, spirit: null, grace: null }, virtueReq: {}, attuneCap: null, slot: 'Primary', location: 'Rovgot Wyrm, Wares of Zenith' }, // TBD — stats not yet on wiki
 
   // === MAGICK - Staves (Primary) ===
+  // Silistavf (Preludes 14) — Ode'n Voltaic staff from Mirifuir Siege
   { name: 'Gwylen', combatArt: 'Magick', damageType: 'Arcanic', rank0Damage: 33, baseDamage: 57, attackSpeed: 1.0, smiteChance: 6, staggerDamage: 19, attunement: { courage: 0, spirit: 1, grace: 0 }, virtueReq: {}, attuneCap: 32, slot: 'Primary', location: 'Starter weapon (Oscelda pact) — Kith of Kings, Silent Rose faction shops' },
   { name: 'Seathorn', combatArt: 'Magick', damageType: 'Arcanic', rank0Damage: 44, baseDamage: 68, attackSpeed: 0.9, smiteChance: 2, staggerDamage: 46, attunement: { courage: 0, spirit: 3, grace: 2 }, virtueReq: { spirit: 21 }, attuneCap: 22, slot: 'Primary', location: 'Enclave Tales Tier 3 (all enclaves)' },
   { name: 'The Alder', combatArt: 'Magick', damageType: 'Arcanic', rank0Damage: 40, baseDamage: 64, attackSpeed: 0.8, smiteChance: 6, staggerDamage: 23, attunement: { courage: 0, spirit: 2, grace: 0 }, virtueReq: { spirit: 10 }, attuneCap: 27, slot: 'Primary', location: 'Wyld Oscelda / Paragon Founders Pack' },
   { name: 'The Erstroot', combatArt: 'Magick', damageType: 'Arcanic', rank0Damage: 40, baseDamage: 64, attackSpeed: 0.95, smiteChance: 6, staggerDamage: 27, attunement: { courage: 0, spirit: 3, grace: 0 }, virtueReq: { spirit: 19 }, attuneCap: 27, slot: 'Primary', location: 'Collector Crate, Wraith of Wastes, The Organ, Wares of Zenith' },
+  { name: 'Silistavf', combatArt: 'Magick', damageType: 'Voltaic', rank0Damage: null, baseDamage: null, attackSpeed: null, smiteChance: null, staggerDamage: null, attunement: { courage: null, spirit: null, grace: null }, virtueReq: {}, attuneCap: null, slot: 'Primary', location: 'Mirifuir Siege, Wares of Zenith' }, // TBD — stats not yet on wiki
 
   // === MAGICK - Wristcasters (Sidearm) ===
   { name: "Basker's Wrest", combatArt: 'Magick', damageType: 'Arcanic', rank0Damage: 32, baseDamage: 56, attackSpeed: 1.4, smiteChance: 4, staggerDamage: 40, attunement: { courage: 2, spirit: 2, grace: 0 }, virtueReq: { spirit: 9, courage: 8 }, attuneCap: 21, slot: 'Sidearm', location: 'Kith of Kings Tale Tier 3 / faction shop, Kabocha, Wraith of Wastes' },
@@ -57,8 +64,10 @@ export const WEAPONS = [
   { name: 'Vasp-IV', combatArt: 'Polearm', damageType: 'Sharp', rank0Damage: 59, baseDamage: 72, attackSpeed: 0.6, smiteChance: 5, staggerDamage: 80, attunement: { courage: 3, spirit: 0, grace: 0 }, virtueReq: { courage: 16 }, attuneCap: 58, slot: 'Primary', location: 'Ode Chest, Banneret, Knight, Nimrod, Wares of Zenith' },
 
   // === SHIELDS (Primary) ===
+  // Lyke-Wake (Preludes 14) — Mendicant sword-and-shield with unique Counter Stance moveset
   { name: 'Bog & Myrtle', combatArt: 'Shield', damageType: 'Sharp', rank0Damage: 39, baseDamage: 63, attackSpeed: 0.7, smiteChance: 2, staggerDamage: 68, attunement: { courage: 2, spirit: 0, grace: 2 }, virtueReq: { courage: 14 }, attuneCap: 26, slot: 'Primary', location: 'Collector Crate, Knell Knight, Enclave Tales Tier 1–2, Wares of Zenith' },
   { name: 'Oryn-Umbr', combatArt: 'Shield', damageType: 'Sharp', rank0Damage: 37, baseDamage: 61, attackSpeed: 0.7, smiteChance: 5, staggerDamage: 60, attunement: { courage: 3, spirit: 0, grace: 0 }, virtueReq: { courage: 16 }, attuneCap: 25, slot: 'Primary', location: 'Sinecure enemies (Soldier, Assassin, Guard, Halberdier, The Circade, etc.), Wares of Zenith' },
+  { name: 'Lyke-Wake', combatArt: 'Shield', damageType: 'Sharp', rank0Damage: null, baseDamage: null, attackSpeed: null, smiteChance: null, staggerDamage: null, attunement: { courage: null, spirit: null, grace: null }, virtueReq: {}, attuneCap: null, slot: 'Primary', location: 'Mendicant Knights (Fallen Skytower), Wares of Zenith' }, // TBD — stats not yet on wiki; uses unique Counter Stance moveset
 
   // === SHORT BLADES - Dual Blades (Primary) ===
   { name: 'Rivt-II', combatArt: 'Short Blade', damageType: 'Sharp', rank0Damage: 26, baseDamage: 50, attackSpeed: 1.4, smiteChance: 4, staggerDamage: 49, attunement: { courage: 0, spirit: 0, grace: 3 }, virtueReq: { grace: 16 }, attuneCap: 26, slot: 'Primary', location: 'Ode Chest, Banneret, Hunter, Nimrod, Wares of Zenith' },

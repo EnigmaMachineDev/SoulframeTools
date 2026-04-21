@@ -16,6 +16,7 @@ export const gameData = {
           { id: "fable-waste-bear", name: "The Waste Bear" },
           { id: "fable-an-invitation", name: "An Invitation..." },
           { id: "fable-warsongs", name: "Warsongs" },
+          { id: "fable-wreck-mestra-carmo", name: "The Wreck of Mestra Carmo" },
         ],
       },
       miniQuests: {
@@ -68,9 +69,17 @@ export const gameData = {
           { id: "wep-the-paragon", name: "The Paragon" },
         ],
       },
+      rapiers: {
+        label: "Rapiers",
+        items: [
+          { id: "wep-espadarte", name: "Espadarte" },
+          { id: "wep-navalha", name: "Navalha" },
+        ],
+      },
       longBlades: {
         label: "Long Blades",
         items: [
+          { id: "wep-cenotaph", name: "Cenotaph" },
           { id: "wep-dewelion", name: "Dewelion" },
           { id: "wep-falx", name: "Falx" },
           { id: "wep-igne-mora", name: "Igne Mora" },
@@ -88,6 +97,7 @@ export const gameData = {
         label: "Magick",
         items: [
           { id: "wep-esthelle", name: "Esthelle" },
+          { id: "wep-silistavf", name: "Silistavf" },
           { id: "wep-gwylen", name: "Gwylen" },
           { id: "wep-odiac", name: "Odiac" },
           { id: "wep-the-alder", name: "The Alder" },
@@ -109,6 +119,7 @@ export const gameData = {
         label: "Shields",
         items: [
           { id: "wep-bog-myrtle", name: "Bog & Myrtle" },
+          { id: "wep-lyke-wake", name: "Lyke-Wake" },
           { id: "wep-oryn-umbr", name: "Oryn-Umbr" },
         ],
       },
@@ -153,6 +164,8 @@ export const gameData = {
       wyldSirin: { label: "Wyld Sirin Set", items: [{ id: "arm-wyld-sirin-finery", name: "Wyld Sirin Finery" }, { id: "arm-wyld-sirin-wevetbelt", name: "Wyld Sirin Wevetbelt" }, { id: "arm-wyld-sirin-feignmask", name: "Wyld Sirin's Feignmask" }] },
       wazzard: { label: "Wazzard Set", items: [{ id: "arm-wazzard-robes", name: "Wazzard's Robes" }, { id: "arm-wazzard-bycoket", name: "Wazzard's Bycoket" }, { id: "arm-wazzard-trunks", name: "Wazzard's Trunks" }] },
       wyldTethren: { label: "Wyld Tethren Set", items: [{ id: "arm-wyld-tethren-flamefoot", name: "Wyld Tethren Flamefoot" }, { id: "arm-wyld-tethren-solist", name: "Wyld Tethren Solist Shield" }, { id: "arm-wyld-tethren-hornhelm", name: "Wyld Tethren's Hornhelm" }] },
+      mestraUniform: { label: "Mestra's Uniform Set", items: [{ id: "arm-mestras-helm", name: "Mestra's Helm" }, { id: "arm-mestras-furbelow", name: "Mestra's Furbelow" }, { id: "arm-mestras-breeches", name: "Mestra's Breeches" }] },
+      pensive: { label: "Pensive Set", items: [{ id: "arm-pensives-bonnet", name: "Pensive's Bonnet" }, { id: "arm-pensives-cloak", name: "Pensive's Cloak" }, { id: "arm-pensives-pantaloons", name: "Pensive's Pantaloons" }] },
     },
   },
   virtuePrisms: {
@@ -182,7 +195,7 @@ export const gameData = {
     icon: "Flame",
     trackLevel: true,
     categories: {
-      normalPacts: { label: "Normal Pacts", items: [{ id: "pact-bromius", name: "Bromius" }, { id: "pact-garren-rood", name: "Garren Rood" }, { id: "pact-moras-hand", name: "Mora's Hand" }, { id: "pact-ode-tempest", name: "Ode Tempest" }, { id: "pact-orengall", name: "Orengall" }, { id: "pact-oscelda", name: "Oscelda" }, { id: "pact-sirin", name: "Sirin" }, { id: "pact-tethren", name: "Tethren" }] },
+      normalPacts: { label: "Normal Pacts", items: [{ id: "pact-bromius", name: "Bromius" }, { id: "pact-duelo", name: "Duelo" }, { id: "pact-garren-rood", name: "Garren Rood" }, { id: "pact-moras-hand", name: "Mora's Hand" }, { id: "pact-ode-tempest", name: "Ode Tempest" }, { id: "pact-orengall", name: "Orengall" }, { id: "pact-oscelda", name: "Oscelda" }, { id: "pact-sirin", name: "Sirin" }, { id: "pact-tethren", name: "Tethren" }] },
       wyldPacts: { label: "Wyld Pacts", items: [{ id: "pact-wyld-oscelda", name: "Wyld Oscelda" }, { id: "pact-wyld-sirin", name: "Wyld Sirin" }, { id: "pact-wyld-tethren", name: "Wyld Tethren" }] },
     },
   },
@@ -223,7 +236,7 @@ export const gameData = {
     icon: "Palette",
     categories: {
       palettes: { label: "Colour Palettes", items: [{ id: "cos-aloras-royal", name: "Alora's Royal Dyes" }, { id: "cos-eponas-forests", name: "Epona's Forests" }, { id: "cos-osceldas-hope", name: "Oscelda's Hope" }, { id: "cos-rhiannons-flame", name: "Rhiannon's Flame" }, { id: "cos-sigils-roses", name: "Sigil's Roses" }, { id: "cos-sirins-shroud", name: "Sirin's Shroud" }, { id: "cos-tethrens-blaze", name: "Tethren's Blaze" }, { id: "cos-verminias-brines", name: "Verminia's Brines" }, { id: "cos-verminias-memoir", name: "Verminia's Memoir" }] },
-      guideSkins: { label: "Guide Skins", items: [{ id: "cos-floppet", name: "Floppet" }, { id: "cos-grandfas-sparrow", name: "Grandfa's Sparrow" }, { id: "cos-lady-cardinal", name: "Lady Cardinal" }, { id: "cos-lord-cardinal", name: "Lord Cardinal" }, { id: "cos-midnight-grassquit", name: "Midnight Grassquit" }, { id: "cos-snow-bunting", name: "Snow Bunting" }, { id: "cos-sparragon", name: "Sparragon" }, { id: "cos-spotted-towhee", name: "Spotted Towhee" }] },
+      guideSkins: { label: "Guide Skins", items: [{ id: "cos-floppet", name: "Floppet" }, { id: "cos-grandfas-sparrow", name: "Grandfa's Sparrow" }, { id: "cos-lady-cardinal", name: "Lady Cardinal" }, { id: "cos-lord-cardinal", name: "Lord Cardinal" }, { id: "cos-midnight-grassquit", name: "Midnight Grassquit" }, { id: "cos-snow-bunting", name: "Snow Bunting" }, { id: "cos-sparragon", name: "Sparragon" }, { id: "cos-spotted-towhee", name: "Spotted Towhee" }, { id: "cos-wanderquill", name: "Wanderquill" }] },
       motifs: { label: "Motifs", items: [{ id: "cos-frost-thaw", name: "Frost and Thaw" }, { id: "cos-frostflake", name: "Frostflake" }, { id: "cos-lady-cardinal-motif", name: "Lady Cardinal" }, { id: "cos-lady-lord-cardinal", name: "Lady and Lord Cardinal" }, { id: "cos-lord-cardinal-motif", name: "Lord Cardinal" }, { id: "cos-paragon-periapt", name: "Paragon Periapt" }, { id: "cos-soulframe-motif", name: "Soulframe Motif" }, { id: "cos-thawtide-bell", name: "Thawtide Bell" }, { id: "cos-thawtide-jingles", name: "Thawtide Jingles" }, { id: "cos-waking-sun", name: "The Waking Sun" }, { id: "cos-wyldings-heart", name: "Wylding's Heart" }, { id: "cos-wyldings-hilt", name: "Wylding's Hilt" }, { id: "cos-wyldings-hush", name: "Wylding's Hush" }] },
     },
   },

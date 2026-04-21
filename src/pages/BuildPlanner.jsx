@@ -111,10 +111,12 @@ export default function BuildPlanner() {
   const sidearmJoineries = useMemo(() => getJoineriesForWeapon(sidearm.combatArt), [sidearm.combatArt]);
   const primaryJoinery = primaryJoineryIdx >= 0 ? primaryJoineries[primaryJoineryIdx] : null;
   const sidearmJoinery = sidearmJoineryIdx >= 0 ? sidearmJoineries[sidearmJoineryIdx] : null;
-  const primaryJoineryDmg = primaryJoinery ? (primaryJoinery.tiers[primaryJoineryTier]?.stats?.damage || primaryJoinery.tiers[primaryJoineryTier]?.stats?.consecutiveDamage || 0) : 0;
-  const sidearmJoineryDmg = sidearmJoinery ? (sidearmJoinery.tiers[sidearmJoineryTier]?.stats?.damage || sidearmJoinery.tiers[sidearmJoineryTier]?.stats?.consecutiveDamage || 0) : 0;
-  const primaryIsBlessed = primaryJoinery?.tiers[primaryJoineryTier]?.blessed || false;
-  const sidearmIsBlessed = sidearmJoinery?.tiers[sidearmJoineryTier]?.blessed || false;
+  const primaryJoineryDmg = 0; // P14: joineries no longer grant flat damage
+  const sidearmJoineryDmg = 0;
+  const primaryJoineryPips = primaryJoinery ? (primaryJoinery.tiers[primaryJoineryTier]?.pips || 0) : 0;
+  const sidearmJoineryPips = sidearmJoinery ? (sidearmJoinery.tiers[sidearmJoineryTier]?.pips || 0) : 0;
+  const primaryIsBlessed = primaryJoineryPips > 0; // any joinery tier now grants pips
+  const sidearmIsBlessed = sidearmJoineryPips > 0;
   const primaryEffectivePip = primaryIsBlessed ? primaryBlessedPip : null;
   const sidearmEffectivePip = sidearmIsBlessed ? sidearmBlessedPip : null;
 
@@ -154,14 +156,14 @@ export default function BuildPlanner() {
     return entries;
   }, [sidearmTotemSlots, sidearmTotems, sidearmRune, sidearmRuneBonusTotemIdx]);
 
-  const primaryCalc = useMemo(() => calculateWeaponAttunement(primary, virtues, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip), [primary, virtues, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip]);
-  const sidearmCalc = useMemo(() => calculateWeaponAttunement(sidearm, virtues, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip), [sidearm, virtues, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip]);
-  const primaryDPS = useMemo(() => calculateDPS(primary, virtues, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip), [primary, virtues, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip]);
-  const sidearmDPS = useMemo(() => calculateDPS(sidearm, virtues, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip), [sidearm, virtues, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip]);
-  const primaryCharged = useMemo(() => calculateChargedAttack(primary, virtues, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip), [primary, virtues, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip]);
-  const sidearmCharged = useMemo(() => calculateChargedAttack(sidearm, virtues, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip), [sidearm, virtues, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip]);
-  const primaryTotemCalc = useMemo(() => calculateWeaponWithTotems(primary, virtues, primaryEquippedTotems, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip), [primary, virtues, primaryEquippedTotems, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip]);
-  const sidearmTotemCalc = useMemo(() => calculateWeaponWithTotems(sidearm, virtues, sidearmEquippedTotems, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip), [sidearm, virtues, sidearmEquippedTotems, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip]);
+  const primaryCalc = useMemo(() => calculateWeaponAttunement(primary, virtues, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip, primaryJoineryPips), [primary, virtues, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip, primaryJoineryPips]);
+  const sidearmCalc = useMemo(() => calculateWeaponAttunement(sidearm, virtues, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip, sidearmJoineryPips), [sidearm, virtues, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip, sidearmJoineryPips]);
+  const primaryDPS = useMemo(() => calculateDPS(primary, virtues, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip, primaryJoineryPips), [primary, virtues, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip, primaryJoineryPips]);
+  const sidearmDPS = useMemo(() => calculateDPS(sidearm, virtues, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip, sidearmJoineryPips), [sidearm, virtues, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip, sidearmJoineryPips]);
+  const primaryCharged = useMemo(() => calculateChargedAttack(primary, virtues, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip, primaryJoineryPips), [primary, virtues, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip, primaryJoineryPips]);
+  const sidearmCharged = useMemo(() => calculateChargedAttack(sidearm, virtues, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip, sidearmJoineryPips), [sidearm, virtues, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip, sidearmJoineryPips]);
+  const primaryTotemCalc = useMemo(() => calculateWeaponWithTotems(primary, virtues, primaryEquippedTotems, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip, primaryJoineryPips), [primary, virtues, primaryEquippedTotems, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip, primaryJoineryPips]);
+  const sidearmTotemCalc = useMemo(() => calculateWeaponWithTotems(sidearm, virtues, sidearmEquippedTotems, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip, sidearmJoineryPips), [sidearm, virtues, sidearmEquippedTotems, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip, sidearmJoineryPips]);
 
   const totalLife = useMemo(() => calculateTotalLife(pact, virtues), [pact, virtues]);
   const baseDefense = useMemo(() => calculateTotalDefense(armourPieces, virtues), [armourPieces, virtues]);
@@ -260,7 +262,6 @@ export default function BuildPlanner() {
           <StatRow label="Base Attack" value={`${r0} → ${calc.attackAtRank}`} icon={<Sword size={14} />} />
           {calc.rankScaling > 0 && <StatRow label="Rank Scaling" value={`+${calc.rankScaling}`} icon={<Zap size={14} />} color="text-blue-300" />}
           <StatRow label="Attunement" value={calc.meetsRequirement ? `+${calc.attunement}` : 'Req. not met'} icon={<Sparkles size={14} />} color={calc.meetsRequirement ? 'text-green-400' : 'text-red-400'} />
-          {calc.joineryDamage > 0 && <StatRow label="Joinery" value={`+${calc.joineryDamage}`} icon={<Flame size={14} />} color="text-amber-300" />}
           <StatRow label="Total Attack" value={`(+${calc.bonus}) ${hasTotems ? mod.totalAttack : calc.totalAttack}`} icon={<Sword size={14} />} color="text-sf-bright" bonus={hasTotems && mod.totalAttack > calc.totalAttack ? mod.totalAttack - calc.totalAttack : 0} />
           <StatRow label="Charged Attack" value={hasTotems ? mod.charged : charged} icon={<Zap size={14} />} color="text-emerald-300" />
           <StatRow label="Attack Speed" value={`${hasTotems ? mod.atkSpeed : weapon.attackSpeed}/s`} icon={<Wind size={14} />} bonus={hasTotems && mod.atkSpeed > weapon.attackSpeed ? `+${Math.round((mod.atkSpeed - weapon.attackSpeed) * 100) / 100}` : 0} />
@@ -309,7 +310,7 @@ export default function BuildPlanner() {
         {joinery && joinery.tiers[joineryTier] && <div className="mt-1.5 text-[10px] text-amber-300/80">{formatJoineryStats(joinery.tiers[joineryTier]).map((s, i) => <span key={i} className="block">{s}</span>)}</div>}
         {isBlessed && (
           <div className="mt-2">
-            <label className="block text-[10px] text-amber-400 uppercase mb-1">Blessed Pip (+1 Attunement)</label>
+            <label className="block text-[10px] text-amber-400 uppercase mb-1">Joinery Pip (+{joinery?.tiers[joineryTier]?.pips || 1} Attunement)</label>
             <div className="flex gap-1.5">{['courage', 'spirit', 'grace'].map(v => (<button key={v} onClick={() => setBlessedPip(blessedPip === v ? null : v)} className={`flex-1 text-[10px] py-1 px-2 rounded border capitalize ${blessedPip === v ? 'bg-sf-accent/20 border-sf-accent text-sf-accent font-medium' : 'bg-sf-bg border-sf-border text-sf-muted hover:border-sf-accent/50'}`}>{v}</button>))}</div>
           </div>
         )}

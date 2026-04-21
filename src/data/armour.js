@@ -148,6 +148,25 @@ export const ARMOUR_SETS = [
     ],
   },
   {
+    name: "Mestra's Uniform",
+    location: "The Wreck of Mestra Carmo (shipwrecked duels while wearing the Duelo Ribbon)",
+    pieces: [
+      { name: "Mestra's Helm", slot: 'Helm', physDef: null, magDef: null, stability: null, attunement: { physical: { courage: null, spirit: null, grace: null }, magick: { courage: null, spirit: null, grace: null }, stability: { courage: null, spirit: null, grace: null } }, virtueReq: {} }, // TBD — stats not yet on wiki
+      { name: "Mestra's Furbelow", slot: 'Cuirass', physDef: null, magDef: null, stability: null, attunement: { physical: { courage: null, spirit: null, grace: null }, magick: { courage: null, spirit: null, grace: null }, stability: { courage: null, spirit: null, grace: null } }, virtueReq: {} }, // TBD — stats not yet on wiki
+      { name: "Mestra's Breeches", slot: 'Leggings', physDef: null, magDef: null, stability: null, attunement: { physical: { courage: null, spirit: null, grace: null }, magick: { courage: null, spirit: null, grace: null }, stability: { courage: null, spirit: null, grace: null } }, virtueReq: {} }, // TBD — stats not yet on wiki
+    ],
+  },
+  {
+    name: 'Pensive',
+    location: "Orlick's Sanctuary chapters",
+    pieces: [
+      // Hotfix: virtueReq reduced from 12 to 6; Courage and Grace attunement reduced to 1 pip each
+      { name: "Pensive's Bonnet", slot: 'Helm', physDef: null, magDef: null, stability: null, attunement: { physical: { courage: 1, spirit: null, grace: 1 }, magick: { courage: null, spirit: null, grace: null }, stability: { courage: null, spirit: null, grace: null } }, virtueReq: { courage: 6, grace: 6 } }, // TBD — base stats not yet on wiki
+      { name: "Pensive's Cloak", slot: 'Cuirass', physDef: null, magDef: null, stability: null, attunement: { physical: { courage: 1, spirit: null, grace: 1 }, magick: { courage: null, spirit: null, grace: null }, stability: { courage: null, spirit: null, grace: null } }, virtueReq: { courage: 6, grace: 6 } }, // TBD — base stats not yet on wiki
+      { name: "Pensive's Pantaloons", slot: 'Leggings', physDef: null, magDef: null, stability: null, attunement: { physical: { courage: 1, spirit: null, grace: 1 }, magick: { courage: null, spirit: null, grace: null }, stability: { courage: null, spirit: null, grace: null } }, virtueReq: { courage: 6, grace: 6 } }, // TBD — base stats not yet on wiki
+    ],
+  },
+  {
     name: 'Underwear',
     location: 'Default (no source)',
     pieces: [

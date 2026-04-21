@@ -8,16 +8,16 @@
 // most builds never hit it. We enforce it as a safety ceiling only.
 //
 // Rank scaling: Attack_at_rank = rank0 + floor(rank * (rank30 - rank0) / 30)
-// Joinery: flat +damage added on top of attunement bonus.
+// Joinery (P14+): Joineries now add Virtue Attunement pips (1–3), not flat damage.
 // In-game display: Attack (+bonus) total, where total = rank0 + bonus,
-//   and bonus = rankScaling + attunement + joineryDamage.
+//   and bonus = rankScaling + attunement.
 //
 // Life per virtue: Courage=10, Spirit=1, Grace=4 (confirmed via 12 in-game data points)
 // Base Envoy Life: 2
 
 const BASE_ENVOY_LIFE = 2;
 
-export function calculateWeaponAttunement(weapon, virtues, rank = 30, joineryDamage = 0, blessedPip = null) {
+export function calculateWeaponAttunement(weapon, virtues, rank = 30, joineryDamage = 0, blessedPip = null, joineryPips = 1) {
   const req = weapon.virtueReq || {};
   const meetsReq = Object.entries(req).every(([virtue, val]) => (virtues[virtue] || 0) >= val);
 
@@ -27,10 +27,10 @@ export function calculateWeaponAttunement(weapon, virtues, rank = 30, joineryDam
 
   if (!meetsReq) return { bonus: 0, attunement: 0, meetsRequirement: false, totalAttack: attackAtRank + joineryDamage, attackAtRank, rankScaling: attackAtRank - r0, joineryDamage };
 
-  // Apply blessed joinery pip (+1 to chosen virtue's attunement)
+  // Apply joinery pips (P14: 1–3 pips to chosen virtue's attunement)
   const att = { ...weapon.attunement };
   if (blessedPip && (blessedPip === 'courage' || blessedPip === 'spirit' || blessedPip === 'grace')) {
-    att[blessedPip] = (att[blessedPip] || 0) + 1;
+    att[blessedPip] = (att[blessedPip] || 0) + joineryPips;
   }
 
   let attunement = 0;
@@ -57,8 +57,8 @@ export function calculateWeaponAttunement(weapon, virtues, rank = 30, joineryDam
 }
 
 // DPS = totalAttack × attackSpeed.
-export function calculateDPS(weapon, virtues, rank = 30, joineryDamage = 0, blessedPip = null) {
-  const { totalAttack } = calculateWeaponAttunement(weapon, virtues, rank, joineryDamage, blessedPip);
+export function calculateDPS(weapon, virtues, rank = 30, joineryDamage = 0, blessedPip = null, joineryPips = 1) {
+  const { totalAttack } = calculateWeaponAttunement(weapon, virtues, rank, joineryDamage, blessedPip, joineryPips);
   const dps = totalAttack * (weapon.attackSpeed || 1);
   return {
     dps: Math.round(dps * 100) / 100,
@@ -66,8 +66,8 @@ export function calculateDPS(weapon, virtues, rank = 30, joineryDamage = 0, bles
   };
 }
 
-export function calculateChargedAttack(weapon, virtues, rank = 30, joineryDamage = 0, blessedPip = null) {
-  const { totalAttack } = calculateWeaponAttunement(weapon, virtues, rank, joineryDamage, blessedPip);
+export function calculateChargedAttack(weapon, virtues, rank = 30, joineryDamage = 0, blessedPip = null, joineryPips = 1) {
+  const { totalAttack } = calculateWeaponAttunement(weapon, virtues, rank, joineryDamage, blessedPip, joineryPips);
   return Math.round(totalAttack * 2);
 }
 
@@ -266,8 +266,8 @@ export function parseTotemUtilityEffect(totem) {
 //           modified: {totalAttack, dps, charged, smiteChance, atkSpeed, stagger},
 //           conditionals: [{condition, totalAttack, dps, charged}] }
 // equippedTotems is an array of { totem, slot } where slot is 'Attack', 'Defense', or 'Utility'
-export function calculateWeaponWithTotems(weapon, virtues, equippedTotems, rank = 30, joineryDamage = 0, blessedPip = null) {
-  const baseCalc = calculateWeaponAttunement(weapon, virtues, rank, joineryDamage, blessedPip);
+export function calculateWeaponWithTotems(weapon, virtues, equippedTotems, rank = 30, joineryDamage = 0, blessedPip = null, joineryPips = 1) {
+  const baseCalc = calculateWeaponAttunement(weapon, virtues, rank, joineryDamage, blessedPip, joineryPips);
   const baseTotalAttack = baseCalc.totalAttack;
   const baseSmite = weapon.smiteChance;
   const baseAtkSpeed = weapon.attackSpeed;
