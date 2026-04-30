@@ -9,7 +9,7 @@ import { TOTEMS } from '../data/totems';
 import { TALISMANS } from '../data/talismans';
 import { JOINERIES, getJoineriesForWeapon, formatJoineryStats } from '../data/joineries';
 import {
-  calculateWeaponAttunement, calculateDPS, calculateChargedAttack,
+  calculateWeaponAttunement, calculateChargedAttack,
   calculateTotalLife, calculateTotalDefense,
   calculateCooldownReduction, calculateWeaponWithTotems,
 } from '../data/calculations';
@@ -158,8 +158,6 @@ export default function BuildPlanner() {
 
   const primaryCalc = useMemo(() => calculateWeaponAttunement(primary, virtues, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip, primaryJoineryPips), [primary, virtues, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip, primaryJoineryPips]);
   const sidearmCalc = useMemo(() => calculateWeaponAttunement(sidearm, virtues, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip, sidearmJoineryPips), [sidearm, virtues, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip, sidearmJoineryPips]);
-  const primaryDPS = useMemo(() => calculateDPS(primary, virtues, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip, primaryJoineryPips), [primary, virtues, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip, primaryJoineryPips]);
-  const sidearmDPS = useMemo(() => calculateDPS(sidearm, virtues, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip, sidearmJoineryPips), [sidearm, virtues, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip, sidearmJoineryPips]);
   const primaryCharged = useMemo(() => calculateChargedAttack(primary, virtues, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip, primaryJoineryPips), [primary, virtues, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip, primaryJoineryPips]);
   const sidearmCharged = useMemo(() => calculateChargedAttack(sidearm, virtues, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip, sidearmJoineryPips), [sidearm, virtues, sidearmWeaponRank, sidearmJoineryDmg, sidearmEffectivePip, sidearmJoineryPips]);
   const primaryTotemCalc = useMemo(() => calculateWeaponWithTotems(primary, virtues, primaryEquippedTotems, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip, primaryJoineryPips), [primary, virtues, primaryEquippedTotems, primaryWeaponRank, primaryJoineryDmg, primaryEffectivePip, primaryJoineryPips]);
@@ -249,8 +247,8 @@ export default function BuildPlanner() {
     return bonus.replace('$1', statArr[3]);
   }
 
-  function WeaponPanel({ weapon, calc, dps, charged, label, totemCalc }) {
-    const hasTotems = totemCalc && (totemCalc.modified.totalAttack !== totemCalc.base.totalAttack || totemCalc.modified.smiteChance !== totemCalc.base.smiteChance || totemCalc.modified.atkSpeed !== totemCalc.base.atkSpeed);
+  function WeaponPanel({ weapon, calc, charged, label, totemCalc }) {
+    const hasTotems = totemCalc && (totemCalc.modified.totalAttack !== totemCalc.base.totalAttack || totemCalc.modified.smiteChance !== totemCalc.base.smiteChance);
     const mod = totemCalc?.modified;
     const conds = totemCalc?.conditionals || [];
     const r0 = weapon.rank0Damage || weapon.baseDamage;
@@ -264,19 +262,13 @@ export default function BuildPlanner() {
           <StatRow label="Attunement" value={calc.meetsRequirement ? `+${calc.attunement}` : 'Req. not met'} icon={<Sparkles size={14} />} color={calc.meetsRequirement ? 'text-green-400' : 'text-red-400'} />
           <StatRow label="Total Attack" value={`(+${calc.bonus}) ${hasTotems ? mod.totalAttack : calc.totalAttack}`} icon={<Sword size={14} />} color="text-sf-bright" bonus={hasTotems && mod.totalAttack > calc.totalAttack ? mod.totalAttack - calc.totalAttack : 0} />
           <StatRow label="Charged Attack" value={hasTotems ? mod.charged : charged} icon={<Zap size={14} />} color="text-emerald-300" />
-          <StatRow label="Attack Speed" value={`${hasTotems ? mod.atkSpeed : weapon.attackSpeed}/s`} icon={<Wind size={14} />} bonus={hasTotems && mod.atkSpeed > weapon.attackSpeed ? `+${Math.round((mod.atkSpeed - weapon.attackSpeed) * 100) / 100}` : 0} />
           <StatRow label="Smite Chance" value={`${hasTotems ? mod.smiteChance.toFixed(1) : weapon.smiteChance}%`} icon={<Target size={14} />} bonus={hasTotems && mod.smiteChance > weapon.smiteChance ? `+${(mod.smiteChance - weapon.smiteChance).toFixed(1)}` : 0} />
           <StatRow label="Stagger Damage" value={weapon.staggerDamage} icon={<Shield size={14} />} />
-        </div>
-        <div className="border-t border-sf-border/50 pt-3">
-          <div className="flex items-center justify-between"><span className="text-sm text-sf-muted">Effective DPS</span><span className="text-lg font-bold text-sf-bright">{hasTotems ? mod.dps.toFixed(1) : dps.dps.toFixed(1)}</span></div>
-          {hasTotems && mod.dps !== dps.dps && <p className="text-[10px] text-green-400 mt-0.5">Base DPS without totems: {dps.dps.toFixed(1)}</p>}
-          <p className="text-[10px] text-sf-muted mt-1">DPS = Total Attack × Attack Speed</p>
         </div>
         {conds.length > 0 && (
           <div className="border-t border-sf-border/50 mt-3 pt-3">
             <h5 className="text-[10px] uppercase tracking-wider text-sf-muted mb-2">Conditional Bonuses</h5>
-            {conds.map((c, i) => (<div key={i} className="bg-yellow-900/10 border border-yellow-700/20 rounded p-2 mb-1.5"><div className="flex items-center justify-between"><span className="text-xs text-yellow-300 font-medium">{c.condition}</span><span className="text-xs font-bold text-yellow-200">{c.dps.toFixed(1)} DPS</span></div><div className="flex items-center justify-between mt-0.5"><span className="text-[10px] text-sf-muted">{c.desc}</span><span className="text-[10px] text-yellow-300">Atk: {c.totalAttack}</span></div></div>))}
+            {conds.map((c, i) => (<div key={i} className="bg-yellow-900/10 border border-yellow-700/20 rounded p-2 mb-1.5"><div className="flex items-center justify-between"><span className="text-xs text-yellow-300 font-medium">{c.condition}</span><span className="text-xs font-bold text-yellow-200">Atk: {c.totalAttack}</span></div><div className="flex items-center justify-between mt-0.5"><span className="text-[10px] text-sf-muted">{c.desc}</span><span className="text-[10px] text-yellow-300">Charged: {c.charged}</span></div></div>))}
           </div>
         )}
         {!calc.meetsRequirement && (
@@ -286,7 +278,7 @@ export default function BuildPlanner() {
     );
   }
 
-  function WeaponSection({ label, weapons, selectedIdx, setSelectedIdx, selectedRuneIdx, setSelectedRuneIdx, runes, rune, totems, totemSlots, setTotemSlots, runeBonusTotemIdx, setRuneBonusTotemIdx, weaponRank, setWeaponRank, joineries, joineryIdx, setJoineryIdx, joineryTier, setJoineryTier, joinery, isBlessed, blessedPip, setBlessedPip, calc, dps, charged, totemCalc, iconColor }) {
+  function WeaponSection({ label, weapons, selectedIdx, setSelectedIdx, selectedRuneIdx, setSelectedRuneIdx, runes, rune, totems, totemSlots, setTotemSlots, runeBonusTotemIdx, setRuneBonusTotemIdx, weaponRank, setWeaponRank, joineries, joineryIdx, setJoineryIdx, joineryTier, setJoineryTier, joinery, isBlessed, blessedPip, setBlessedPip, calc, charged, totemCalc, iconColor }) {
     const weapon = weapons[selectedIdx] || weapons[0];
     return (
       <SectionCard title={label} icon={<Sword size={20} className={iconColor} />}>
@@ -314,7 +306,7 @@ export default function BuildPlanner() {
             <div className="flex gap-1.5">{['courage', 'spirit', 'grace'].map(v => (<button key={v} onClick={() => setBlessedPip(blessedPip === v ? null : v)} className={`flex-1 text-[10px] py-1 px-2 rounded border capitalize ${blessedPip === v ? 'bg-sf-accent/20 border-sf-accent text-sf-accent font-medium' : 'bg-sf-bg border-sf-border text-sf-muted hover:border-sf-accent/50'}`}>{v}</button>))}</div>
           </div>
         )}
-        <div className="mt-3"><WeaponPanel weapon={weapon} calc={calc} dps={dps} charged={charged} label={label} totemCalc={totemCalc} /></div>
+        <div className="mt-3"><WeaponPanel weapon={weapon} calc={calc} charged={charged} label={label} totemCalc={totemCalc} /></div>
         <div className="mt-3 pt-3 border-t border-sf-border/50">
           <h4 className="text-xs uppercase tracking-wider text-sf-muted mb-2">Rune</h4>
           <select value={selectedRuneIdx} onChange={e => { setSelectedRuneIdx(Number(e.target.value)); setRuneBonusTotemIdx(-1); }} className="w-full bg-sf-bg border border-sf-border rounded-lg px-3 py-2 text-sm text-sf-text focus:outline-none focus:border-sf-accent cursor-pointer"><option value={-1}>None</option>{runes.map((r, i) => <option key={i} value={i}>{r.name}</option>)}</select>
@@ -469,15 +461,15 @@ export default function BuildPlanner() {
 
       {/* Row 2: Weapons side by side (2-col on lg) */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <WeaponSection label="Primary" weapons={primaryWeapons} selectedIdx={selectedPrimaryIdx} setSelectedIdx={setSelectedPrimaryIdx} selectedRuneIdx={selectedPrimaryRuneIdx} setSelectedRuneIdx={setSelectedPrimaryRuneIdx} runes={primaryRunes} rune={primaryRune} totems={primaryTotems} totemSlots={primaryTotemSlots} setTotemSlots={setPrimaryTotemSlots} runeBonusTotemIdx={primaryRuneBonusTotemIdx} setRuneBonusTotemIdx={setPrimaryRuneBonusTotemIdx} weaponRank={primaryWeaponRank} setWeaponRank={setPrimaryWeaponRank} joineries={primaryJoineries} joineryIdx={primaryJoineryIdx} setJoineryIdx={setPrimaryJoineryIdx} joineryTier={primaryJoineryTier} setJoineryTier={setPrimaryJoineryTier} joinery={primaryJoinery} isBlessed={primaryIsBlessed} blessedPip={primaryBlessedPip} setBlessedPip={setPrimaryBlessedPip} calc={primaryCalc} dps={primaryDPS} charged={primaryCharged} totemCalc={primaryTotemCalc} iconColor="text-sf-bright" />
-        <WeaponSection label="Sidearm" weapons={sidearmWeapons} selectedIdx={selectedSidearmIdx} setSelectedIdx={setSelectedSidearmIdx} selectedRuneIdx={selectedSidearmRuneIdx} setSelectedRuneIdx={setSelectedSidearmRuneIdx} runes={sidearmRunes} rune={sidearmRune} totems={sidearmTotems} totemSlots={sidearmTotemSlots} setTotemSlots={setSidearmTotemSlots} runeBonusTotemIdx={sidearmRuneBonusTotemIdx} setRuneBonusTotemIdx={setSidearmRuneBonusTotemIdx} weaponRank={sidearmWeaponRank} setWeaponRank={setSidearmWeaponRank} joineries={sidearmJoineries} joineryIdx={sidearmJoineryIdx} setJoineryIdx={setSidearmJoineryIdx} joineryTier={sidearmJoineryTier} setJoineryTier={setSidearmJoineryTier} joinery={sidearmJoinery} isBlessed={sidearmIsBlessed} blessedPip={sidearmBlessedPip} setBlessedPip={setSidearmBlessedPip} calc={sidearmCalc} dps={sidearmDPS} charged={sidearmCharged} totemCalc={sidearmTotemCalc} iconColor="text-grace" />
+        <WeaponSection label="Primary" weapons={primaryWeapons} selectedIdx={selectedPrimaryIdx} setSelectedIdx={setSelectedPrimaryIdx} selectedRuneIdx={selectedPrimaryRuneIdx} setSelectedRuneIdx={setSelectedPrimaryRuneIdx} runes={primaryRunes} rune={primaryRune} totems={primaryTotems} totemSlots={primaryTotemSlots} setTotemSlots={setPrimaryTotemSlots} runeBonusTotemIdx={primaryRuneBonusTotemIdx} setRuneBonusTotemIdx={setPrimaryRuneBonusTotemIdx} weaponRank={primaryWeaponRank} setWeaponRank={setPrimaryWeaponRank} joineries={primaryJoineries} joineryIdx={primaryJoineryIdx} setJoineryIdx={setPrimaryJoineryIdx} joineryTier={primaryJoineryTier} setJoineryTier={setPrimaryJoineryTier} joinery={primaryJoinery} isBlessed={primaryIsBlessed} blessedPip={primaryBlessedPip} setBlessedPip={setPrimaryBlessedPip} calc={primaryCalc} charged={primaryCharged} totemCalc={primaryTotemCalc} iconColor="text-sf-bright" />
+        <WeaponSection label="Sidearm" weapons={sidearmWeapons} selectedIdx={selectedSidearmIdx} setSelectedIdx={setSelectedSidearmIdx} selectedRuneIdx={selectedSidearmRuneIdx} setSelectedRuneIdx={setSelectedSidearmRuneIdx} runes={sidearmRunes} rune={sidearmRune} totems={sidearmTotems} totemSlots={sidearmTotemSlots} setTotemSlots={setSidearmTotemSlots} runeBonusTotemIdx={sidearmRuneBonusTotemIdx} setRuneBonusTotemIdx={setSidearmRuneBonusTotemIdx} weaponRank={sidearmWeaponRank} setWeaponRank={setSidearmWeaponRank} joineries={sidearmJoineries} joineryIdx={sidearmJoineryIdx} setJoineryIdx={setSidearmJoineryIdx} joineryTier={sidearmJoineryTier} setJoineryTier={setSidearmJoineryTier} joinery={sidearmJoinery} isBlessed={sidearmIsBlessed} blessedPip={sidearmBlessedPip} setBlessedPip={setSidearmBlessedPip} calc={sidearmCalc} charged={sidearmCharged} totemCalc={sidearmTotemCalc} iconColor="text-grace" />
       </div>
 
       {/* Row 3: Build Summary (full width) */}
       <SectionCard title="Build Summary" icon={<Target size={20} className="text-sf-bright" />} className="bg-gradient-to-br from-sf-card to-sf-bg">
         <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">
-          <div className="bg-sf-bg/70 rounded-lg p-3 text-center border border-sf-accent/20"><p className="text-[10px] text-sf-muted uppercase mb-1">Primary DPS</p><p className="text-2xl font-bold text-sf-bright">{primaryTotemCalc.modified.dps.toFixed(1)}</p><p className="text-[10px] text-sf-muted">{primary.name}</p></div>
-          <div className="bg-sf-bg/70 rounded-lg p-3 text-center border border-grace/20"><p className="text-[10px] text-sf-muted uppercase mb-1">Sidearm DPS</p><p className="text-2xl font-bold text-grace">{sidearmTotemCalc.modified.dps.toFixed(1)}</p><p className="text-[10px] text-sf-muted">{sidearm.name}</p></div>
+          <div className="bg-sf-bg/70 rounded-lg p-3 text-center border border-sf-accent/20"><p className="text-[10px] text-sf-muted uppercase mb-1">Primary Atk</p><p className="text-2xl font-bold text-sf-bright">{primaryTotemCalc.modified.totalAttack}</p><p className="text-[10px] text-sf-muted">{primary.name}</p></div>
+          <div className="bg-sf-bg/70 rounded-lg p-3 text-center border border-grace/20"><p className="text-[10px] text-sf-muted uppercase mb-1">Sidearm Atk</p><p className="text-2xl font-bold text-grace">{sidearmTotemCalc.modified.totalAttack}</p><p className="text-[10px] text-sf-muted">{sidearm.name}</p></div>
           <div className="bg-sf-bg/70 rounded-lg p-3 text-center border border-red-800/30"><p className="text-[10px] text-sf-muted uppercase mb-1">Total Life</p><p className="text-2xl font-bold text-red-400">{totalLife}</p></div>
           <div className="bg-sf-bg/70 rounded-lg p-3 text-center border border-blue-800/30"><p className="text-[10px] text-sf-muted uppercase mb-1">Stability</p><p className="text-2xl font-bold text-blue-300">{defense.totalStab}</p></div>
           <div className="bg-sf-bg/70 rounded-lg p-3 text-center border border-orange-800/30"><p className="text-[10px] text-sf-muted uppercase mb-1">Phys Armour</p><p className="text-2xl font-bold text-orange-300">{defense.totalPhys}</p></div>

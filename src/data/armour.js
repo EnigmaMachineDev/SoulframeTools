@@ -151,19 +151,18 @@ export const ARMOUR_SETS = [
     name: "Mestra's Uniform",
     location: "The Wreck of Mestra Carmo (shipwrecked duels while wearing the Duelo Ribbon)",
     pieces: [
-      { name: "Mestra's Helm", slot: 'Helm', physDef: null, magDef: null, stability: null, attunement: { physical: { courage: null, spirit: null, grace: null }, magick: { courage: null, spirit: null, grace: null }, stability: { courage: null, spirit: null, grace: null } }, virtueReq: {} }, // TBD — stats not yet on wiki
-      { name: "Mestra's Furbelow", slot: 'Cuirass', physDef: null, magDef: null, stability: null, attunement: { physical: { courage: null, spirit: null, grace: null }, magick: { courage: null, spirit: null, grace: null }, stability: { courage: null, spirit: null, grace: null } }, virtueReq: {} }, // TBD — stats not yet on wiki
-      { name: "Mestra's Breeches", slot: 'Leggings', physDef: null, magDef: null, stability: null, attunement: { physical: { courage: null, spirit: null, grace: null }, magick: { courage: null, spirit: null, grace: null }, stability: { courage: null, spirit: null, grace: null } }, virtueReq: {} }, // TBD — stats not yet on wiki
+      { name: "Mestra's Helm", slot: 'Helm', physDef: 1, magDef: 2, stability: 2, attunement: { physical: { courage: 0, spirit: 0, grace: 3 }, magick: { courage: 0, spirit: 0, grace: 2 }, stability: { courage: 0, spirit: 0, grace: 2 } }, virtueReq: { grace: 12 } },
+      { name: "Mestra's Furbelow", slot: 'Cuirass', physDef: 4, magDef: 3, stability: 3, attunement: { physical: { courage: 0, spirit: 0, grace: 3 }, magick: { courage: 0, spirit: 0, grace: 2 }, stability: { courage: 0, spirit: 0, grace: 3 } }, virtueReq: { grace: 12 } },
+      { name: "Mestra's Breeches", slot: 'Leggings', physDef: 3, magDef: 2, stability: 2, attunement: { physical: { courage: 0, spirit: 0, grace: 3 }, magick: { courage: 0, spirit: 0, grace: 2 }, stability: { courage: 0, spirit: 0, grace: 3 } }, virtueReq: { grace: 12 } },
     ],
   },
   {
     name: 'Pensive',
     location: "Orlick's Sanctuary chapters",
     pieces: [
-      // Hotfix: virtueReq reduced from 12 to 6; Courage and Grace attunement reduced to 1 pip each
-      { name: "Pensive's Bonnet", slot: 'Helm', physDef: null, magDef: null, stability: null, attunement: { physical: { courage: 1, spirit: null, grace: 1 }, magick: { courage: null, spirit: null, grace: null }, stability: { courage: null, spirit: null, grace: null } }, virtueReq: { courage: 6, grace: 6 } }, // TBD — base stats not yet on wiki
-      { name: "Pensive's Cloak", slot: 'Cuirass', physDef: null, magDef: null, stability: null, attunement: { physical: { courage: 1, spirit: null, grace: 1 }, magick: { courage: null, spirit: null, grace: null }, stability: { courage: null, spirit: null, grace: null } }, virtueReq: { courage: 6, grace: 6 } }, // TBD — base stats not yet on wiki
-      { name: "Pensive's Pantaloons", slot: 'Leggings', physDef: null, magDef: null, stability: null, attunement: { physical: { courage: 1, spirit: null, grace: 1 }, magick: { courage: null, spirit: null, grace: null }, stability: { courage: null, spirit: null, grace: null } }, virtueReq: { courage: 6, grace: 6 } }, // TBD — base stats not yet on wiki
+      { name: "Pensive's Bonnet", slot: 'Helm', physDef: 2, magDef: 2, stability: 1, attunement: { physical: { courage: 1, spirit: 2, grace: 1 }, magick: { courage: 1, spirit: 2, grace: 1 }, stability: { courage: 1, spirit: 2, grace: 1 } }, virtueReq: { spirit: 6 } },
+      { name: "Pensive's Cloak", slot: 'Cuirass', physDef: 4, magDef: 4, stability: 3, attunement: { physical: { courage: 1, spirit: 2, grace: 1 }, magick: { courage: 1, spirit: 2, grace: 1 }, stability: { courage: 1, spirit: 2, grace: 1 } }, virtueReq: { spirit: 6 } },
+      { name: "Pensive's Pantaloons", slot: 'Leggings', physDef: 3, magDef: 3, stability: 2, attunement: { physical: { courage: 1, spirit: 2, grace: 1 }, magick: { courage: 1, spirit: 2, grace: 1 }, stability: { courage: 1, spirit: 2, grace: 1 } }, virtueReq: { spirit: 6 } },
     ],
   },
   {

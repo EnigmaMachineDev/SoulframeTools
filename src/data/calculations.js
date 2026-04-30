@@ -56,16 +56,6 @@ export function calculateWeaponAttunement(weapon, virtues, rank = 30, joineryDam
   };
 }
 
-// DPS = totalAttack × attackSpeed.
-export function calculateDPS(weapon, virtues, rank = 30, joineryDamage = 0, blessedPip = null, joineryPips = 1) {
-  const { totalAttack } = calculateWeaponAttunement(weapon, virtues, rank, joineryDamage, blessedPip, joineryPips);
-  const dps = totalAttack * (weapon.attackSpeed || 1);
-  return {
-    dps: Math.round(dps * 100) / 100,
-    totalAttack,
-  };
-}
-
 export function calculateChargedAttack(weapon, virtues, rank = 30, joineryDamage = 0, blessedPip = null, joineryPips = 1) {
   const { totalAttack } = calculateWeaponAttunement(weapon, virtues, rank, joineryDamage, blessedPip, joineryPips);
   return Math.round(totalAttack * 2);
@@ -262,21 +252,20 @@ export function parseTotemUtilityEffect(totem) {
 }
 
 // Calculate weapon stats with totem bonuses applied
-// Returns { base: {totalAttack, dps, charged, smiteChance, atkSpeed, stagger},
-//           modified: {totalAttack, dps, charged, smiteChance, atkSpeed, stagger},
-//           conditionals: [{condition, totalAttack, dps, charged}] }
+// Returns { base: {totalAttack, charged, smiteChance, stagger},
+//           modified: {totalAttack, charged, smiteChance, stagger},
+//           conditionals: [{condition, totalAttack, charged}] }
+// Note: attack speed no longer published — DPS is not calculated.
 // equippedTotems is an array of { totem, slot } where slot is 'Attack', 'Defense', or 'Utility'
 export function calculateWeaponWithTotems(weapon, virtues, equippedTotems, rank = 30, joineryDamage = 0, blessedPip = null, joineryPips = 1) {
   const baseCalc = calculateWeaponAttunement(weapon, virtues, rank, joineryDamage, blessedPip, joineryPips);
   const baseTotalAttack = baseCalc.totalAttack;
   const baseSmite = weapon.smiteChance;
-  const baseAtkSpeed = weapon.attackSpeed;
   const baseStagger = weapon.staggerDamage;
 
   // Collect totem effects — only parse the bonus matching the equipped slot
   let flatDmgAlways = 0;
   let pctDmgAlways = 0;
-  let atkSpeedPct = 0;
   let extraSmiteChance = 0;
   let extraPhysArmour = 0;
   let extraMagArmour = 0;
@@ -302,9 +291,6 @@ export function calculateWeaponWithTotems(weapon, virtues, equippedTotems, rank 
             break;
           case 'pctDmg':
             pctDmgAlways += atkEffect.value;
-            break;
-          case 'atkSpeed':
-            atkSpeedPct += atkEffect.value;
             break;
           case 'condFlatDmg':
             conditionals.push({ condition: atkEffect.condition, flatDmg: atkEffect.value, pctDmg: 0, desc: atkEffect.desc });
@@ -333,24 +319,19 @@ export function calculateWeaponWithTotems(weapon, virtues, equippedTotems, rank 
   }
 
   // Calculate modified base values (always-on effects)
-  // Smite is NOT a damage multiplier — DPS = totalAttack × attackSpeed
-  const modAtkSpeed = baseAtkSpeed * (1 + atkSpeedPct / 100);
   const modTotalAttack = Math.floor(baseTotalAttack * (1 + pctDmgAlways / 100)) + flatDmgAlways;
   const modSmite = baseSmite + extraSmiteChance;
-  const modDPS = Math.round(modTotalAttack * modAtkSpeed * 100) / 100;
   const modCharged = Math.round(modTotalAttack * 2);
 
   // Calculate each conditional scenario (always-on + that condition)
   const condResults = [];
   for (const cond of conditionals) {
     const condAttack = Math.floor((baseTotalAttack + cond.flatDmg) * (1 + (pctDmgAlways + cond.pctDmg) / 100)) + flatDmgAlways;
-    const condDPS = Math.round(condAttack * modAtkSpeed * 100) / 100;
     const condCharged = Math.round(condAttack * 2);
     condResults.push({
       condition: cond.condition,
       desc: cond.desc,
       totalAttack: condAttack,
-      dps: condDPS,
       charged: condCharged,
     });
   }
@@ -361,15 +342,12 @@ export function calculateWeaponWithTotems(weapon, virtues, equippedTotems, rank 
       totalAttack: baseTotalAttack,
       bonus: baseCalc.bonus,
       smiteChance: baseSmite,
-      atkSpeed: baseAtkSpeed,
       stagger: baseStagger,
     },
     modified: {
       totalAttack: modTotalAttack,
-      dps: modDPS,
       charged: modCharged,
       smiteChance: modSmite,
-      atkSpeed: Math.round(modAtkSpeed * 1000) / 1000,
       stagger: baseStagger,
     },
     conditionals: condResults,

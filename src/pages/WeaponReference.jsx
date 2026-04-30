@@ -9,8 +9,6 @@ const COLUMNS = [
   { key: 'damageType', label: 'Type', align: 'left', sortable: true },
   { key: 'rank0Damage', label: 'R0 Atk', align: 'right', sortable: true },
   { key: 'baseDamage', label: 'R30 Atk', align: 'right', sortable: true },
-  { key: 'attackSpeed', label: 'Speed', align: 'right', sortable: true },
-  { key: 'dps', label: 'Base DPS', align: 'right', sortable: true },
   { key: 'charged', label: 'Charged', align: 'right', sortable: true },
   { key: 'smiteChance', label: 'Smite%', align: 'right', sortable: true },
   { key: 'staggerDamage', label: 'Stagger', align: 'right', sortable: true },
@@ -37,7 +35,7 @@ export default function WeaponReference() {
   }
 
   const filtered = useMemo(() => {
-    let list = WEAPONS.map(w => ({ ...w, dps: w.baseDamage * w.attackSpeed, charged: w.baseDamage * 2 }));
+    let list = WEAPONS.map(w => ({ ...w, charged: w.baseDamage * 2 }));
     if (search) {
       const q = search.toLowerCase();
       list = list.filter(w => w.name.toLowerCase().includes(q));
@@ -125,8 +123,6 @@ export default function WeaponReference() {
                   <td className="py-2 px-2 text-sf-muted">{w.damageType}</td>
                   <td className="py-2 px-2 text-right text-sf-text">{w.rank0Damage}</td>
                   <td className="py-2 px-2 text-right text-sf-bright">{w.baseDamage}</td>
-                  <td className="py-2 px-2 text-right text-sf-text">{w.attackSpeed}</td>
-                  <td className="py-2 px-2 text-right text-sf-green font-medium">{w.dps.toFixed(1)}</td>
                   <td className="py-2 px-2 text-right text-amber-300">{w.charged}</td>
                   <td className="py-2 px-2 text-right text-sf-text">{w.smiteChance}%</td>
                   <td className="py-2 px-2 text-right text-sf-text">{w.staggerDamage}</td>

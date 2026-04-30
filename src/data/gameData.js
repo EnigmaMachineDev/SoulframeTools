@@ -69,21 +69,16 @@ export const gameData = {
           { id: "wep-the-paragon", name: "The Paragon" },
         ],
       },
-      rapiers: {
-        label: "Rapiers",
-        items: [
-          { id: "wep-espadarte", name: "Espadarte" },
-          { id: "wep-navalha", name: "Navalha" },
-        ],
-      },
       longBlades: {
         label: "Long Blades",
         items: [
           { id: "wep-cenotaph", name: "Cenotaph" },
           { id: "wep-dewelion", name: "Dewelion" },
+          { id: "wep-espadarte", name: "Espadarte" },
           { id: "wep-falx", name: "Falx" },
           { id: "wep-igne-mora", name: "Igne Mora" },
           { id: "wep-marrows-bane", name: "Marrow's Bane" },
+          { id: "wep-navalha", name: "Navalha" },
           { id: "wep-nurash", name: "Nurash" },
           { id: "wep-sollos-i", name: "Sollos-I" },
           { id: "wep-stultin", name: "Stultin" },

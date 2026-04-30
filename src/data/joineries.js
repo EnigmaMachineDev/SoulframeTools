@@ -7,13 +7,12 @@
 //   Thrice Blessed = +3 Attunement pips
 // Maximum of 5 pips in a single Virtue; 5+ pips grants a gold-trimmed icon.
 // Weapon damage (+25 at max rank) is now part of the weapon rank progression, not joineries.
-// Rapier weapons use the same joinery types as Long Blade (Verite + Gildaur).
 
 export const JOINERIES = [
   {
     name: 'Verite',
     description: 'Melee joinery — reliable for mending melee weapons.',
-    weaponTypes: ['Short Blade', 'Long Blade', 'Polearm', 'Shield', 'Greatsword', 'Rapier'],
+    weaponTypes: ['Short Blade', 'Long Blade', 'Polearm', 'Shield', 'Greatsword'],
     tiers: [
       { tier: 'Blessed', rarity: 'Common', pips: 1 },
       { tier: 'Twice Blessed', rarity: 'Uncommon', pips: 2 },
@@ -43,7 +42,7 @@ export const JOINERIES = [
   {
     name: 'Gildaur',
     description: 'Universal joinery — fine for any weapon that needs mending.',
-    weaponTypes: ['Short Blade', 'Long Blade', 'Polearm', 'Shield', 'Greatsword', 'Rapier', 'Magick', 'Bow', 'Flyblade'],
+    weaponTypes: ['Short Blade', 'Long Blade', 'Polearm', 'Shield', 'Greatsword', 'Magick', 'Bow', 'Flyblade'],
     tiers: [
       { tier: 'Blessed', rarity: 'Common', pips: 1 },
       { tier: 'Twice Blessed', rarity: 'Uncommon', pips: 2 },
