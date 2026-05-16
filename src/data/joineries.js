@@ -12,7 +12,7 @@ export const JOINERIES = [
   {
     name: 'Verite',
     description: 'Melee joinery — reliable for mending melee weapons.',
-    weaponTypes: ['Short Blade', 'Long Blade', 'Polearm', 'Shield', 'Greatsword'],
+    weaponTypes: ['Short Blade', 'Long Blade', 'Polearm', 'Shield', 'Heavy'],
     tiers: [
       { tier: 'Blessed', rarity: 'Common', pips: 1 },
       { tier: 'Twice Blessed', rarity: 'Uncommon', pips: 2 },
@@ -42,7 +42,7 @@ export const JOINERIES = [
   {
     name: 'Gildaur',
     description: 'Universal joinery — fine for any weapon that needs mending.',
-    weaponTypes: ['Short Blade', 'Long Blade', 'Polearm', 'Shield', 'Greatsword', 'Magick', 'Bow', 'Flyblade'],
+    weaponTypes: ['Short Blade', 'Long Blade', 'Polearm', 'Shield', 'Heavy', 'Magick', 'Bow', 'Flyblade'],
     tiers: [
       { tier: 'Blessed', rarity: 'Common', pips: 1 },
       { tier: 'Twice Blessed', rarity: 'Uncommon', pips: 2 },

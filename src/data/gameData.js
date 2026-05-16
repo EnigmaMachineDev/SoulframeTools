@@ -61,12 +61,13 @@ export const gameData = {
           { id: "wep-thrice-spurns", name: "Thrice Spurns" },
         ],
       },
-      greatswords: {
-        label: "Greatswords",
+      heavy: {
+        label: "Heavy Weapons",
         items: [
           { id: "wep-needleseye", name: "Needleseye" },
           { id: "wep-purity", name: "Purity" },
           { id: "wep-the-paragon", name: "The Paragon" },
+          { id: "wep-orst-iii", name: "Orst-III" },
         ],
       },
       longBlades: {
@@ -163,16 +164,6 @@ export const gameData = {
       pensive: { label: "Pensive Set", items: [{ id: "arm-pensives-bonnet", name: "Pensive's Bonnet" }, { id: "arm-pensives-cloak", name: "Pensive's Cloak" }, { id: "arm-pensives-pantaloons", name: "Pensive's Pantaloons" }] },
     },
   },
-  virtuePrisms: {
-    label: "Virtue Prisms",
-    icon: "Diamond",
-    categories: {
-      starterPrisms: { label: "Starter Prisms", items: [{ id: "prism-iridis-shaman", name: "Iridis' Shaman" }, { id: "prism-warrior-mora", name: "Warrior of Mora" }, { id: "prism-rogue-saphene", name: "Rogue to Saphene" }] },
-      hybridPrisms: { label: "Hybrid Prisms", items: [{ id: "prism-oros-ranger", name: "Oro's Ranger" }, { id: "prism-knight-paladine", name: "Knight O'Paladine" }, { id: "prism-verus-assassin", name: "Verus' Assassin" }] },
-      extremePrisms: { label: "Extreme Prisms", items: [{ id: "prism-druid-iridis", name: "Druid of Iridis" }, { id: "prism-moras-beast", name: "Mora's Beast" }, { id: "prism-saphenes-shadow", name: "Saphene's Shadow" }] },
-      wyldPrisms: { label: "Wyld Prisms", items: [{ id: "prism-wyld-oscelda-witch", name: "Wyld Oscelda's Witch" }, { id: "prism-wyld-tethren-braveling", name: "Wyld Tethren's Braveling" }, { id: "prism-wyld-sirin-trickster", name: "Wyld Sirin's Trickster" }] },
-    },
-  },
   accessories: {
     label: "Talismans",
     icon: "Gem",
@@ -200,7 +191,7 @@ export const gameData = {
     categories: {
       bowRunes: { label: "Bow Runes", items: [{ id: "rune-alcas-breath", name: "Alca's Breath" }, { id: "rune-the-torrent", name: "The Torrent" }] },
       flybladeRunes: { label: "Flyblade Runes", items: [{ id: "rune-hurlwind", name: "Hurlwind" }, { id: "rune-picktrix", name: "Picktrix" }] },
-      greatswordRunes: { label: "Greatsword Runes", items: [{ id: "rune-everflame-gs", name: "Everflame (Greatsword)" }, { id: "rune-treefell", name: "Treefell" }] },
+      heavyRunes: { label: "Heavy Runes", items: [{ id: "rune-everflame-gs", name: "Everflame (Heavy)" }, { id: "rune-treefell", name: "Treefell" }] },
       longBladeRunes: { label: "Long Blade Runes", items: [{ id: "rune-everflame-lb", name: "Everflame (Long Blade)" }, { id: "rune-the-mistgale", name: "The Mistgale" }] },
       magickRunes: { label: "Magick Runes", items: [{ id: "rune-archstorm", name: "Archstorm" }, { id: "rune-the-hollowing", name: "The Hollowing" }] },
       polearmRunes: { label: "Polearm Runes", items: [{ id: "rune-splitbolt", name: "Splitbolt" }, { id: "rune-torcheternal", name: "Torcheternal" }] },

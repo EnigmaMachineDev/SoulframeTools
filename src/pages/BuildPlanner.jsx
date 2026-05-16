@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Shield, Sword, Heart, Zap, Target, Info, Flame, Sparkles, Wind, Copy, Check, Upload } from 'lucide-react';
-import { PRISMS, calculateVirtues } from '../data/prisms';
+import { calculateVirtues } from '../data/prisms';
 import { PACTS, PACT_ART_VIRTUE_VALUES } from '../data/pacts';
 import { WEAPONS } from '../data/weapons';
 import { ARMOUR_HELMS, ARMOUR_CUIRASSES, ARMOUR_LEGGINGS } from '../data/armour';
@@ -14,13 +14,16 @@ import {
   calculateCooldownReduction, calculateWeaponWithTotems,
 } from '../data/calculations';
 
-function VirtueBar({ label, value, max, color, icon }) {
+function VirtueBar({ label, value, max, color, icon, bonus }) {
   const pct = max > 0 ? Math.min((value / max) * 100, 100) : 0;
   return (
     <div className="flex items-center gap-3">
       <div className="flex items-center gap-1.5 w-24">{icon}<span className="text-sm font-medium">{label}</span></div>
       <div className="flex-1 h-3 bg-sf-border rounded-full overflow-hidden"><div className={`virtue-bar h-full rounded-full ${color}`} style={{ width: `${pct}%` }} /></div>
-      <span className="text-sm font-semibold w-8 text-right">{value}</span>
+      <div className="flex items-center gap-1 w-16 justify-end">
+        <span className="text-sm font-semibold">{value}</span>
+        {bonus > 0 && <span className="text-xs text-green-400">(+{bonus})</span>}
+      </div>
     </div>
   );
 }
@@ -62,7 +65,9 @@ function DamageTypeIcon({ type }) {
 
 export default function BuildPlanner() {
   const [envoyRank, setEnvoyRank] = useState(30);
-  const [selectedPrismIdx, setSelectedPrismIdx] = useState(0);
+  const [directCourage, setDirectCourage] = useState(0);
+  const [directSpirit, setDirectSpirit] = useState(0);
+  const [directGrace, setDirectGrace] = useState(0);
   const [selectedPactIdx, setSelectedPactIdx] = useState(0);
   const [selectedHelmIdx, setSelectedHelmIdx] = useState(0);
   const [selectedCuirassIdx, setSelectedCuirassIdx] = useState(0);
@@ -91,7 +96,8 @@ export default function BuildPlanner() {
   const [fable1Virtue, setFable1Virtue] = useState('grace');
   const [fable2Virtue, setFable2Virtue] = useState('grace');
 
-  const prism = PRISMS[selectedPrismIdx];
+  const totalVirtuePoints = envoyRank * 2;
+  const allocatedVirtue = directCourage + directSpirit + directGrace;
   const pact = PACTS[selectedPactIdx];
   const helm = ARMOUR_HELMS[selectedHelmIdx] || ARMOUR_HELMS[0];
   const cuirass = ARMOUR_CUIRASSES[selectedCuirassIdx] || ARMOUR_CUIRASSES[0];
@@ -136,11 +142,11 @@ export default function BuildPlanner() {
   }, [fable1Virtue, fable2Virtue]);
 
   const virtues = useMemo(() => {
-    const base = calculateVirtues(prism, envoyRank, pactArtBonuses, fableBonuses);
+    const base = calculateVirtues({ courage: directCourage, spirit: directSpirit, grace: directGrace }, envoyRank, pactArtBonuses, fableBonuses);
     if (pact.bonusVirtue) Object.entries(pact.bonusVirtue).forEach(([v, val]) => { base[v] = (base[v] || 0) + val; });
     if (talisman) { const s = talisman.stats; if (s.courage) base.courage = (base.courage || 0) + s.courage; if (s.spirit) base.spirit = (base.spirit || 0) + s.spirit; if (s.grace) base.grace = (base.grace || 0) + s.grace; }
     return base;
-  }, [prism, envoyRank, pactArtBonuses, fableBonuses, pact, talisman]);
+  }, [directCourage, directSpirit, directGrace, envoyRank, pactArtBonuses, fableBonuses, pact, talisman]);
 
   const primaryEquippedTotems = useMemo(() => {
     const slots = ['Attack', 'Defense', 'Utility'];
@@ -172,7 +178,7 @@ export default function BuildPlanner() {
   const maxVirtue = Math.max(virtues.courage, virtues.spirit, virtues.grace, 1);
 
   function exportBuild() {
-    const build = { envoyRank, selectedPrismIdx, selectedPactIdx, selectedHelmIdx, selectedCuirassIdx, selectedLeggingsIdx, selectedPrimaryIdx, selectedSidearmIdx, selectedPrimaryRuneIdx, selectedSidearmRuneIdx, primaryTotemSlots, sidearmTotemSlots, primaryRuneBonusTotemIdx, sidearmRuneBonusTotemIdx, selectedTalismanIdx, courageArtRank, spiritArtRank, graceArtRank, primaryWeaponRank, sidearmWeaponRank, primaryJoineryIdx, primaryJoineryTier, primaryBlessedPip, sidearmJoineryIdx, sidearmJoineryTier, sidearmBlessedPip, fable1Virtue, fable2Virtue };
+    const build = { envoyRank, directCourage, directSpirit, directGrace, selectedPactIdx, selectedHelmIdx, selectedCuirassIdx, selectedLeggingsIdx, selectedPrimaryIdx, selectedSidearmIdx, selectedPrimaryRuneIdx, selectedSidearmRuneIdx, primaryTotemSlots, sidearmTotemSlots, primaryRuneBonusTotemIdx, sidearmRuneBonusTotemIdx, selectedTalismanIdx, courageArtRank, spiritArtRank, graceArtRank, primaryWeaponRank, sidearmWeaponRank, primaryJoineryIdx, primaryJoineryTier, primaryBlessedPip, sidearmJoineryIdx, sidearmJoineryTier, sidearmBlessedPip, fable1Virtue, fable2Virtue };
     return btoa(JSON.stringify(build));
   }
 
@@ -180,7 +186,9 @@ export default function BuildPlanner() {
     try {
       const build = JSON.parse(atob(code));
       if (build.envoyRank != null) setEnvoyRank(build.envoyRank);
-      if (build.selectedPrismIdx != null) setSelectedPrismIdx(build.selectedPrismIdx);
+      if (build.directCourage != null) setDirectCourage(build.directCourage);
+      if (build.directSpirit != null) setDirectSpirit(build.directSpirit);
+      if (build.directGrace != null) setDirectGrace(build.directGrace);
       if (build.selectedPactIdx != null) setSelectedPactIdx(build.selectedPactIdx);
       if (build.selectedHelmIdx != null) setSelectedHelmIdx(build.selectedHelmIdx);
       if (build.selectedCuirassIdx != null) setSelectedCuirassIdx(build.selectedCuirassIdx);
@@ -355,13 +363,40 @@ export default function BuildPlanner() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* Prism + Pact */}
         <div className="space-y-6">
-          <SectionCard title="Virtue Prism" icon={<Sparkles size={20} className="text-sf-bright" />}>
-            <SelectField label="Prism" value={selectedPrismIdx} onChange={e => setSelectedPrismIdx(Number(e.target.value))}>{PRISMS.map((p, i) => <option key={p.name} value={i}>{p.name}</option>)}</SelectField>
-            <p className="text-xs text-sf-muted mt-2">{prism.description}</p>
-            <div className="mt-4 space-y-2.5">
-              <VirtueBar label="Courage" value={virtues.courage} max={maxVirtue + 5} color="bg-courage" icon={<Flame size={14} className="text-courage" />} />
-              <VirtueBar label="Spirit" value={virtues.spirit} max={maxVirtue + 5} color="bg-spirit" icon={<Sparkles size={14} className="text-spirit" />} />
-              <VirtueBar label="Grace" value={virtues.grace} max={maxVirtue + 5} color="bg-grace" icon={<Wind size={14} className="text-grace" />} />
+          <SectionCard title="Virtues" icon={<Sparkles size={20} className="text-sf-bright" />}>
+            <h4 className="text-xs uppercase tracking-wider text-sf-muted mb-3">Virtue Lith Allocation</h4>
+            <div className="space-y-3">
+              {[
+                { key: 'courage', label: 'Courage', color: 'text-courage', barColor: 'bg-courage', icon: <Flame size={14} className="text-courage" />, val: directCourage, set: setDirectCourage, others: directSpirit + directGrace },
+                { key: 'spirit', label: 'Spirit', color: 'text-spirit', barColor: 'bg-spirit', icon: <Sparkles size={14} className="text-spirit" />, val: directSpirit, set: setDirectSpirit, others: directCourage + directGrace },
+                { key: 'grace', label: 'Grace', color: 'text-grace', barColor: 'bg-grace', icon: <Wind size={14} className="text-grace" />, val: directGrace, set: setDirectGrace, others: directCourage + directSpirit },
+              ].map(({ key, label, color, barColor, icon, val, set, others }) => {
+                const maxForThis = Math.max(0, totalVirtuePoints - others);
+                return (
+                  <div key={key}>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className={`text-xs uppercase tracking-wider ${color}`}>{label}</label>
+                      <span className={`text-sm font-semibold ${color}`}>{val}</span>
+                    </div>
+                    <input type="range" min={0} max={maxForThis} value={Math.min(val, maxForThis)} onChange={e => set(Number(e.target.value))} className="w-full h-1.5 bg-sf-border rounded-full appearance-none cursor-pointer accent-sf-accent" />
+                  </div>
+                );
+              })}
+            </div>
+            <div className="mt-2 flex justify-between text-xs">
+              <span className="text-sf-muted">Virtue Liths available: {totalVirtuePoints}</span>
+              <span className={allocatedVirtue > totalVirtuePoints ? 'text-red-400' : 'text-sf-muted'}>Allocated: {allocatedVirtue}</span>
+            </div>
+            <div className="mt-4 pt-3 border-t border-sf-border/50">
+              <div className="flex items-center justify-between mb-2.5">
+                <h4 className="text-xs uppercase tracking-wider text-sf-muted">Effective Virtue</h4>
+                <span className="text-[10px] text-sf-muted">includes pact arts, fables &amp; talisman</span>
+              </div>
+              <div className="space-y-2.5">
+                <VirtueBar label="Courage" value={virtues.courage} max={maxVirtue + 5} color="bg-courage" icon={<Flame size={14} className="text-courage" />} bonus={virtues.courage - directCourage} />
+                <VirtueBar label="Spirit" value={virtues.spirit} max={maxVirtue + 5} color="bg-spirit" icon={<Sparkles size={14} className="text-spirit" />} bonus={virtues.spirit - directSpirit} />
+                <VirtueBar label="Grace" value={virtues.grace} max={maxVirtue + 5} color="bg-grace" icon={<Wind size={14} className="text-grace" />} bonus={virtues.grace - directGrace} />
+              </div>
             </div>
             <div className="mt-4 pt-3 border-t border-sf-border/50">
               <h4 className="text-xs uppercase tracking-wider text-sf-muted mb-1">Fable Virtue Bonuses</h4>
@@ -478,7 +513,7 @@ export default function BuildPlanner() {
         <div className="mt-4 pt-3 border-t border-sf-border/50">
           <h4 className="text-xs uppercase tracking-wider text-sf-muted mb-2">Build Details</h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-1.5 text-xs">
-            {[['Prism', prism.name], ['Pact', pact.name], ['Helm', helm.name], ['Cuirass', cuirass.name], ['Leggings', leggings.name], ['Talisman', talisman ? talisman.name : 'None'], ['Primary', primary.name], ['Primary Rune', primaryRune ? primaryRune.name : '—'], ['Sidearm', sidearm.name], ['Sidearm Rune', sidearmRune ? sidearmRune.name : '—']].map(([l, v]) => (
+            {[['Virtues', `${directCourage}C / ${directSpirit}S / ${directGrace}G`], ['Pact', pact.name], ['Helm', helm.name], ['Cuirass', cuirass.name], ['Leggings', leggings.name], ['Talisman', talisman ? talisman.name : 'None'], ['Primary', primary.name], ['Primary Rune', primaryRune ? primaryRune.name : '—'], ['Sidearm', sidearm.name], ['Sidearm Rune', sidearmRune ? sidearmRune.name : '—']].map(([l, v]) => (
               <div key={l} className="flex justify-between"><span className="text-sf-muted">{l}</span><span className="text-sf-text">{v}</span></div>
             ))}
             <div className="flex justify-between"><span className="text-sf-muted">Virtues</span><span><span className="text-courage">{virtues.courage}C</span> / <span className="text-spirit">{virtues.spirit}S</span> / <span className="text-grace">{virtues.grace}G</span></span></div>

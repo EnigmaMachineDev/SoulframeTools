@@ -4,12 +4,12 @@
 // attuneCap: wiki VirtueAttuneCap field (NOT a bonus cap — see calculations.js)
 
 export const COMBAT_ARTS = [
-  'Bow', 'Flyblade', 'Greatsword', 'Long Blade', 'Magick', 'Polearm', 'Shield', 'Short Blade'
+  'Bow', 'Flyblade', 'Heavy', 'Long Blade', 'Magick', 'Polearm', 'Shield', 'Short Blade'
 ];
 
 export const WEAPONS = [
   // === BOWS (Primary) ===
-  { name: 'Blitzel', combatArt: 'Bow', damageType: 'Sharp', rank0Damage: 42, baseDamage: 90, smiteChance: 2, staggerDamage: 54, attunement: { courage: 2, spirit: 0, grace: 2 }, virtueReq: { grace: 16 }, attuneCap: 28, slot: 'Primary', location: 'Gruul Seeker Ruthos, Reaper, Wares of Zenith' },
+  { name: 'Blitzel', combatArt: 'Bow', damageType: 'Sharp', rank0Damage: 42, baseDamage: 90, smiteChance: 2, staggerDamage: 54, attunement: { courage: 2, spirit: 0, grace: 2 }, virtueReq: { grace: 16 }, attuneCap: 28, slot: 'Primary', location: 'Gruul Seeker Ruthos, Flayed Reaper, Wares of Zenith' },
   { name: 'Avex', combatArt: 'Bow', damageType: 'Sharp', rank0Damage: 45, baseDamage: 93, smiteChance: 4, staggerDamage: 66, attunement: { courage: 3, spirit: 0, grace: 2 }, virtueReq: { courage: 16, grace: 14 }, attuneCap: null, slot: 'Primary', location: 'The Organ' },
   { name: 'Juniper', combatArt: 'Bow', damageType: 'Sharp', rank0Damage: 43, baseDamage: 91, smiteChance: 6, staggerDamage: 50, attunement: { courage: 0, spirit: 2, grace: 2 }, virtueReq: { grace: 9, spirit: 7 }, attuneCap: 29, slot: 'Primary', location: 'Juniper Echo Stones (world collectible — one copy only)' },
   { name: 'Maestro', combatArt: 'Bow', damageType: 'Sharp', rank0Damage: 41, baseDamage: 89, smiteChance: 5, staggerDamage: 54, attunement: { courage: 0, spirit: 2, grace: 2 }, virtueReq: { grace: 16 }, attuneCap: 28, slot: 'Primary', location: 'Banneret, Kabocha, Knell Knight, Thawtide Hunter, The Mendicant King' },
@@ -18,13 +18,14 @@ export const WEAPONS = [
 
   // === FLYBLADES (Sidearm) ===
   { name: 'Precklies', combatArt: 'Flyblade', damageType: 'Sharp', rank0Damage: 25, baseDamage: 79, smiteChance: 4, staggerDamage: 64, attunement: { courage: 0, spirit: 0, grace: 1 }, virtueReq: {}, attuneCap: 25, slot: 'Sidearm', location: 'Collector Crate, Banneret, Hunter, Nimrod, Kith of Kings faction shop' },
-  { name: 'Skílter', combatArt: 'Flyblade', damageType: 'Sharp', rank0Damage: 29, baseDamage: 83, smiteChance: 3, staggerDamage: 66, attunement: { courage: 2, spirit: 0, grace: 2 }, virtueReq: { grace: 7, courage: 7 }, attuneCap: 19, slot: 'Sidearm', location: 'Collector Crate, Ode Chest, Gruul Seeker Ruthos, Reaper, Wares of Zenith' },
+  { name: 'Skílter', combatArt: 'Flyblade', damageType: 'Sharp', rank0Damage: 29, baseDamage: 83, smiteChance: 3, staggerDamage: 66, attunement: { courage: 2, spirit: 0, grace: 2 }, virtueReq: { grace: 7, courage: 7 }, attuneCap: 19, slot: 'Sidearm', location: 'Collector Crate, Ode Chest, Gruul Seeker Ruthos, Flayed Reaper, Wares of Zenith' },
   { name: 'Thrice Spurns', combatArt: 'Flyblade', damageType: 'Sharp', rank0Damage: 31, baseDamage: 85, smiteChance: 4, staggerDamage: 66, attunement: { courage: 2, spirit: 0, grace: 0 }, virtueReq: { courage: 10 }, attuneCap: 21, slot: 'Sidearm', location: 'Wyld Tethren / Paragon Founders Pack' },
 
-  // === GREATSWORDS (Primary) ===
-  { name: 'Needleseye', combatArt: 'Greatsword', damageType: 'Sharp', rank0Damage: 63, baseDamage: 117, smiteChance: 5, staggerDamage: 134, attunement: { courage: 3, spirit: 0, grace: 0 }, virtueReq: { courage: 21 }, attuneCap: 43, slot: 'Primary', location: 'Collector Crate, Dendrit Chest, Enclave Tales Tier 2–3, Avakot Favour, Wares of Zenith' },
-  { name: 'Purity', combatArt: 'Greatsword', damageType: 'Sharp', rank0Damage: 68, baseDamage: 122, smiteChance: 6, staggerDamage: 126, attunement: { courage: 3, spirit: 2, grace: 0 }, virtueReq: { courage: 21 }, attuneCap: 36, slot: 'Primary', location: 'The Mendicant King, Collector Crate, Wares of Zenith' },
-  { name: 'The Paragon', combatArt: 'Greatsword', damageType: 'Sharp', rank0Damage: 63, baseDamage: 117, smiteChance: 7, staggerDamage: 120, attunement: { courage: 2, spirit: 2, grace: 2 }, virtueReq: {}, attuneCap: 134, slot: 'Primary', location: 'Paragon Founders Pack' },
+  // === HEAVY (Primary) — Greatswords + Maces, renamed from Greatsword in a Preludes update ===
+  { name: 'Needleseye', combatArt: 'Heavy', damageType: 'Sharp', rank0Damage: 63, baseDamage: 117, smiteChance: 5, staggerDamage: 134, attunement: { courage: 3, spirit: 0, grace: 0 }, virtueReq: { courage: 21 }, attuneCap: 43, slot: 'Primary', location: 'Collector Crate, Dendrit Chest, Enclave Tales Tier 2–3, Avakot Favour, Wares of Zenith' },
+  { name: 'Purity', combatArt: 'Heavy', damageType: 'Sharp', rank0Damage: 68, baseDamage: 122, smiteChance: 6, staggerDamage: 126, attunement: { courage: 3, spirit: 2, grace: 0 }, virtueReq: { courage: 21 }, attuneCap: 36, slot: 'Primary', location: 'The Mendicant King, Collector Crate, Wares of Zenith' },
+  { name: 'The Paragon', combatArt: 'Heavy', damageType: 'Sharp', rank0Damage: 63, baseDamage: 117, smiteChance: 7, staggerDamage: 120, attunement: { courage: 2, spirit: 2, grace: 2 }, virtueReq: {}, attuneCap: 134, slot: 'Primary', location: 'Paragon Founders Pack' },
+  { name: 'Orst-III', combatArt: 'Heavy', damageType: 'Blunt', rank0Damage: 63, baseDamage: 117, smiteChance: 2, staggerDamage: 134, attunement: { courage: 2, spirit: 0, grace: 0 }, virtueReq: { courage: 12 }, attuneCap: null, slot: 'Primary', location: 'Gruul Seeker Sontaro, Sinecure Knight (Mace), Sinecure Officer, Sinecure-errant Gawth' },
 
   // === RAPIERS / Duelo Blades (Primary) — introduced in Preludes 14; wiki classifies Art as Long Blade ===
   { name: 'Espadarte', combatArt: 'Long Blade', damageType: 'Sharp', rank0Damage: 42, baseDamage: 96, smiteChance: 2, staggerDamage: 86, attunement: { courage: 2, spirit: 0, grace: 2 }, virtueReq: { courage: 6, grace: 8 }, attuneCap: null, slot: 'Primary', location: 'Mirifuir Siege, Wares of Zenith' },
@@ -76,7 +77,7 @@ export const WEAPONS = [
   { name: 'Unsula', combatArt: 'Short Blade', damageType: 'Sharp', rank0Damage: 26, baseDamage: 53, smiteChance: 5, staggerDamage: 73, attunement: { courage: 2, spirit: 0, grace: 2 }, virtueReq: { grace: 14 }, attuneCap: 17, slot: 'Primary', location: 'Ode Chest, Banneret, Nimrod, Fore-Feller Hewyl, Gruul Seeker Sontaro, Sinecure-errant, Fort Sieges, Wares of Zenith' },
 
   // === SHORT BLADES - Dual Blades (Sidearm) ===
-  { name: 'Clivers', combatArt: 'Short Blade', damageType: 'Sharp', rank0Damage: 25, baseDamage: 52, smiteChance: 5, staggerDamage: 75, attunement: { courage: 2, spirit: 0, grace: 2 }, virtueReq: { grace: 15 }, attuneCap: 25, slot: 'Sidearm', location: 'Etheldred The Weaver, Reaper, The Organ' },
+  { name: 'Clivers', combatArt: 'Short Blade', damageType: 'Sharp', rank0Damage: 25, baseDamage: 52, smiteChance: 5, staggerDamage: 75, attunement: { courage: 2, spirit: 0, grace: 2 }, virtueReq: { grace: 15 }, attuneCap: 25, slot: 'Sidearm', location: 'Etheldred The Weaver, Flayed Reaper, The Organ' },
   { name: 'Cobladh', combatArt: 'Short Blade', damageType: 'Sharp', rank0Damage: 38, baseDamage: 92, smiteChance: 4, staggerDamage: 80, attunement: { courage: 0, spirit: 0, grace: 2 }, virtueReq: { grace: 10 }, attuneCap: 26, slot: 'Sidearm', location: 'Wyld Sirin / Paragon Founders Pack' },
   { name: 'Grinn', combatArt: 'Short Blade', damageType: 'Sharp', rank0Damage: 36, baseDamage: 90, smiteChance: 6, staggerDamage: 86, attunement: { courage: 2, spirit: 0, grace: 2 }, virtueReq: { grace: 16 }, attuneCap: 23, slot: 'Sidearm', location: 'Ode Chest, Banneret, Nimrod, Fore-Feller Hewyl, Gruul Seeker Ruthos, Gruul Seeker Sontaro, Sinecure-errant, Fort Sieges, Wares of Zenith' },
   { name: 'Nettle', combatArt: 'Short Blade', damageType: 'Sharp', rank0Damage: 33, baseDamage: 87, smiteChance: 3, staggerDamage: 80, attunement: { courage: 0, spirit: 0, grace: 1 }, virtueReq: {}, attuneCap: 32, slot: 'Sidearm', location: 'The Steelsinger (quest reward), Collector Crate, Knell Knight, Wares of Zenith' },

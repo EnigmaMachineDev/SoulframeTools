@@ -1,10 +1,19 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { Dices, ExternalLink, RotateCcw, Settings, ChevronDown, ChevronUp, AlertTriangle } from 'lucide-react';
 import { WEAPONS, COMBAT_ARTS } from '../data/weapons';
-import { PRISMS } from '../data/prisms';
 import { PACTS } from '../data/pacts';
 import { ARMOUR_HELMS, ARMOUR_CUIRASSES, ARMOUR_LEGGINGS, ARMOUR_SETS } from '../data/armour';
 import { RUNES } from '../data/runes';
+
+const VIRTUE_FOCUSES = [
+  { name: 'Courage', virtues: ['courage'], description: 'Courage-focused build' },
+  { name: 'Spirit', virtues: ['spirit'], description: 'Spirit-focused build' },
+  { name: 'Grace', virtues: ['grace'], description: 'Grace-focused build' },
+  { name: 'Courage & Spirit', virtues: ['courage', 'spirit'], description: 'Hybrid Courage/Spirit build' },
+  { name: 'Courage & Grace', virtues: ['courage', 'grace'], description: 'Hybrid Courage/Grace build' },
+  { name: 'Spirit & Grace', virtues: ['spirit', 'grace'], description: 'Hybrid Spirit/Grace build' },
+  { name: 'Any', virtues: ['courage', 'spirit', 'grace'], description: 'No virtue restriction' },
+];
 
 const VIRTUE_ABBREV = { courage: 'C', spirit: 'S', grace: 'G' };
 
@@ -40,16 +49,6 @@ function getItemVirtueRequirements(item) {
   return Object.keys(item.virtueReq || {});
 }
 
-// Get which virtues a prism is considered to "belong to" for filtering purposes.
-// Wyld prisms have minor allocations (0.15) to non-primary virtues — these are
-// ignored for filtering. Only virtues with >= 0.5 distribution count.
-// e.g. Wyld Tethren (0.7C/0.15S/0.15G) -> ['courage'] only.
-function getPrismVirtues(prism) {
-  return Object.entries(prism.distribution)
-    .filter(([, v]) => v >= 0.5)
-    .map(([k]) => k);
-}
-
 // Get the dominant virtue(s) from an item's attunement object.
 // Weapons have flat { courage, spirit, grace }, armour has nested { physical, magick, stability }.
 // Returns [] if no attunement pips at all (item is virtue-neutral).
@@ -77,26 +76,25 @@ function getItemAttunementVirtues(item) {
   return Object.entries(totals).filter(([, v]) => v === max && v > 0).map(([k]) => k);
 }
 
-// An item is usable with a prism if:
-// - it has a virtue requirement matching the prism's virtue(s), OR
-// - it has no virtue requirement but its dominant attunement matches the prism, OR
+// An item is usable with a virtue focus if:
+// - it has a virtue requirement matching the focus virtue(s), OR
+// - it has no virtue requirement but its dominant attunement matches the focus, OR
 // - it has no virtue requirement AND no attunement (virtue-neutral, always usable)
-function itemUsable(item, prism) {
-  if (!item || !prism) return false;
-  const prismVirtues = getPrismVirtues(prism);
+function itemUsable(item, focus) {
+  if (!item || !focus) return false;
+  const focusVirtues = focus.virtues;
   const reqs = getItemVirtueRequirements(item);
   if (reqs.length > 0) {
-    return reqs.some(v => prismVirtues.includes(v));
+    return reqs.some(v => focusVirtues.includes(v));
   }
-  // No virtue requirement — check attunement dominant virtue
   const attVirtues = getItemAttunementVirtues(item);
-  if (attVirtues.length === 0) return true; // no attunement = virtue-neutral, always usable
-  return attVirtues.some(v => prismVirtues.includes(v));
+  if (attVirtues.length === 0) return true;
+  return attVirtues.some(v => focusVirtues.includes(v));
 }
 
-function pickUsable(arr, prism) {
+function pickUsable(arr, focus) {
   if (!arr || arr.length === 0) return null;
-  const usable = arr.filter(w => itemUsable(w, prism));
+  const usable = arr.filter(w => itemUsable(w, focus));
   if (usable.length === 0) return null;
   return usable[Math.floor(Math.random() * usable.length)];
 }
@@ -123,7 +121,7 @@ function loadOptions() {
 
 function buildDefaultOptions() {
   const opts = {};
-  opts.prisms = Object.fromEntries(PRISMS.map(p => [p.name, true]));
+  opts.virtueFocus = Object.fromEntries(VIRTUE_FOCUSES.map(f => [f.name, true]));
   opts.pacts = Object.fromEntries(PACTS.map(p => [p.name, true]));
   opts.primary = Object.fromEntries(WEAPONS.filter(w => w.slot === 'Primary').map(w => [w.name, true]));
   opts.sidearm = Object.fromEntries(WEAPONS.filter(w => w.slot === 'Sidearm').map(w => [w.name, true]));
@@ -180,7 +178,7 @@ export default function LoadoutRandomizer() {
   const resetOptions = () => { const d = buildDefaultOptions(); saveOpts(d); };
 
   const pools = useMemo(() => ({
-    prisms: PRISMS.filter(p => options.prisms?.[p.name]),
+    focuses: VIRTUE_FOCUSES.filter(f => options.virtueFocus?.[f.name]),
     pacts: PACTS.filter(p => options.pacts?.[p.name]),
     primary: WEAPONS.filter(w => w.slot === 'Primary' && options.primary?.[w.name]),
     sidearm: WEAPONS.filter(w => w.slot === 'Sidearm' && options.sidearm?.[w.name]),
@@ -189,28 +187,28 @@ export default function LoadoutRandomizer() {
     leggings: ARMOUR_LEGGINGS.filter(l => options.leggings?.[l.name]),
   }), [options]);
 
-  function pickArmour(pool, prism, emptyMsg, unusableMsg) {
+  function pickArmour(pool, focus, emptyMsg, unusableMsg) {
     if (pool.length === 0) return { item: null, error: emptyMsg };
-    if (prism) {
-      const item = pickUsable(pool, prism);
+    if (focus) {
+      const item = pickUsable(pool, focus);
       return { item, error: item ? null : unusableMsg };
     }
     return { item: pickRandom(pool), error: null };
   }
 
   const randomize = useCallback(() => {
-    const prism = pickRandom(pools.prisms);
+    const focus = pickRandom(pools.focuses);
     const pact = pickRandom(pools.pacts);
-    const { item: helm, error: helmError } = pickArmour(pools.helms, prism, 'No Helms Selected', 'No Usable Helm Selected');
-    const { item: cuirass, error: cuirassError } = pickArmour(pools.cuirasses, prism, 'No Cuirasses Selected', 'No Usable Cuirass Selected');
-    const { item: leggings, error: leggingsError } = pickArmour(pools.leggings, prism, 'No Leggings Selected', 'No Usable Leggings Selected');
+    const { item: helm, error: helmError } = pickArmour(pools.helms, focus, 'No Helms Selected', 'No Usable Helm Selected');
+    const { item: cuirass, error: cuirassError } = pickArmour(pools.cuirasses, focus, 'No Cuirasses Selected', 'No Usable Cuirass Selected');
+    const { item: leggings, error: leggingsError } = pickArmour(pools.leggings, focus, 'No Leggings Selected', 'No Usable Leggings Selected');
 
     let primary = null;
     let primaryError = null;
     if (pools.primary.length === 0) {
       primaryError = 'No Primary Weapons Selected';
-    } else if (prism) {
-      primary = pickUsable(pools.primary, prism);
+    } else if (focus) {
+      primary = pickUsable(pools.primary, focus);
       if (!primary) primaryError = 'No Usable Primary Selected';
     } else {
       primary = pickRandom(pools.primary);
@@ -220,8 +218,8 @@ export default function LoadoutRandomizer() {
     let sidearmError = null;
     if (pools.sidearm.length === 0) {
       sidearmError = 'No Sidearms Selected';
-    } else if (prism) {
-      sidearm = pickUsable(pools.sidearm, prism);
+    } else if (focus) {
+      sidearm = pickUsable(pools.sidearm, focus);
       if (!sidearm) sidearmError = 'No Usable Sidearm Selected';
     } else {
       sidearm = pickRandom(pools.sidearm);
@@ -241,10 +239,10 @@ export default function LoadoutRandomizer() {
     }
 
     setResult({
-      prism, pact, helm, cuirass, leggings,
+      focus, pact, helm, cuirass, leggings,
       primary, primaryError, primaryRune,
       sidearm, sidearmError, sidearmRune,
-      prismError: !prism ? 'No Prisms Selected' : null,
+      focusError: !focus ? 'No Virtue Focus Selected' : null,
       pactError: !pact ? 'No Pacts Selected' : null,
       helmError, cuirassError, leggingsError,
     });
@@ -253,18 +251,18 @@ export default function LoadoutRandomizer() {
   const reroll = useCallback((key) => {
     if (!result) return;
     const newResult = { ...result };
-    const prism = newResult.prism;
-    if (key === 'prism') {
-      newResult.prism = pickRandom(pools.prisms) || result.prism;
-      newResult.prismError = !newResult.prism ? 'No Prisms Selected' : null;
+    const focus = newResult.focus;
+    if (key === 'focus') {
+      newResult.focus = pickRandom(pools.focuses) || result.focus;
+      newResult.focusError = !newResult.focus ? 'No Virtue Focus Selected' : null;
     } else if (key === 'pact') {
       newResult.pact = pickRandom(pools.pacts) || result.pact;
       newResult.pactError = !newResult.pact ? 'No Pacts Selected' : null;
     } else if (key === 'primary') {
       if (pools.primary.length === 0) {
         newResult.primary = null; newResult.primaryError = 'No Primary Weapons Selected';
-      } else if (prism) {
-        newResult.primary = pickUsable(pools.primary, prism);
+      } else if (focus) {
+        newResult.primary = pickUsable(pools.primary, focus);
         newResult.primaryError = !newResult.primary ? 'No Usable Primary Selected' : null;
       } else {
         newResult.primary = pickRandom(pools.primary);
@@ -277,8 +275,8 @@ export default function LoadoutRandomizer() {
     } else if (key === 'sidearm') {
       if (pools.sidearm.length === 0) {
         newResult.sidearm = null; newResult.sidearmError = 'No Sidearms Selected';
-      } else if (prism) {
-        newResult.sidearm = pickUsable(pools.sidearm, prism);
+      } else if (focus) {
+        newResult.sidearm = pickUsable(pools.sidearm, focus);
         newResult.sidearmError = !newResult.sidearm ? 'No Usable Sidearm Selected' : null;
       } else {
         newResult.sidearm = pickRandom(pools.sidearm);
@@ -289,13 +287,13 @@ export default function LoadoutRandomizer() {
         newResult.sidearmRune = sRunes.length > 0 ? pickRandom(sRunes) : null;
       }
     } else if (key === 'helm') {
-      const r = pickArmour(pools.helms, prism, 'No Helms Selected', 'No Usable Helm Selected');
+      const r = pickArmour(pools.helms, focus, 'No Helms Selected', 'No Usable Helm Selected');
       newResult.helm = r.item || result.helm; newResult.helmError = r.item ? null : r.error;
     } else if (key === 'cuirass') {
-      const r = pickArmour(pools.cuirasses, prism, 'No Cuirasses Selected', 'No Usable Cuirass Selected');
+      const r = pickArmour(pools.cuirasses, focus, 'No Cuirasses Selected', 'No Usable Cuirass Selected');
       newResult.cuirass = r.item || result.cuirass; newResult.cuirassError = r.item ? null : r.error;
     } else if (key === 'leggings') {
-      const r = pickArmour(pools.leggings, prism, 'No Leggings Selected', 'No Usable Leggings Selected');
+      const r = pickArmour(pools.leggings, focus, 'No Leggings Selected', 'No Usable Leggings Selected');
       newResult.leggings = r.item || result.leggings; newResult.leggingsError = r.item ? null : r.error;
     }
     setResult(newResult);
@@ -307,7 +305,7 @@ export default function LoadoutRandomizer() {
   const cuirassNames = useMemo(() => ARMOUR_CUIRASSES.map(c => c.name), []);
   const leggingsNames = useMemo(() => ARMOUR_LEGGINGS.map(l => l.name), []);
   const runeNames = useMemo(() => RUNES.map(r => r.name), []);
-  const prismNames = useMemo(() => PRISMS.map(p => p.name), []);
+  const focusNames = useMemo(() => VIRTUE_FOCUSES.map(f => f.name), []);
   const pactNames = useMemo(() => PACTS.map(p => p.name), []);
 
   return (
@@ -340,7 +338,7 @@ export default function LoadoutRandomizer() {
           </div>
           <p className="text-xs text-sf-muted mb-4 font-sans">Uncheck items to exclude them from randomization. Options are saved automatically.</p>
           <div className="space-y-2">
-            <OptionsCategory title="Virtue Prisms" items={prismNames} options={options.prisms || {}} onToggle={n => toggleItem('prisms', n)} onSelectAll={() => selectAll('prisms', prismNames)} onDeselectAll={() => deselectAll('prisms', prismNames)} />
+            <OptionsCategory title="Virtue Focus" items={focusNames} options={options.virtueFocus || {}} onToggle={n => toggleItem('virtueFocus', n)} onSelectAll={() => selectAll('virtueFocus', focusNames)} onDeselectAll={() => deselectAll('virtueFocus', focusNames)} />
             <OptionsCategory title="Pacts" items={pactNames} options={options.pacts || {}} onToggle={n => toggleItem('pacts', n)} onSelectAll={() => selectAll('pacts', pactNames)} onDeselectAll={() => deselectAll('pacts', pactNames)} />
             <OptionsCategory title="Primary Weapons" items={primaryNames} options={options.primary || {}} onToggle={n => toggleItem('primary', n)} onSelectAll={() => selectAll('primary', primaryNames)} onDeselectAll={() => deselectAll('primary', primaryNames)} />
             <OptionsCategory title="Sidearm Weapons" items={sidearmNames} options={options.sidearm || {}} onToggle={n => toggleItem('sidearm', n)} onSelectAll={() => selectAll('sidearm', sidearmNames)} onDeselectAll={() => deselectAll('sidearm', sidearmNames)} />
@@ -354,7 +352,7 @@ export default function LoadoutRandomizer() {
 
       {result && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <ResultCard label="Virtue Prism" value={result.prism?.name} sub={result.prism?.description} error={result.prismError} onReroll={() => reroll('prism')} />
+          <ResultCard label="Virtue Focus" value={result.focus?.name} sub={result.focus?.description} error={result.focusError} onReroll={() => reroll('focus')} />
           <ResultCard label="Pact" value={result.pact?.name} sub={result.pact ? `${result.pact.type} — ${result.pact.alignedVirtue}` : null} error={result.pactError} onReroll={() => reroll('pact')} />
           <ResultCard label="Primary Weapon" value={result.primary?.name} sub={result.primary ? `${result.primary.combatArt} — ${result.primary.damageType}` : null} scaling={result.primary ? weaponScaling(result.primary) : null} extra={result.primaryRune ? `Rune: ${result.primaryRune.name}` : null} error={result.primaryError} onReroll={() => reroll('primary')} />
           <ResultCard label="Sidearm" value={result.sidearm?.name} sub={result.sidearm ? `${result.sidearm.combatArt} — ${result.sidearm.damageType}` : null} scaling={result.sidearm ? weaponScaling(result.sidearm) : null} extra={result.sidearmRune ? `Rune: ${result.sidearmRune.name}` : null} error={result.sidearmError} onReroll={() => reroll('sidearm')} />
