@@ -92,14 +92,19 @@ export const gameData = {
       magick: {
         label: "Magick",
         items: [
-          { id: "wep-esthelle", name: "Esthelle" },
-          { id: "wep-silistavf", name: "Silistavf" },
           { id: "wep-gwylen", name: "Gwylen" },
-          { id: "wep-odiac", name: "Odiac" },
+          { id: "wep-seathorn", name: "Seathorn" },
+          { id: "wep-silistavf", name: "Silistavf" },
           { id: "wep-the-alder", name: "The Alder" },
           { id: "wep-the-erstroot", name: "The Erstroot" },
+        ],
+      },
+      sidearmMagick: {
+        label: "Sidearm Magick",
+        items: [
           { id: "wep-baskers-wrest", name: "Basker's Wrest" },
-          { id: "wep-seathorn", name: "Seathorn" },
+          { id: "wep-esthelle", name: "Esthelle" },
+          { id: "wep-odiac", name: "Odiac" },
         ],
       },
       polearms: {
@@ -122,16 +127,21 @@ export const gameData = {
       shortBlades: {
         label: "Short Blades",
         items: [
-          { id: "wep-cobladh", name: "Cobladh" },
-          { id: "wep-grinn", name: "Grinn" },
-          { id: "wep-nettle", name: "Nettle" },
           { id: "wep-rivt-ii", name: "Rivt-II" },
           { id: "wep-rostrum", name: "Rostrum" },
           { id: "wep-the-royal-tines", name: "The Royal Tines" },
           { id: "wep-unsula", name: "Unsula" },
+        ],
+      },
+      sidearmShortBlades: {
+        label: "Sidearm Short Blades",
+        items: [
+          { id: "wep-clivers", name: "Clivers" },
+          { id: "wep-cobladh", name: "Cobladh" },
+          { id: "wep-grinn", name: "Grinn" },
+          { id: "wep-nettle", name: "Nettle" },
           { id: "wep-virdigris", name: "Virdigris" },
           { id: "wep-witan", name: "Witan" },
-          { id: "wep-clivers", name: "Clivers" },
         ],
       },
     },

@@ -304,7 +304,7 @@ export default function LoadoutRandomizer() {
   const helmNames = useMemo(() => ARMOUR_HELMS.map(h => h.name), []);
   const cuirassNames = useMemo(() => ARMOUR_CUIRASSES.map(c => c.name), []);
   const leggingsNames = useMemo(() => ARMOUR_LEGGINGS.map(l => l.name), []);
-  const runeNames = useMemo(() => RUNES.map(r => r.name), []);
+  const runeNames = useMemo(() => [...new Set(RUNES.map(r => r.name))], []);
   const focusNames = useMemo(() => VIRTUE_FOCUSES.map(f => f.name), []);
   const pactNames = useMemo(() => PACTS.map(p => p.name), []);
 
