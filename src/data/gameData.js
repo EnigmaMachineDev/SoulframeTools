@@ -25,6 +25,11 @@ export const gameData = {
           { id: "fable-mistress-thread", name: "Mistress of The Thread" },
           { id: "fable-lightning-vial", name: "Lightning in a Vial" },
           { id: "fable-deadwood", name: "Deadwood" },
+          { id: "fable-a-birdie-flown", name: "A Birdie Flown" },
+          { id: "fable-burning-sage", name: "Burning Sage" },
+          { id: "fable-laid-to-rest", name: "Laid to Rest" },
+          { id: "fable-runner-of-the-rose", name: "Runner of the Rose" },
+          { id: "fable-the-fungal-lord", name: "The Fungal Lord" },
         ],
       },
       events: {
