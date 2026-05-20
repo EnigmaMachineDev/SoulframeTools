@@ -41,6 +41,7 @@ export const gameData = {
     label: "Weapons",
     icon: "Sword",
     trackLevel: true,
+    trackCraft: true,
     categories: {
       bows: {
         label: "Bows",
@@ -149,6 +150,7 @@ export const gameData = {
   armour: {
     label: "Armour Sets",
     icon: "Shield",
+    trackCraft: true,
     categories: {
       arbearer: { label: "Arbearer Set", items: [{ id: "arm-arbearer-braes", name: "Arbearer's Braes" }, { id: "arm-arbearer-mask", name: "Arbearer's Mask" }, { id: "arm-arbearer-pauncher", name: "Arbearer's Pauncher" }] },
       circade: { label: "Circade Set", items: [{ id: "arm-circade-greaves", name: "Circade's Greaves" }, { id: "arm-circade-gutguard", name: "Circade's Gutguard" }, { id: "arm-circade-helm", name: "Circade's Helm of Deceit" }] },
@@ -238,10 +240,14 @@ export const gameData = {
   },
 };
 
-export function getItemTrackingIds(item, trackLevel) {
+export function getItemTrackingIds(item, trackLevel, trackCraft = false) {
   if (trackLevel) {
-    return [`${item.id}:collected`, `${item.id}:leveled`];
+    const ids = [`${item.id}:collected`];
+    if (trackCraft) ids.push(`${item.id}:crafted`);
+    ids.push(`${item.id}:leveled`);
+    return ids;
   }
+  if (trackCraft) return [item.id, `${item.id}:crafted`];
   return [item.id];
 }
 
@@ -250,7 +256,7 @@ export function getAllItemIds() {
   for (const [, section] of Object.entries(gameData)) {
     for (const category of Object.values(section.categories)) {
       for (const item of category.items) {
-        ids.push(...getItemTrackingIds(item, section.trackLevel));
+        ids.push(...getItemTrackingIds(item, section.trackLevel, section.trackCraft));
       }
     }
   }
@@ -267,7 +273,7 @@ export function getSectionItemIds(sectionKey) {
   const ids = [];
   for (const category of Object.values(section.categories)) {
     for (const item of category.items) {
-      ids.push(...getItemTrackingIds(item, section.trackLevel));
+      ids.push(...getItemTrackingIds(item, section.trackLevel, section.trackCraft));
     }
   }
   return ids;
@@ -280,7 +286,7 @@ export function getCategoryItemIds(sectionKey, categoryKey) {
   if (!category) return [];
   const ids = [];
   for (const item of category.items) {
-    ids.push(...getItemTrackingIds(item, section.trackLevel));
+    ids.push(...getItemTrackingIds(item, section.trackLevel, section.trackCraft));
   }
   return ids;
 }
