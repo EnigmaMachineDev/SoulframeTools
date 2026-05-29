@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Menu, X, Sword, Shield, Dices, CheckSquare, Wrench, Home } from 'lucide-react';
+
+const GA_ID = 'G-7SRRYRESDV';
 
 const navItems = [
   { path: '/', label: 'Home', icon: Home },
@@ -14,6 +16,12 @@ const navItems = [
 export default function Layout() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    if (typeof window.gtag === 'function') {
+      window.gtag('config', GA_ID, { page_path: location.pathname });
+    }
+  }, [location.pathname]);
 
   return (
     <div className="min-h-screen bg-sf-bg">
