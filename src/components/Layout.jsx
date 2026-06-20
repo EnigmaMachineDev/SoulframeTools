@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
-import { Menu, X, Sword, Shield, Dices, CheckSquare, Wrench, Home } from 'lucide-react';
+import { Menu, X, Sword, Swords, Shield, Dices, CheckSquare, Wrench, Home } from 'lucide-react';
 
 const GA_ID = 'G-7SRRYRESDV';
 
@@ -9,6 +9,7 @@ const navItems = [
   { path: '/build', label: 'Build Planner', icon: Wrench },
   { path: '/checklist', label: 'Checklist', icon: CheckSquare },
   { path: '/weapons', label: 'Weapon Reference', icon: Sword },
+  { path: '/compare', label: 'Weapon Compare', icon: Swords },
   { path: '/armour', label: 'Armour Reference', icon: Shield },
   { path: '/random', label: 'Loadout Randomizer', icon: Dices },
 ];

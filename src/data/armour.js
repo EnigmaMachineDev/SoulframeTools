@@ -29,6 +29,18 @@ export const ARMOUR_SETS = [
     ],
   },
   {
+    name: 'Cucurbita',
+    // NOTE: the wiki Armour table publishes these masks' base Phys/Mag/Stab + Virtue Req only,
+    // not their Attunement pip breakdown — so pips are left at 0 (base stats shown as-is, no
+    // virtue scaling) until that data is available, rather than guessing the distribution.
+    location: 'Cucurbita cosmetic masks (source not documented on the wiki Armour table)',
+    pieces: [
+      { name: "Crone Cucurbita Mask", slot: 'Helm', physDef: 3, magDef: 3, stability: 1, attunement: { physical: { courage: 0, spirit: 0, grace: 0 }, magick: { courage: 0, spirit: 0, grace: 0 }, stability: { courage: 0, spirit: 0, grace: 0 } }, virtueReq: { spirit: 9 } },
+      { name: "Lil' Zook Mask", slot: 'Helm', physDef: 4, magDef: 1, stability: 2, attunement: { physical: { courage: 0, spirit: 0, grace: 0 }, magick: { courage: 0, spirit: 0, grace: 0 }, stability: { courage: 0, spirit: 0, grace: 0 } }, virtueReq: { courage: 9 } },
+      { name: "Poppa Pepo Mask", slot: 'Helm', physDef: 2, magDef: 2, stability: 3, attunement: { physical: { courage: 0, spirit: 0, grace: 0 }, magick: { courage: 0, spirit: 0, grace: 0 }, stability: { courage: 0, spirit: 0, grace: 0 } }, virtueReq: { grace: 9 } },
+    ],
+  },
+  {
     name: 'Fire King',
     location: 'Kith of Kings Tale Tier 3',
     pieces: [
@@ -151,6 +163,7 @@ export const ARMOUR_SETS = [
     name: "Mestra's Uniform",
     location: "The Wreck of Mestra Carmo (shipwrecked duels while wearing the Duelo Ribbon)",
     pieces: [
+      { name: "Duelo Ribbon", slot: 'Helm', physDef: 0, magDef: 0, stability: 0, attunement: { physical: { courage: 0, spirit: 0, grace: 0 }, magick: { courage: 0, spirit: 0, grace: 0 }, stability: { courage: 0, spirit: 0, grace: 0 } }, virtueReq: {} },
       { name: "Mestra's Helm", slot: 'Helm', physDef: 1, magDef: 2, stability: 2, attunement: { physical: { courage: 0, spirit: 0, grace: 3 }, magick: { courage: 0, spirit: 0, grace: 2 }, stability: { courage: 0, spirit: 0, grace: 2 } }, virtueReq: { grace: 12 } },
       { name: "Mestra's Furbelow", slot: 'Cuirass', physDef: 4, magDef: 3, stability: 3, attunement: { physical: { courage: 0, spirit: 0, grace: 3 }, magick: { courage: 0, spirit: 0, grace: 2 }, stability: { courage: 0, spirit: 0, grace: 3 } }, virtueReq: { grace: 12 } },
       { name: "Mestra's Breeches", slot: 'Leggings', physDef: 3, magDef: 2, stability: 2, attunement: { physical: { courage: 0, spirit: 0, grace: 3 }, magick: { courage: 0, spirit: 0, grace: 2 }, stability: { courage: 0, spirit: 0, grace: 3 } }, virtueReq: { grace: 12 } },

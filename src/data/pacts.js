@@ -241,10 +241,18 @@ export const PACT_ART_VIRTUE_COSTS = [1, 2, 3];
 export const PACT_ART_VIRTUE_VALUES = [1, 3, 6];
 
 // General Pact Arts (standardized across all pacts)
+// Preludes 15 renamed three arts. The Smite-based capabilities of the old
+// Sympathy/Voided arts moved onto the reworked Totems, so those arts were
+// repurposed; Healer was renamed and re-scoped to Life Elixir carry capacity.
+//   Healer   → Physic    (Life Elixir capacity)
+//   Sympathy → Stalwart  (resist knockdown)
+//   Voided   → Forestall (cheat death)
+// TODO[P15 values]: per-rank values below are pre-P15 placeholders — confirm
+// the new chance/amount values from the wiki/in-game and update `values`.
 export const GENERAL_ARTS = [
-  { name: 'Healer', description: 'Regain Life more efficiently.', values: [1, 2, 3, 4], maxRank: 4 },
+  { name: 'Physic', description: 'Survival graces the well-prepared. Increase the amount of Life Elixirs you can carry.', values: [1, 2, 3, 4], maxRank: 4 },
   { name: 'Rooted', description: 'Defence against Stagger is heightened.', values: [1, 2, 3, 4], maxRank: 4 },
-  { name: 'Sympathy', description: 'Regain Life on Smite.', values: [1, 2, 3, 4], maxRank: 4 },
-  { name: 'Voided', description: 'Deal damage on Smite.', values: [1, 2, 3, 4], maxRank: 4 },
+  { name: 'Stalwart', description: 'Stand tall. Gain a chance to resist being knocked down.', values: [1, 2, 3, 4], maxRank: 4 },
+  { name: 'Forestall', description: 'Cheat death once more. Gain a chance to survive where otherwise you would die.', values: [1, 2, 3, 4], maxRank: 4 },
   { name: 'Wingspan', description: 'Sparrow Soul has more time to return.', values: [1, 2, 3, 4], maxRank: 4 },
 ];

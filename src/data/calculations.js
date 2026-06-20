@@ -21,8 +21,11 @@ export function calculateWeaponAttunement(weapon, virtues, rank = 30, joineryDam
   const req = weapon.virtueReq || {};
   const meetsReq = Object.entries(req).every(([virtue, val]) => (virtues[virtue] || 0) >= val);
 
-  const r0 = weapon.rank0Damage || weapon.baseDamage;
-  const r30 = weapon.baseDamage;
+  // Some P15 weapons (Vrusht-IX, Ilverac, Veilk) have unpublished stats: rank0 and/or
+  // baseDamage may be null. Fall back gracefully so the math never produces NaN —
+  // a null baseDamage means "no rank scaling known", so treat r30 = r0 (flat).
+  const r0 = weapon.rank0Damage ?? weapon.baseDamage ?? 0;
+  const r30 = weapon.baseDamage ?? r0;
   const attackAtRank = r0 + Math.floor(rank * (r30 - r0) / 30);
 
   if (!meetsReq) return { bonus: 0, attunement: 0, meetsRequirement: false, totalAttack: attackAtRank + joineryDamage, attackAtRank, rankScaling: attackAtRank - r0, joineryDamage };
@@ -56,9 +59,43 @@ export function calculateWeaponAttunement(weapon, virtues, rank = 30, joineryDam
   };
 }
 
+// Fully-charged Heavy Attack / Charged Shot / Heavy Cast, with no enemy armour.
+// Uses the per-Combat-Art formulas from wiki.avakot.org/Damage/Data. Reproduces the wiki's
+// non-Grace worked examples exactly (Purity melee 274, Erstroot cast 291). Grace weapons land
+// slightly low (e.g. Juniper 182 vs wiki 188) because the wiki adds a +0.6 "innate Grace pip"
+// to such weapons; there is no published rule for which weapons qualify, so it is not modelled.
+// The charged attunement model differs from the Light-Attack one:
+//   Att = 0.5 × Pips · Virtues, capped at WB × capMult × Rarity (Rarity 1.0 Common / 1.5 else).
+//   Bow:    2.5×WB + Att + Lvl              (capMult 2.5, no armour pen)
+//   Magick: 4.5×WB + Att + Lvl              (capMult 4.5)
+//   Melee:  2×(WB + Att) + Lvl              (capMult 1.0; = LA + (WB+Att) at full charge)
+// joineryDamage is the legacy flat-damage arg (0 in P14+); joinery pips arrive via blessedPip.
 export function calculateChargedAttack(weapon, virtues, rank = 30, joineryDamage = 0, blessedPip = null, joineryPips = 1) {
-  const { totalAttack } = calculateWeaponAttunement(weapon, virtues, rank, joineryDamage, blessedPip, joineryPips);
-  return Math.round(totalAttack * 2);
+  const r0 = weapon.rank0Damage ?? weapon.baseDamage ?? 0;
+  const r30 = weapon.baseDamage ?? r0;
+  const lvl = Math.floor(rank * (r30 - r0) / 30);
+
+  const req = weapon.virtueReq || {};
+  const meetsReq = Object.entries(req).every(([virtue, val]) => (virtues[virtue] || 0) >= val);
+
+  const pips = { ...weapon.attunement };
+  if (blessedPip && (blessedPip === 'courage' || blessedPip === 'spirit' || blessedPip === 'grace')) {
+    pips[blessedPip] = (pips[blessedPip] || 0) + joineryPips;
+  }
+
+  const RARITY_MULT = { Common: 1.0, Uncommon: 1.5, Rare: 1.5 };
+  const rarityMult = RARITY_MULT[weapon.rarity] ?? 1.0;
+  const capMult = weapon.combatArt === 'Bow' ? 2.5 : weapon.combatArt === 'Magick' ? 4.5 : 1.0;
+
+  let att = meetsReq ? calculateChargedAttunement(pips, virtues) : 0;
+  att = Math.min(att, attackAttuneCap(r0, rarityMult, capMult));
+
+  let dmg;
+  if (weapon.combatArt === 'Bow') dmg = 2.5 * r0 + att + lvl;
+  else if (weapon.combatArt === 'Magick') dmg = 4.5 * r0 + att + lvl;
+  else dmg = 2 * (r0 + att) + lvl;
+
+  return Math.round(dmg + joineryDamage);
 }
 
 export function calculateTotalLife(pact, virtues) {
@@ -107,253 +144,69 @@ export function calculateCooldownReduction(spirit) {
   return Math.round((spirit - 2) * 1.5 * 100) / 100;
 }
 
-// Parse a totem's attack bonus into a structured effect object
-// Returns { type, value, condition } where type is one of:
-//   'flatDmg'       - always-on flat damage (e.g. "+35 Damage to Smited enemies")
-//   'pctDmg'        - always-on % damage (e.g. "35% Damage to a nearby enemy")
-//   'atkSpeed'      - attack speed % bonus (e.g. "+10% Attack Speed")
-//   'chargeRate'    - charge rate % bonus (e.g. "+15% Charge Rate")
-//   'condFlatDmg'   - conditional flat damage (e.g. "+14 Damage on Dodge Attacks")
-//   'condPctDmg'    - conditional % damage
-//   'smiteChance'   - additional smite chance (e.g. "Additional 5% chance of Smite")
-//   'other'         - non-damage effects (armour reduction, slow, etc.)
-// condition: null for always-on, or a string like "Dodge Attack", "Sprint Attack", etc.
-export function parseTotemAttackEffect(totem) {
-  if (!totem) return null;
-  const bonus = totem.bonuses.attack;
-  const statArr = totem.stats.attack;
-  if (!bonus || !statArr) return null;
+// === Combat multipliers (wiki.avakot.org/Gameplay, P15) ===
+// All Grace-scaling multipliers require the weapon's Virtue Requirement to be met to apply.
 
-  const val = Array.isArray(statArr[0]) ? statArr[0][3] : statArr[3];
-
-  // % Damage to a nearby enemy (Rat - always on in combat)
-  if (/\$1%?\s*[Dd]amage\s+to\s+a\s+nearby/i.test(bonus))
-    return { type: 'pctDmg', value: val, condition: null, desc: bonus.replace('$1', val) };
-
-  // +X Damage to Smited enemies (Rat - conditional on smite status)
-  if (/[Dd]amage\s+to\s+[Ss]mited/i.test(bonus))
-    return { type: 'flatDmg', value: val, condition: 'vs Smited', desc: bonus.replace('$1', val) };
-
-  // +X% Attack Speed (Squirrel)
-  if (/[Aa]ttack\s+[Ss]peed/i.test(bonus))
-    return { type: 'atkSpeed', value: val, condition: null, desc: bonus.replace('$1', val) };
-
-  // +X% Charge Rate (Squirrel Bow)
-  if (/[Cc]harge\s+[Rr]ate/i.test(bonus))
-    return { type: 'chargeRate', value: val, condition: null, desc: bonus.replace('$1', val) };
-
-  // Dodge Attack damage (Squirrel)
-  if (/[Dd]odge\s+[Aa]ttack/i.test(bonus))
-    return { type: 'condFlatDmg', value: val, condition: 'Dodge Attack', desc: bonus.replace('$1', val) };
-
-  // Sprint Attack damage (Deer)
-  if (/[Ss]print\s+[Aa]ttack/i.test(bonus))
-    return { type: 'condFlatDmg', value: val, condition: 'Sprint Attack', desc: bonus.replace('$1', val) };
-
-  // Throw Damage (Duck)
-  if (/[Tt]hrow\s+[Dd]amage/i.test(bonus))
-    return { type: 'condFlatDmg', value: val, condition: 'Throw', desc: bonus.replace('$1', val) };
-
-  // Fully Charged Aerial Shots (Duck Bow)
-  if (/[Cc]harged\s+[Aa]erial/i.test(bonus))
-    return { type: 'condFlatDmg', value: val, condition: 'Charged Aerial', desc: bonus.replace('$1', val) };
-
-  // Sprint Attack Casts (Deer Magick)
-  if (/[Ss]print\s+[Aa]ttack\s+[Cc]ast/i.test(bonus))
-    return { type: 'condFlatDmg', value: val, condition: 'Sprint Cast', desc: bonus.replace('$1', val) };
-
-  // Kick Staggers increase charge rate (Rabbit)
-  if (/[Kk]ick.*[Cc]harge\s+[Rr]ate/i.test(bonus))
-    return { type: 'chargeRate', value: val, condition: 'After Kick', desc: bonus.replace('$1', val) };
-
-  // Increase life returned on regain (Rabbit)
-  if (/[Ll]ife\s+returned.*[Rr]egain/i.test(bonus))
-    return { type: 'other', value: val, condition: 'Regain', desc: bonus.replace('$1', val) };
-
-  // Increase Primary Cast damage (Duck Magick)
-  if (/[Pp]rimary\s+[Cc]ast\s+[Dd]amage/i.test(bonus))
-    return { type: 'flatDmg', value: val, condition: null, desc: bonus.replace('$1', val) };
-
-  // Armour reduction, slow, etc. - non-damage
-  if (/[Aa]rmour|[Ss]low|[Ss]tagger/i.test(bonus))
-    return { type: 'other', value: val, condition: null, desc: bonus.replace('$1', val) };
-
-  return { type: 'other', value: val, condition: null, desc: bonus.replace('$1', val) };
+// Lethality Multiplier — applies to Front/Rear Finishers and stealth (unaware) hits.
+// A Stealth Finisher is both, so callers should apply this twice in that case.
+export function calculateLethalityMultiplier(grace = 0) {
+  return 1 + 0.02 * grace;
 }
 
-// Parse totem defense bonus into structured effect
-export function parseTotemDefenseEffect(totem) {
-  if (!totem) return null;
-  const bonus = totem.bonuses.defense;
-  const statArr = totem.stats.defense;
-  if (!bonus || !statArr) return null;
-
-  const val = Array.isArray(statArr[0]) ? statArr[0][3] : statArr[3];
-  let desc = bonus.replace('$1', val);
-  if (Array.isArray(statArr[0]) && statArr[1]) desc = desc.replace('$2', statArr[1][3]);
-
-  if (/[Pp]hysical\s+[Aa]rmour/i.test(bonus))
-    return { type: 'physArmour', value: val, desc };
-  if (/[Mm]agick\s+[Aa]rmour/i.test(bonus))
-    return { type: 'magArmour', value: val, desc };
-  if (/[Ss]tagger\s+reflected/i.test(bonus))
-    return { type: 'staggerReflect', value: val, desc };
-  if (/[Dd]efence\s+against\s+[Ss]tagger/i.test(bonus))
-    return { type: 'staggerDef', value: val, desc };
-  if (/[Pp]arry\s+[Ww]indow/i.test(bonus))
-    return { type: 'parryWindow', value: val, desc };
-  if (/[Kk]ick\s+[Ss]tagger/i.test(bonus))
-    return { type: 'kickStagger', value: val, desc };
-  if (/[Pp]erfect\s+[Dd]odge/i.test(bonus) || /[Pp]erfect\s+dodge/i.test(bonus))
-    return { type: 'dodgeWindow', value: val, desc };
-  if (/[Pp]arr(y|ies).*[Aa]rmour/i.test(bonus))
-    return { type: 'parryArmour', value: val, desc };
-  if (/[Pp]arr(y|ies).*[Ss]tagger/i.test(bonus))
-    return { type: 'parryStagger', value: val, desc };
-  if (/[Ss]tagger\s+on/i.test(bonus))
-    return { type: 'condStagger', value: val, desc };
-  if (/[Ss]tability/i.test(bonus))
-    return { type: 'stability', value: val, desc };
-  if (/[Dd]eflection/i.test(bonus))
-    return { type: 'deflection', value: val, desc };
-  if (/[Pp]arrying.*[Pp]rojectile/i.test(bonus))
-    return { type: 'projectileParry', value: val, desc };
-  if (/[Rr]eflecting.*[Pp]rojectile/i.test(bonus))
-    return { type: 'projectileReflect', value: val, desc };
-
-  return { type: 'other', value: val, desc };
+// Headshot Multiplier — projectile attacks only (ranged / thrown / Magick / Flyblade).
+export function calculateHeadshotMultiplier(grace = 0) {
+  return 1.2 + 0.03 * grace;
 }
 
-// Parse totem utility bonus into structured effect
-export function parseTotemUtilityEffect(totem) {
-  if (!totem) return null;
-  const bonus = totem.bonuses.utility;
-  const statArr = totem.stats.utility;
-  if (!bonus || !statArr) return null;
-
-  const val = Array.isArray(statArr[0]) ? statArr[0][3] : statArr[3];
-  let desc = bonus.replace('$1', val);
-  if (Array.isArray(statArr[0]) && statArr[1]) desc = desc.replace('$2', statArr[1][3]);
-
-  if (/[Ss]mite\s+[Cc]hance/i.test(bonus) || /[Cc]hance\s+of\s+[Ss]mite/i.test(bonus))
-    return { type: 'smiteChance', value: val, desc };
-  if (/[Ss]mite\s+duration/i.test(bonus))
-    return { type: 'smiteDuration', value: val, desc };
-  if (/[Hh]eal/i.test(bonus))
-    return { type: 'heal', value: val, desc };
-  if (/[Cc]ooldown/i.test(bonus))
-    return { type: 'cooldown', value: val, desc };
-  if (/[Ss]tagger/i.test(bonus))
-    return { type: 'stagger', value: val, desc };
-  if (/[Aa]rmour/i.test(bonus))
-    return { type: 'armourReduce', value: val, desc };
-
-  return { type: 'other', value: val, desc };
+// Enemy Armour is a flat subtraction from each hit, never below 1 damage dealt.
+export function applyEnemyArmour(damage, enemyArmour = 0) {
+  return Math.max(1, Math.round(damage) - enemyArmour);
 }
 
-// Calculate weapon stats with totem bonuses applied
-// Returns { base: {totalAttack, charged, smiteChance, stagger},
-//           modified: {totalAttack, charged, smiteChance, stagger},
-//           conditionals: [{condition, totalAttack, charged}] }
-// Note: attack speed no longer published — DPS is not calculated.
-// equippedTotems is an array of { totem, slot } where slot is 'Attack', 'Defense', or 'Utility'
-export function calculateWeaponWithTotems(weapon, virtues, equippedTotems, rank = 30, joineryDamage = 0, blessedPip = null, joineryPips = 1) {
-  const baseCalc = calculateWeaponAttunement(weapon, virtues, rank, joineryDamage, blessedPip, joineryPips);
-  const baseTotalAttack = baseCalc.totalAttack;
-  const baseSmite = weapon.smiteChance;
-  const baseStagger = weapon.staggerDamage;
-
-  // Collect totem effects — only parse the bonus matching the equipped slot
-  let flatDmgAlways = 0;
-  let pctDmgAlways = 0;
-  let extraSmiteChance = 0;
-  let extraPhysArmour = 0;
-  let extraMagArmour = 0;
-  const conditionals = [];
-  const defenseEffects = [];
-  const utilityEffects = [];
-
-  for (const entry of equippedTotems) {
-    if (!entry) continue;
-    const { totem, slot } = entry;
-    if (!totem) continue;
-
-    if (slot === 'Attack') {
-      const atkEffect = parseTotemAttackEffect(totem);
-      if (atkEffect) {
-        switch (atkEffect.type) {
-          case 'flatDmg':
-            if (atkEffect.condition) {
-              conditionals.push({ condition: atkEffect.condition, flatDmg: atkEffect.value, pctDmg: 0, desc: atkEffect.desc });
-            } else {
-              flatDmgAlways += atkEffect.value;
-            }
-            break;
-          case 'pctDmg':
-            pctDmgAlways += atkEffect.value;
-            break;
-          case 'condFlatDmg':
-            conditionals.push({ condition: atkEffect.condition, flatDmg: atkEffect.value, pctDmg: 0, desc: atkEffect.desc });
-            break;
-          case 'condPctDmg':
-            conditionals.push({ condition: atkEffect.condition, flatDmg: 0, pctDmg: atkEffect.value, desc: atkEffect.desc });
-            break;
-          default:
-            break;
-        }
-      }
-    } else if (slot === 'Defense') {
-      const defEffect = parseTotemDefenseEffect(totem);
-      if (defEffect) {
-        if (defEffect.type === 'physArmour') extraPhysArmour += defEffect.value;
-        else if (defEffect.type === 'magArmour') extraMagArmour += defEffect.value;
-        defenseEffects.push(defEffect);
-      }
-    } else if (slot === 'Utility') {
-      const utilEffect = parseTotemUtilityEffect(totem);
-      if (utilEffect) {
-        if (utilEffect.type === 'smiteChance') extraSmiteChance += utilEffect.value;
-        utilityEffects.push(utilEffect);
-      }
-    }
-  }
-
-  // Calculate modified base values (always-on effects)
-  const modTotalAttack = Math.floor(baseTotalAttack * (1 + pctDmgAlways / 100)) + flatDmgAlways;
-  const modSmite = baseSmite + extraSmiteChance;
-  const modCharged = Math.round(modTotalAttack * 2);
-
-  // Calculate each conditional scenario (always-on + that condition)
-  const condResults = [];
-  for (const cond of conditionals) {
-    const condAttack = Math.floor((baseTotalAttack + cond.flatDmg) * (1 + (pctDmgAlways + cond.pctDmg) / 100)) + flatDmgAlways;
-    const condCharged = Math.round(condAttack * 2);
-    condResults.push({
-      condition: cond.condition,
-      desc: cond.desc,
-      totalAttack: condAttack,
-      charged: condCharged,
-    });
-  }
-
-  return {
-    meetsRequirement: baseCalc.meetsRequirement,
-    base: {
-      totalAttack: baseTotalAttack,
-      bonus: baseCalc.bonus,
-      smiteChance: baseSmite,
-      stagger: baseStagger,
-    },
-    modified: {
-      totalAttack: modTotalAttack,
-      charged: modCharged,
-      smiteChance: modSmite,
-      stagger: baseStagger,
-    },
-    conditionals: condResults,
-    defenseEffects,
-    utilityEffects,
-    extraPhysArmour,
-    extraMagArmour,
-  };
+// Foe XP scaling: base XP × this multiplier, then floored to a whole number.
+export function calculateExperienceMultiplier(foeLevel = 0) {
+  return 1 + 0.85 * Math.sqrt(foeLevel);
 }
+
+// Cumulative XP to reach `rank` from unranked. Pact = 1000 × rank²; Weapon = half.
+export function xpToRank(rank, type = 'weapon') {
+  const pact = 1000 * rank * rank;
+  return type === 'pact' ? pact : pact / 2;
+}
+
+// === Heavy / Charged attacks & Smite (wiki.avakot.org/Damage/Data, /Stats) ===
+// Heavy-attack attunement uses a different model from Light attacks: Att = 0.5 × Pips · Virtues
+// (dot product), capped at WB × attuneCapMult × Rarity. Rarity (the weapon's star count) is
+// 1.0 for Common and 1.5 for Uncommon/Rare. attuneCapMult is 1 (melee), 2.5 (bow), 4.5 (cast).
+export function calculateChargedAttunement(pips, virtues) {
+  const dot =
+    (pips.courage || 0) * (virtues.courage || 0) +
+    (pips.spirit || 0) * (virtues.spirit || 0) +
+    (pips.grace || 0) * (virtues.grace || 0);
+  return 0.5 * dot;
+}
+
+export function attackAttuneCap(weaponBase, rarityMult = 1, attuneCapMult = 1) {
+  return weaponBase * attuneCapMult * rarityMult;
+}
+
+// Craftwork (Refinement) Damage: flat +4 per craftsmanship rank (the tier's order,
+// 0=Stock … 5=Legendary), halved for Dual Blades. We can't detect Dual Blades from a
+// weapon's combatArt ('Short Blade' covers both Daggers and Dual Blades), so callers pass
+// isDualBlades explicitly; it defaults false (full bonus).
+export function calculateCraftworkDamage(craftworkOrder = 0, isDualBlades = false) {
+  const bonus = craftworkOrder * 4;
+  return isDualBlades ? Math.floor(bonus / 2) : bonus;
+}
+
+// Smite Damage ("Critical Hit"): 4 × (WB + Lvl + Voided) + Rat Totem bonus.
+// Ignores enemy armour; halved against bosses.
+export function calculateSmiteDamage({ weaponBase = 0, levelBonus = 0, voidedBonus = 0, ratTotemBonus = 0, isBoss = false } = {}) {
+  let dmg = 4 * (weaponBase + levelBonus + voidedBonus) + ratTotemBonus;
+  if (isBoss) dmg *= 0.5;
+  return Math.round(dmg);
+}
+
+// NOTE: Totem damage/armour folding was removed in the Preludes 15 rework. P15 totems are a
+// flat, build-wide pool of conditional Rune/Pull-Smite/Smite effects (see data/totems.js),
+// not flat always-on attack/defense buffs, so they are no longer applied to weapon stat math.

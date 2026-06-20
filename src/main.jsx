@@ -15,6 +15,7 @@ import WeaponReference from './pages/WeaponReference.jsx'
 import ArmourReference from './pages/ArmourReference.jsx'
 import Checklist from './pages/Checklist.jsx'
 import BuildPlanner from './pages/BuildPlanner.jsx'
+import WeaponCompare from './pages/WeaponCompare.jsx'
 import About from './pages/About.jsx'
 import Contact from './pages/Contact.jsx'
 import PrivacyPolicy from './pages/PrivacyPolicy.jsx'
@@ -29,6 +30,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/build" element={<BuildPlanner />} />
           <Route path="/checklist" element={<Checklist />} />
           <Route path="/weapons" element={<WeaponReference />} />
+          <Route path="/compare" element={<WeaponCompare />} />
           <Route path="/armour" element={<ArmourReference />} />
           <Route path="/random" element={<LoadoutRandomizer />} />
           <Route path="/about" element={<About />} />

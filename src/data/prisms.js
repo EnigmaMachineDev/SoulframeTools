@@ -1,7 +1,7 @@
-// Virtue Lith system — replaced Virtue Prisms in a major Preludes update.
-// Players now directly allocate Virtue Points between Courage, Spirit, and Grace
-// using Virtue Liths. Total available points = envoyRank * 2 (max 60 at Rank 30).
-// Acquire Virtue Liths from defeating Agari or completing the Siege of Fort Curlail.
+// Virtue allocation. Players directly allocate Virtue Points between Courage,
+// Spirit, and Grace. Total available points = envoyRank * 2 (max 60 at Rank 30).
+// Preludes 15 removed Virtue Liths: allocation can now be freely adjusted
+// without spending any consumable (Liths were a P14.5 experiment, now gone).
 // Virtue effects:
 //   Courage: 10 Life per point, scales large melee attunement, empowers 1st Arcanic
 //   Spirit: 1 Life per point, scales Magick attunement, reduces Arcanic cooldown by 1.5% per point over 2, empowers 2nd Arcanic

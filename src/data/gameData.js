@@ -3,20 +3,37 @@ export const gameData = {
     label: "Fables (Quests)",
     icon: "BookOpen",
     categories: {
-      mainFables: {
-        label: "Main Fables",
+      envoyFables: {
+        label: "Envoy Fables",
         items: [
+          { id: "fable-warsongs", name: "Warsongs" },
           { id: "fable-rise-envoy", name: "Rise, Envoy" },
+          { id: "fable-an-invitation", name: "An Invitation..." },
+        ],
+      },
+      ancestorFables: {
+        label: "Ancestor Fables",
+        items: [
           { id: "fable-last-pensive", name: "The Last Pensive" },
           { id: "fable-steelsinger", name: "The Steelsinger" },
           { id: "fable-brewer-hues", name: "Brewer of Hues" },
           { id: "fable-witch-withdrawn", name: "A Witch Withdrawn" },
+          { id: "fable-wreck-mestra-carmo", name: "The Wreck of Mestra Carmo" },
+        ],
+      },
+      omenBeastFables: {
+        label: "Omen Beast Fables",
+        items: [
           { id: "fable-torment-stag", name: "The Torment Stag" },
           { id: "fable-shewolf-snared", name: "The Shewolf Snared" },
           { id: "fable-waste-bear", name: "The Waste Bear" },
-          { id: "fable-an-invitation", name: "An Invitation..." },
-          { id: "fable-warsongs", name: "Warsongs" },
-          { id: "fable-wreck-mestra-carmo", name: "The Wreck of Mestra Carmo" },
+        ],
+      },
+      orlicksSagas: {
+        label: "Orlick's Sagas",
+        items: [
+          { id: "fable-orlick-ch1", name: "Chapter 1" },
+          { id: "fable-orlick-ch2", name: "Chapter 2" },
         ],
       },
       miniQuests: {
@@ -63,40 +80,57 @@ export const gameData = {
         label: "Flyblades",
         items: [
           { id: "wep-precklies", name: "Precklies" },
-          { id: "wep-skilter", name: "Skilter" },
+          { id: "wep-skilter", name: "Skílter" },
           { id: "wep-thrice-spurns", name: "Thrice Spurns" },
         ],
       },
-      heavy: {
-        label: "Heavy Weapons",
+      heavyGreatswords: {
+        label: "Heavy — Greatswords",
         items: [
           { id: "wep-needleseye", name: "Needleseye" },
           { id: "wep-purity", name: "Purity" },
           { id: "wep-the-paragon", name: "The Paragon" },
-          { id: "wep-orst-iii", name: "Orst-III" },
         ],
       },
-      longBlades: {
-        label: "Long Blades",
+      heavyMaces: {
+        label: "Heavy — Maces",
+        items: [
+          { id: "wep-orst-iii", name: "Orst-III" },
+          { id: "wep-vrusht-ix", name: "Vrusht-IX" },
+        ],
+      },
+      longBladesSwords: {
+        label: "Long Blades — Swords",
         items: [
           { id: "wep-cenotaph", name: "Cenotaph" },
+          { id: "wep-ilverac", name: "Ilverac" },
           { id: "wep-dewelion", name: "Dewelion" },
-          { id: "wep-espadarte", name: "Espadarte" },
-          { id: "wep-falx", name: "Falx" },
           { id: "wep-igne-mora", name: "Igne Mora" },
-          { id: "wep-marrows-bane", name: "Marrow's Bane" },
-          { id: "wep-navalha", name: "Navalha" },
-          { id: "wep-nurash", name: "Nurash" },
           { id: "wep-sollos-i", name: "Sollos-I" },
-          { id: "wep-stultin", name: "Stultin" },
           { id: "wep-tessard", name: "Tessard" },
           { id: "wep-the-ivor", name: "The Ivor" },
           { id: "wep-vetch", name: "Vetch" },
           { id: "wep-wulder", name: "Wulder" },
         ],
       },
+      longBladesCleavers: {
+        label: "Long Blades — Cleavers",
+        items: [
+          { id: "wep-falx", name: "Falx" },
+          { id: "wep-marrows-bane", name: "Marrow's Bane" },
+          { id: "wep-nurash", name: "Nurash" },
+          { id: "wep-stultin", name: "Stultin" },
+        ],
+      },
+      longBladesRapiers: {
+        label: "Long Blades — Rapiers",
+        items: [
+          { id: "wep-espadarte", name: "Espadarte" },
+          { id: "wep-navalha", name: "Navalha" },
+        ],
+      },
       magick: {
-        label: "Magick",
+        label: "Staves",
         items: [
           { id: "wep-gwylen", name: "Gwylen" },
           { id: "wep-seathorn", name: "Seathorn" },
@@ -106,7 +140,7 @@ export const gameData = {
         ],
       },
       sidearmMagick: {
-        label: "Sidearm Magick",
+        label: "Wrist Casters",
         items: [
           { id: "wep-baskers-wrest", name: "Basker's Wrest" },
           { id: "wep-esthelle", name: "Esthelle" },
@@ -114,12 +148,18 @@ export const gameData = {
         ],
       },
       polearms: {
-        label: "Polearms",
+        label: "Polearms — Polearms",
         items: [
           { id: "wep-duhk-halic", name: "Duhk Halic" },
           { id: "wep-gathannan", name: "Gathannan" },
           { id: "wep-rook", name: "Rook" },
           { id: "wep-vasp-iv", name: "Vasp-IV" },
+        ],
+      },
+      poleaxes: {
+        label: "Polearms — Poleaxes",
+        items: [
+          { id: "wep-veilk", name: "Veilk" },
         ],
       },
       shields: {
@@ -130,11 +170,16 @@ export const gameData = {
           { id: "wep-oryn-umbr", name: "Oryn-Umbr" },
         ],
       },
-      shortBlades: {
-        label: "Short Blades",
+      shortBladesSingle: {
+        label: "Short Blades — Single",
+        items: [
+          { id: "wep-rostrum", name: "Rostrum" },
+        ],
+      },
+      shortBladesDual: {
+        label: "Short Blades — Dual",
         items: [
           { id: "wep-rivt-ii", name: "Rivt-II" },
-          { id: "wep-rostrum", name: "Rostrum" },
           { id: "wep-the-royal-tines", name: "The Royal Tines" },
           { id: "wep-unsula", name: "Unsula" },
         ],
@@ -177,8 +222,9 @@ export const gameData = {
       wyldSirin: { label: "Wyld Sirin Set", items: [{ id: "arm-wyld-sirin-finery", name: "Wyld Sirin Finery" }, { id: "arm-wyld-sirin-wevetbelt", name: "Wyld Sirin Wevetbelt" }, { id: "arm-wyld-sirin-feignmask", name: "Wyld Sirin's Feignmask" }] },
       wazzard: { label: "Wazzard Set", items: [{ id: "arm-wazzard-robes", name: "Wazzard's Robes" }, { id: "arm-wazzard-bycoket", name: "Wazzard's Bycoket" }, { id: "arm-wazzard-trunks", name: "Wazzard's Trunks" }] },
       wyldTethren: { label: "Wyld Tethren Set", items: [{ id: "arm-wyld-tethren-flamefoot", name: "Wyld Tethren Flamefoot" }, { id: "arm-wyld-tethren-solist", name: "Wyld Tethren Solist Shield" }, { id: "arm-wyld-tethren-hornhelm", name: "Wyld Tethren's Hornhelm" }] },
-      mestraUniform: { label: "Mestra's Uniform Set", items: [{ id: "arm-mestras-helm", name: "Mestra's Helm" }, { id: "arm-mestras-furbelow", name: "Mestra's Furbelow" }, { id: "arm-mestras-breeches", name: "Mestra's Breeches" }] },
+      mestraUniform: { label: "Mestra's Uniform Set", items: [{ id: "arm-duelo-ribbon", name: "Duelo Ribbon" }, { id: "arm-mestras-helm", name: "Mestra's Helm" }, { id: "arm-mestras-furbelow", name: "Mestra's Furbelow" }, { id: "arm-mestras-breeches", name: "Mestra's Breeches" }] },
       pensive: { label: "Pensive Set", items: [{ id: "arm-pensives-bonnet", name: "Pensive's Bonnet" }, { id: "arm-pensives-cloak", name: "Pensive's Cloak" }, { id: "arm-pensives-pantaloons", name: "Pensive's Pantaloons" }] },
+      underwear: { label: "Underwear Set", items: [{ id: "arm-helmless", name: "Helmless" }, { id: "arm-laid-bare", name: "Laid Bare" }, { id: "arm-forsaken-rags", name: "Forsaken Rags" }] },
     },
   },
   accessories: {
@@ -223,13 +269,13 @@ export const gameData = {
       overworld: {
         label: "Overworld Locations",
         items: [
-          { id: "loc-alcas-children", name: "Alca's Children Enclave" }, { id: "loc-astrologers-watch", name: "Astrologer's Watch" }, { id: "loc-auld-priori", name: "Auld Priori" }, { id: "loc-birdies-bog", name: "Birdie's Bog" }, { id: "loc-bracken-brae", name: "Bracken Brae" }, { id: "loc-bradan-bank", name: "Bradan Bank" }, { id: "loc-castle-kearnhold", name: "Castle Kearnhold" }, { id: "loc-college-pensives", name: "College of Pensives" }, { id: "loc-combers-leve", name: "Comber's Leve" }, { id: "loc-creedance-high", name: "Creedance High" }, { id: "loc-curlail", name: "Curlail" }, { id: "loc-eternium-gardens", name: "Eternium Gardens" }, { id: "loc-fallen-skytower", name: "Fallen Skytower" }, { id: "loc-fonnish-fort", name: "Fonnish Fort Ruins" }, { id: "loc-fort-curlail", name: "Fort Curlail" }, { id: "loc-fort-kearnhold", name: "Fort Kearnhold" }, { id: "loc-galvinar-wastes", name: "Galvinar Wastes" }, { id: "loc-garren-shrine", name: "Garren Shrine" }, { id: "loc-heedoway", name: "Heedoway" }, { id: "loc-hews", name: "Hews" }, { id: "loc-hilly-den", name: "Hilly-Den" }, { id: "loc-kairness", name: "Kairness" }, { id: "loc-kith-of-kings", name: "Kith of Kings Enclave" }, { id: "loc-luminns", name: "Luminns" }, { id: "loc-mines-borro", name: "Mines Of Borro" }, { id: "loc-mirifuir", name: "Mirifuir" }, { id: "loc-moons-watch", name: "Moon's Watch" }, { id: "loc-moray", name: "Moray" }, { id: "loc-nellynoch", name: "Nellynoch" }, { id: "loc-new-viscii", name: "New Viscii" }, { id: "loc-oo-mull", name: "Oo-Mull" }, { id: "loc-oros-well", name: "Oro's Well" }, { id: "loc-othavess", name: "Othavess" }, { id: "loc-rivernest", name: "Rivernest" }, { id: "loc-roods", name: "Roods" }, { id: "loc-salzbrim", name: "Salzbrim" }, { id: "loc-sawney-way", name: "Sawney Way" }, { id: "loc-sidae-stake", name: "Sidae's Stake" }, { id: "loc-silent-rose", name: "Silent Rose Enclave" }, { id: "loc-skelfies", name: "Skelfies" }, { id: "loc-stroaic", name: "Stroaic" }, { id: "loc-taughslane", name: "Taughslane" }, { id: "loc-turret-jotar", name: "Turret Jotar" }, { id: "loc-vertonn", name: "Vertonn" }, { id: "loc-wevetwood", name: "Wevetwood" }, { id: "loc-wyndoun", name: "Wyndoun" },
+          { id: "loc-alcas-children", name: "Alca's Children Enclave" }, { id: "loc-astrologers-watch", name: "Astrologer's Watch" }, { id: "loc-auld-priori", name: "Auld Priori" }, { id: "loc-birdies-bog", name: "Birdie's Bog" }, { id: "loc-bracken-brae", name: "Bracken Brae" }, { id: "loc-bradan-bank", name: "Bradan Bank" }, { id: "loc-castle-kearnhold", name: "Castle Kearnhold" }, { id: "loc-college-pensives", name: "College of Pensives" }, { id: "loc-combers-leve", name: "Comber's Leve" }, { id: "loc-creedance-high", name: "Creedance High" }, { id: "loc-curlail", name: "Curlail" }, { id: "loc-eternium-gardens", name: "Eternium Gardens" }, { id: "loc-fallen-skytower", name: "Fallen Skytower" }, { id: "loc-fonnish-fort", name: "Fonnish Fort Ruins" }, { id: "loc-fort-curlail", name: "Fort Curlail" }, { id: "loc-fort-kearnhold", name: "Fort Kearnhold" }, { id: "loc-galvinar-wastes", name: "Galvinar Wastes" }, { id: "loc-garren-shrine", name: "Garren Shrine" }, { id: "loc-heedoway", name: "Heedoway" }, { id: "loc-hews", name: "Hews" }, { id: "loc-hilly-den", name: "Hilly-Den" }, { id: "loc-kairness", name: "Kairness" }, { id: "loc-kith-of-kings", name: "Kith of Kings Enclave" }, { id: "loc-luminns", name: "Luminns" }, { id: "loc-mines-borro", name: "Mines Of Borro" }, { id: "loc-mirifuir", name: "Mirifuir" }, { id: "loc-moons-watch", name: "Moon's Watch" }, { id: "loc-moray", name: "Moray" }, { id: "loc-nellynoch", name: "Nellynoch" }, { id: "loc-new-viscii", name: "New Viscii" }, { id: "loc-oo-mull", name: "Oo-Mull" }, { id: "loc-oros-well", name: "Oro's Well" }, { id: "loc-othavess", name: "Othavess" }, { id: "loc-pigwen-skerry", name: "Pigwen Skerry" }, { id: "loc-rivernest", name: "Rivernest" }, { id: "loc-roods", name: "Roods" }, { id: "loc-salzbrim", name: "Salzbrin" }, { id: "loc-sawney-way", name: "Sawney Way" }, { id: "loc-sidae-stake", name: "Sidae's Stake" }, { id: "loc-silent-rose", name: "Silent Rose Enclave" }, { id: "loc-sinkland-depths", name: "Sinkland Depths" }, { id: "loc-skelfies", name: "Skelfies" }, { id: "loc-stroaic", name: "Stroaic" }, { id: "loc-taughslane", name: "Taughslane" }, { id: "loc-turret-jotar", name: "Turret Jotar" }, { id: "loc-vertonn", name: "Vertonn" }, { id: "loc-wevetwood", name: "Wevetwood" }, { id: "loc-wyndoun", name: "Wyndoun" },
         ],
       },
       dungeons: {
         label: "Dungeons",
         items: [
-          { id: "loc-crypt-circade", name: "Crypt of The Circade" }, { id: "loc-dermak-undercity", name: "Dermak Undercity" }, { id: "loc-glades-andurin", name: "Glades of Andurin" }, { id: "loc-neathuns", name: "Neath'uns" },
+          { id: "loc-crypt-circade", name: "Crypt of The Circade" }, { id: "loc-dermak-undercity", name: "Dermak Undercity" }, { id: "loc-glades-andurin", name: "Glades of Andurin" }, { id: "loc-neathuns", name: "Neath'uns" }, { id: "loc-rovgot-ruins", name: "Rovgot Ruins" },
         ],
       },
     },
@@ -241,6 +287,18 @@ export const gameData = {
       palettes: { label: "Colour Palettes", items: [{ id: "cos-aloras-royal", name: "Alora's Royal Dyes" }, { id: "cos-eponas-forests", name: "Epona's Forests" }, { id: "cos-osceldas-hope", name: "Oscelda's Hope" }, { id: "cos-rhiannons-flame", name: "Rhiannon's Flame" }, { id: "cos-sigils-roses", name: "Sigil's Roses" }, { id: "cos-sirins-shroud", name: "Sirin's Shroud" }, { id: "cos-tethrens-blaze", name: "Tethren's Blaze" }, { id: "cos-verminias-brines", name: "Verminia's Brines" }, { id: "cos-verminias-memoir", name: "Verminia's Memoir" }] },
       guideSkins: { label: "Guide Skins", items: [{ id: "cos-floppet", name: "Floppet" }, { id: "cos-grandfas-sparrow", name: "Grandfa's Sparrow" }, { id: "cos-lady-cardinal", name: "Lady Cardinal" }, { id: "cos-lord-cardinal", name: "Lord Cardinal" }, { id: "cos-midnight-grassquit", name: "Midnight Grassquit" }, { id: "cos-snow-bunting", name: "Snow Bunting" }, { id: "cos-sparragon", name: "Sparragon" }, { id: "cos-spotted-towhee", name: "Spotted Towhee" }, { id: "cos-wanderquill", name: "Wanderquill" }] },
       motifs: { label: "Motifs", items: [{ id: "cos-frost-thaw", name: "Frost and Thaw" }, { id: "cos-frostflake", name: "Frostflake" }, { id: "cos-lady-cardinal-motif", name: "Lady Cardinal" }, { id: "cos-lady-lord-cardinal", name: "Lady and Lord Cardinal" }, { id: "cos-lord-cardinal-motif", name: "Lord Cardinal" }, { id: "cos-paragon-periapt", name: "Paragon Periapt" }, { id: "cos-soulframe-motif", name: "Soulframe Motif" }, { id: "cos-thawtide-bell", name: "Thawtide Bell" }, { id: "cos-thawtide-jingles", name: "Thawtide Jingles" }, { id: "cos-waking-sun", name: "The Waking Sun" }, { id: "cos-wyldings-heart", name: "Wylding's Heart" }, { id: "cos-wyldings-hilt", name: "Wylding's Hilt" }, { id: "cos-wyldings-hush", name: "Wylding's Hush" }] },
+    },
+  },
+  totems: {
+    label: "Totems",
+    icon: "Sparkles",
+    categories: {
+      beaver: { label: "Beaver", items: [{ id: "totem-armour-coat", name: "Armour Coat" }, { id: "totem-draft-dam", name: "Draft Dam" }, { id: "totem-rivers-revive", name: "Rivers Revive" }, { id: "totem-stocky-lodge", name: "Stocky Lodge" }, { id: "totem-thunder-tail", name: "Thunder Tail" }] },
+      duck: { label: "Duck", items: [{ id: "totem-dabble-dredge", name: "Dabble Dredge" }, { id: "totem-diving-drake", name: "Diving Drake" }, { id: "totem-far-foul", name: "Far Foul" }, { id: "totem-heal-preens", name: "Heal Preens" }] },
+      fawn: { label: "Fawn", items: [{ id: "totem-cervid-ward", name: "Cervid Ward" }, { id: "totem-hollowed-herd", name: "Hollowed Herd" }, { id: "totem-moving-musk", name: "Moving Musk" }, { id: "totem-smiting-stag", name: "Smiting Stag" }, { id: "totem-turn-tusk", name: "Turn Tusk" }] },
+      rabbit: { label: "Rabbit", items: [{ id: "totem-binky-kick", name: "Binky Kick" }, { id: "totem-dewclawer", name: "Dewclawer" }, { id: "totem-hare-harms", name: "Hare Harms" }, { id: "totem-sprout-spring", name: "Sprout Spring" }] },
+      rat: { label: "Rat", items: [{ id: "totem-arcanic-gnaws", name: "Arcanic Gnaws" }, { id: "totem-bandicota-blast", name: "Bandicota Blast" }, { id: "totem-lingering-litter", name: "Lingering Litter" }, { id: "totem-noble-nestling", name: "Noble Nestling" }] },
+      squirrel: { label: "Squirrel", items: [{ id: "totem-blinding-bite", name: "Blinding Bite" }, { id: "totem-quick-drey", name: "Quick Drey" }, { id: "totem-spreading-sploot", name: "Spreading Sploot" }, { id: "totem-voltaic-scurry", name: "Voltaic Scurry" }] },
     },
   },
 };
