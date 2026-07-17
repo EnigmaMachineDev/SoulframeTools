@@ -18,16 +18,19 @@ const COLUMNS = [
   { key: 'charged', label: 'Charged', align: 'right', sortable: true },
   { key: 'smiteChance', label: 'Smite%', align: 'right', sortable: true },
   { key: 'staggerDamage', label: 'Stagger', align: 'right', sortable: true },
-  { key: 'attunement', label: 'Attunement', align: 'left', sortable: true },
+  { key: 'att_courage', label: 'Cou', align: 'right', sortable: true, virtue: 'courage', color: 'text-courage' },
+  { key: 'att_spirit', label: 'Spi', align: 'right', sortable: true, virtue: 'spirit', color: 'text-spirit' },
+  { key: 'att_grace', label: 'Gra', align: 'right', sortable: true, virtue: 'grace', color: 'text-grace' },
   { key: 'virtueReq', label: 'Req', align: 'left', sortable: false },
   { key: 'location', label: 'Location', align: 'left', sortable: false },
   { key: 'wiki', label: '', align: 'left', sortable: false },
 ];
 
-// Total attunement pips across the three virtues. A null attunement means the pips are
-// unpublished — that is "unknown", not zero, so such a weapon sorts apart (to the bottom).
-function pipTotal(att) {
-  return att ? (att.courage || 0) + (att.spirit || 0) + (att.grace || 0) : null;
+// Attunement pips for one virtue. A null attunement means the pips are unpublished — that is
+// "unknown", not zero, so such a weapon sorts apart (to the bottom) rather than among the 0-pip
+// weapons. Returns null in that case; the sort comparator sinks nulls in both directions.
+function virtuePips(att, virtue) {
+  return att ? (att[virtue] || 0) : null;
 }
 
 const RARITY_STYLES = {
@@ -70,10 +73,11 @@ export default function WeaponReference() {
 
     const RARITY_ORDER = { Common: 0, Uncommon: 1, Rare: 2 };
     list.sort((a, b) => {
-      // Weapons with unpublished pips have no rank in a pip sort, so they always sink to the
-      // bottom rather than flipping to the top when the direction reverses.
-      if (sortKey === 'attunement') {
-        const pa = pipTotal(a.attunement), pb = pipTotal(b.attunement);
+      // Per-virtue pip sort. Weapons with unpublished pips have no rank, so they always sink to
+      // the bottom rather than flipping to the top when the direction reverses.
+      if (sortKey.startsWith('att_')) {
+        const virtue = sortKey.slice(4);
+        const pa = virtuePips(a.attunement, virtue), pb = virtuePips(b.attunement, virtue);
         if (pa === null || pb === null) return (pa === null ? 1 : 0) - (pb === null ? 1 : 0);
         if (pa !== pb) return sortDir === 'asc' ? pa - pb : pb - pa;
         return a.name.localeCompare(b.name);
@@ -137,7 +141,7 @@ export default function WeaponReference() {
               {COLUMNS.map(col => (
                 <th
                   key={col.key}
-                  className={`py-2 px-2 ${col.align === 'right' ? 'text-right' : 'text-left'} ${col.key === 'name' ? 'px-3' : ''} ${col.sortable ? 'cursor-pointer hover:text-sf-text select-none' : ''} ${sortKey === col.key ? 'text-sf-bright' : ''}`}
+                  className={`py-2 px-2 ${col.align === 'right' ? 'text-right' : 'text-left'} ${col.key === 'name' ? 'px-3' : ''} ${col.sortable ? 'cursor-pointer hover:text-sf-text select-none' : ''} ${sortKey === col.key ? 'text-sf-bright' : (col.color || '')}`}
                   onClick={col.sortable ? () => handleSort(col.key) : undefined}
                 >
                   {col.label}<SortIcon col={col} />
@@ -148,10 +152,11 @@ export default function WeaponReference() {
           <tbody>
             {filtered.map(w => {
               // null attunement/virtueReq mean "unpublished", not "none" — render "—", don't crash.
+              // Each virtue is its own cell now; 0 pips shows a dim dash to keep the grid scannable.
               const att = w.attunement;
-              const attStr = att
-                ? [att.courage > 0 && `C${att.courage}`, att.spirit > 0 && `S${att.spirit}`, att.grace > 0 && `G${att.grace}`].filter(Boolean).join(' ')
-                : '—';
+              const pipCell = (virtue, color) => att && att[virtue] > 0
+                ? <span className={color}>{att[virtue]}</span>
+                : <span className="text-sf-dim">—</span>;
               const reqStr = w.virtueReq
                 ? Object.entries(w.virtueReq).map(([v, val]) => `${v.charAt(0).toUpperCase()}${val}`).join(' ') || '-'
                 : '—';
@@ -169,7 +174,9 @@ export default function WeaponReference() {
                   <td className="py-2 px-2 text-right text-amber-300">{w.charged ?? '—'}</td>
                   <td className="py-2 px-2 text-right text-sf-text">{w.smiteChance}%</td>
                   <td className="py-2 px-2 text-right text-sf-text">{w.staggerDamage ?? '—'}</td>
-                  <td className="py-2 px-2 text-sf-muted text-xs">{attStr}</td>
+                  <td className="py-2 px-2 text-right">{pipCell('courage', 'text-courage')}</td>
+                  <td className="py-2 px-2 text-right">{pipCell('spirit', 'text-spirit')}</td>
+                  <td className="py-2 px-2 text-right">{pipCell('grace', 'text-grace')}</td>
                   <td className="py-2 px-2 text-sf-muted text-xs">{reqStr}</td>
                   <td className="py-2 px-2 text-sf-muted text-xs max-w-[220px]">{w.location || '—'}</td>
                   <td className="py-2 px-1">

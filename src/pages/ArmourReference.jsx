@@ -5,14 +5,13 @@ import { ARMOUR_HELMS, ARMOUR_CUIRASSES, ARMOUR_LEGGINGS, ARMOUR_SETS } from '..
 const ALL_PIECES = [...ARMOUR_HELMS, ...ARMOUR_CUIRASSES, ...ARMOUR_LEGGINGS];
 const SET_NAMES = ARMOUR_SETS.map(s => s.name);
 
-// Grand total of a piece's attunement pips: every virtue across all three defence types.
-// Ranks pieces by how much they scale overall, regardless of which defence the pips feed.
-function totalPips(attunement) {
+// Total pips of one virtue across all three defence types. Armour attunement is nested by
+// defence type (physical/magick/stability), so a piece's Courage scaling is the sum of its
+// Courage pips wherever they appear. Lets users sort by an individual virtue.
+function virtueTotal(attunement, virtue) {
   if (!attunement) return 0;
-  return ['physical', 'magick', 'stability'].reduce((sum, group) => {
-    const g = attunement[group] || {};
-    return sum + (g.courage || 0) + (g.spirit || 0) + (g.grace || 0);
-  }, 0);
+  return ['physical', 'magick', 'stability'].reduce(
+    (sum, group) => sum + ((attunement[group] || {})[virtue] || 0), 0);
 }
 
 export default function ArmourReference() {
@@ -47,7 +46,13 @@ export default function ArmourReference() {
     if (filterSlot !== 'All') list = list.filter(p => p.slot === filterSlot);
     if (filterSet !== 'All') list = list.filter(p => p.setName === filterSet);
 
-    list = list.map(p => ({ ...p, totalArmour: p.physDef + p.magDef, totalPips: totalPips(p.attunement) }));
+    list = list.map(p => ({
+      ...p,
+      totalArmour: p.physDef + p.magDef,
+      attCourage: virtueTotal(p.attunement, 'courage'),
+      attSpirit: virtueTotal(p.attunement, 'spirit'),
+      attGrace: virtueTotal(p.attunement, 'grace'),
+    }));
 
     list.sort((a, b) => {
       let cmp = 0;
@@ -58,7 +63,9 @@ export default function ArmourReference() {
       else if (sortBy === 'mag') cmp = a.magDef - b.magDef;
       else if (sortBy === 'stab') cmp = a.stability - b.stability;
       else if (sortBy === 'total') cmp = a.totalArmour - b.totalArmour;
-      else if (sortBy === 'pips') cmp = a.totalPips - b.totalPips || a.name.localeCompare(b.name);
+      else if (sortBy === 'cou') cmp = a.attCourage - b.attCourage || a.name.localeCompare(b.name);
+      else if (sortBy === 'spi') cmp = a.attSpirit - b.attSpirit || a.name.localeCompare(b.name);
+      else if (sortBy === 'gra') cmp = a.attGrace - b.attGrace || a.name.localeCompare(b.name);
       return sortDir === 'asc' ? cmp : -cmp;
     });
     return list;
@@ -112,11 +119,14 @@ export default function ArmourReference() {
               <th className="py-2 px-2 text-left">Phys Attune</th>
               <th className="py-2 px-2 text-left">Mag Attune</th>
               <th className="py-2 px-2 text-left">Stab Attune</th>
-              <th
-                className={`py-2 px-2 text-right cursor-pointer hover:text-sf-text select-none ${sortBy === 'pips' ? 'text-sf-bright' : ''}`}
-                onClick={() => handleSort('pips')}
-                title="Total attunement pips across Phys, Mag and Stab"
-              >Total Pips<SortIcon col="pips" /></th>
+              {[['cou', 'Cou', 'text-courage'], ['spi', 'Spi', 'text-spirit'], ['gra', 'Gra', 'text-grace']].map(([key, label, color]) => (
+                <th
+                  key={key}
+                  className={`py-2 px-2 text-right cursor-pointer hover:text-sf-text select-none ${sortBy === key ? 'text-sf-bright' : color}`}
+                  onClick={() => handleSort(key)}
+                  title="Total pips of this virtue across Phys, Mag and Stab"
+                >{label}<SortIcon col={key} /></th>
+              ))}
               <th className="py-2 px-2 text-left">Req</th>
               <th className="py-2 px-2 text-left">Location</th>
               <th className="py-2 px-1"></th>
@@ -125,6 +135,8 @@ export default function ArmourReference() {
           <tbody>
             {filtered.map(p => {
               const reqStr = Object.entries(p.virtueReq || {}).map(([v, val]) => `${v.charAt(0).toUpperCase()}${val}`).join(' ') || '-';
+              // Per-virtue total pips; 0 shows a dim dash to keep the wide grid scannable.
+              const armPip = (n, color) => n > 0 ? <span className={color}>{n}</span> : <span className="text-sf-dim">—</span>;
               const wikiSlug = encodeURIComponent(p.name).replace(/%20/g, '_');
               const slotColor = p.slot === 'Helm' ? 'bg-sf-accent/20 text-sf-green' : p.slot === 'Cuirass' ? 'bg-purple-900/20 text-purple-300' : 'bg-blue-900/20 text-blue-300';
               return (
@@ -139,7 +151,9 @@ export default function ArmourReference() {
                   <td className="py-2 px-2 text-sf-muted text-xs">{fmtAttune(p.attunement?.physical)}</td>
                   <td className="py-2 px-2 text-sf-muted text-xs">{fmtAttune(p.attunement?.magick)}</td>
                   <td className="py-2 px-2 text-sf-muted text-xs">{fmtAttune(p.attunement?.stability)}</td>
-                  <td className="py-2 px-2 text-right text-sf-green font-medium">{p.totalPips}</td>
+                  <td className="py-2 px-2 text-right">{armPip(p.attCourage, 'text-courage')}</td>
+                  <td className="py-2 px-2 text-right">{armPip(p.attSpirit, 'text-spirit')}</td>
+                  <td className="py-2 px-2 text-right">{armPip(p.attGrace, 'text-grace')}</td>
                   <td className="py-2 px-2 text-sf-muted text-xs">{reqStr}</td>
                   <td className="py-2 px-2 text-sf-muted text-xs max-w-[220px]">{p.location || '—'}</td>
                   <td className="py-2 px-1">
