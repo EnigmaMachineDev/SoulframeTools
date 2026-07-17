@@ -5,6 +5,16 @@ import { ARMOUR_HELMS, ARMOUR_CUIRASSES, ARMOUR_LEGGINGS, ARMOUR_SETS } from '..
 const ALL_PIECES = [...ARMOUR_HELMS, ...ARMOUR_CUIRASSES, ...ARMOUR_LEGGINGS];
 const SET_NAMES = ARMOUR_SETS.map(s => s.name);
 
+// Grand total of a piece's attunement pips: every virtue across all three defence types.
+// Ranks pieces by how much they scale overall, regardless of which defence the pips feed.
+function totalPips(attunement) {
+  if (!attunement) return 0;
+  return ['physical', 'magick', 'stability'].reduce((sum, group) => {
+    const g = attunement[group] || {};
+    return sum + (g.courage || 0) + (g.spirit || 0) + (g.grace || 0);
+  }, 0);
+}
+
 export default function ArmourReference() {
   const [search, setSearch] = useState('');
   const [filterSlot, setFilterSlot] = useState('All');
@@ -37,7 +47,7 @@ export default function ArmourReference() {
     if (filterSlot !== 'All') list = list.filter(p => p.slot === filterSlot);
     if (filterSet !== 'All') list = list.filter(p => p.setName === filterSet);
 
-    list = list.map(p => ({ ...p, totalArmour: p.physDef + p.magDef }));
+    list = list.map(p => ({ ...p, totalArmour: p.physDef + p.magDef, totalPips: totalPips(p.attunement) }));
 
     list.sort((a, b) => {
       let cmp = 0;
@@ -48,6 +58,7 @@ export default function ArmourReference() {
       else if (sortBy === 'mag') cmp = a.magDef - b.magDef;
       else if (sortBy === 'stab') cmp = a.stability - b.stability;
       else if (sortBy === 'total') cmp = a.totalArmour - b.totalArmour;
+      else if (sortBy === 'pips') cmp = a.totalPips - b.totalPips || a.name.localeCompare(b.name);
       return sortDir === 'asc' ? cmp : -cmp;
     });
     return list;
@@ -101,6 +112,11 @@ export default function ArmourReference() {
               <th className="py-2 px-2 text-left">Phys Attune</th>
               <th className="py-2 px-2 text-left">Mag Attune</th>
               <th className="py-2 px-2 text-left">Stab Attune</th>
+              <th
+                className={`py-2 px-2 text-right cursor-pointer hover:text-sf-text select-none ${sortBy === 'pips' ? 'text-sf-bright' : ''}`}
+                onClick={() => handleSort('pips')}
+                title="Total attunement pips across Phys, Mag and Stab"
+              >Total Pips<SortIcon col="pips" /></th>
               <th className="py-2 px-2 text-left">Req</th>
               <th className="py-2 px-2 text-left">Location</th>
               <th className="py-2 px-1"></th>
@@ -123,6 +139,7 @@ export default function ArmourReference() {
                   <td className="py-2 px-2 text-sf-muted text-xs">{fmtAttune(p.attunement?.physical)}</td>
                   <td className="py-2 px-2 text-sf-muted text-xs">{fmtAttune(p.attunement?.magick)}</td>
                   <td className="py-2 px-2 text-sf-muted text-xs">{fmtAttune(p.attunement?.stability)}</td>
+                  <td className="py-2 px-2 text-right text-sf-green font-medium">{p.totalPips}</td>
                   <td className="py-2 px-2 text-sf-muted text-xs">{reqStr}</td>
                   <td className="py-2 px-2 text-sf-muted text-xs max-w-[220px]">{p.location || '—'}</td>
                   <td className="py-2 px-1">

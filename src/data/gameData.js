@@ -151,6 +151,7 @@ export const gameData = {
         label: "Polearms — Polearms",
         items: [
           { id: "wep-duhk-halic", name: "Duhk Halic" },
+          { id: "wep-farilwyd", name: "Farilwyd" },
           { id: "wep-gathannan", name: "Gathannan" },
           { id: "wep-rook", name: "Rook" },
           { id: "wep-vasp-iv", name: "Vasp-IV" },

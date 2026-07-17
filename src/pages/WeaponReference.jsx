@@ -18,11 +18,17 @@ const COLUMNS = [
   { key: 'charged', label: 'Charged', align: 'right', sortable: true },
   { key: 'smiteChance', label: 'Smite%', align: 'right', sortable: true },
   { key: 'staggerDamage', label: 'Stagger', align: 'right', sortable: true },
-  { key: 'attunement', label: 'Attunement', align: 'left', sortable: false },
+  { key: 'attunement', label: 'Attunement', align: 'left', sortable: true },
   { key: 'virtueReq', label: 'Req', align: 'left', sortable: false },
   { key: 'location', label: 'Location', align: 'left', sortable: false },
   { key: 'wiki', label: '', align: 'left', sortable: false },
 ];
+
+// Total attunement pips across the three virtues. A null attunement means the pips are
+// unpublished — that is "unknown", not zero, so such a weapon sorts apart (to the bottom).
+function pipTotal(att) {
+  return att ? (att.courage || 0) + (att.spirit || 0) + (att.grace || 0) : null;
+}
 
 const RARITY_STYLES = {
   Common: 'bg-sf-hover text-sf-muted',
@@ -64,6 +70,14 @@ export default function WeaponReference() {
 
     const RARITY_ORDER = { Common: 0, Uncommon: 1, Rare: 2 };
     list.sort((a, b) => {
+      // Weapons with unpublished pips have no rank in a pip sort, so they always sink to the
+      // bottom rather than flipping to the top when the direction reverses.
+      if (sortKey === 'attunement') {
+        const pa = pipTotal(a.attunement), pb = pipTotal(b.attunement);
+        if (pa === null || pb === null) return (pa === null ? 1 : 0) - (pb === null ? 1 : 0);
+        if (pa !== pb) return sortDir === 'asc' ? pa - pb : pb - pa;
+        return a.name.localeCompare(b.name);
+      }
       let cmp = 0;
       if (sortKey === 'name') cmp = a.name.localeCompare(b.name);
       else if (sortKey === 'slot') cmp = a.slot.localeCompare(b.slot);
@@ -133,9 +147,14 @@ export default function WeaponReference() {
           </thead>
           <tbody>
             {filtered.map(w => {
+              // null attunement/virtueReq mean "unpublished", not "none" — render "—", don't crash.
               const att = w.attunement;
-              const attStr = [att.courage > 0 && `C${att.courage}`, att.spirit > 0 && `S${att.spirit}`, att.grace > 0 && `G${att.grace}`].filter(Boolean).join(' ');
-              const reqStr = Object.entries(w.virtueReq).map(([v, val]) => `${v.charAt(0).toUpperCase()}${val}`).join(' ') || '-';
+              const attStr = att
+                ? [att.courage > 0 && `C${att.courage}`, att.spirit > 0 && `S${att.spirit}`, att.grace > 0 && `G${att.grace}`].filter(Boolean).join(' ')
+                : '—';
+              const reqStr = w.virtueReq
+                ? Object.entries(w.virtueReq).map(([v, val]) => `${v.charAt(0).toUpperCase()}${val}`).join(' ') || '-'
+                : '—';
               const wikiSlug = encodeURIComponent(w.name).replace(/%20/g, '_');
               return (
                 <tr key={w.name} className="border-b border-sf-border/30 hover:bg-sf-hover transition-colors">

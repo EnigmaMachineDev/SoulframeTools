@@ -21,7 +21,7 @@ export function calculateWeaponAttunement(weapon, virtues, rank = 30, joineryDam
   const req = weapon.virtueReq || {};
   const meetsReq = Object.entries(req).every(([virtue, val]) => (virtues[virtue] || 0) >= val);
 
-  // Some P15 weapons (Vrusht-IX, Ilverac, Veilk) have unpublished stats: rank0 and/or
+  // Some weapons (Farilwyd) have unpublished stats: rank0 and/or
   // baseDamage may be null. Fall back gracefully so the math never produces NaN —
   // a null baseDamage means "no rank scaling known", so treat r30 = r0 (flat).
   const r0 = weapon.rank0Damage ?? weapon.baseDamage ?? 0;
