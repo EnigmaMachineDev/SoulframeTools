@@ -38,16 +38,18 @@ All game data is **static JS exports** in `src/data/`. There is no database, no 
 |------|---------|-------|
 | `weapons.js` | `WEAPONS`, `COMBAT_ARTS` | Each entry has `rank0Damage`, `baseDamage` (= Rank 30), `attunement {courage, spirit, grace}`, `virtueReq`, `slot` (Primary/Sidearm), `location` |
 | `armour.js` | `ARMOUR_HELMS`, `ARMOUR_CUIRASSES`, `ARMOUR_LEGGINGS`, `ARMOUR_SETS` | Each piece has `physDef`, `magDef`, `stability`, `attunement: { physical, magick, stability }` with per-virtue pip counts |
-| `runes.js` | `RUNES` | Rune data; Preludes 14 changed activation (fully charged Heavy Attack/Shot) |
+| `runes.js` | `RUNES` | `effect` is the wiki's max-rank text; `totemSlotVirtue` is the Virtue of the 4th Totem slot the Rune unlocks. P16: Runes also charge on hit |
 | `pacts.js` | `PACTS`, `PACT_ART_VIRTUE_VALUES` | Virtue bonus costs updated in Preludes 13 |
 | `prisms.js` | `calculateVirtues` | Virtue Lith system (replaced Prisms): players directly allocate virtue points; total = envoyRank × 2 (max 60 at Rank 30) |
 | `joineries.js` | `JOINERIES`, `getJoineriesForWeapon`, `formatJoineryStats` | Preludes 14 rework: joineries now add Virtue Attunement pips (1–3), not flat damage |
 | `talismans.js` | `TALISMANS` | Neck accessories; cannot be leveled |
-| `totems.js` | `TOTEMS` | Three slots per weapon (Attack, Defense, Utility); 4th unlocked with a Rune; `stats` arrays are `[rank0, rank1, rank2, rank3]` — UI always uses index 3 |
+| `totems.js` | `TOTEMS` | P15 system: grouped by Animal, no Attack/Defense/Utility types; `effect` arrays are `[rank0 … rank3]` — UI always uses index 3. Build Planner treats them as a build-wide pool |
+| `crafting.js` | `CRAFTWORK_TIERS`, `TEMPERS`, `getPossibleTempers`, `STRIKING`, … | Craftwork, Enhance Craftwork (Chordstones), Tempers with single/double-stack values, P16 Temper Striking |
+| `weaponTempers.js` | `POSSIBLE_TEMPERS` | Per-weapon Temper eligibility copied from the wiki's `Module:Data/Weapons` — not derivable from Combat Art + Origin |
 | `gameData.js` | `gameData`, helper functions | Flat checklist registry — weapons/armour/etc. listed by id and name only, no stat data |
 | `calculations.js` | stat formula functions | See below |
 
-When adding a new weapon patch: copy an existing entry in `weapons.js` and update every field. `attuneCap` is the wiki's `VirtueAttuneCap` field — it is **not** an enforced bonus cap in the calculation logic (see the comment at the top of `calculations.js`). Also add the new weapon to `gameData.js` under the appropriate category so it appears in the Checklist.
+When adding a new weapon patch: copy an existing entry in `weapons.js` and update every field. `attuneCap` is the wiki's `VirtueAttuneCap` field — it is **not** an enforced bonus cap in the calculation logic (see the comment at the top of `calculations.js`). Also add the new weapon to `gameData.js` under the appropriate category so it appears in the Checklist. Add its `PossibleTempers` list to `weaponTempers.js` too, or the Build Planner and Weapon Compare will offer it no Tempers.
 
 ## calculations.js
 

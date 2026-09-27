@@ -1,12 +1,12 @@
 import React, { useState, useMemo } from 'react';
-import { Menu, X, BookOpen, Sword, Shield, Gem, Flame, Sparkles, Map, Palette, Diamond, RotateCcw, Download, Upload, ChevronDown, ChevronRight, CheckCircle2, Circle, ExternalLink } from 'lucide-react';
+import { Menu, X, BookOpen, Sword, Shield, Gem, Flame, Sparkles, Map, Palette, Diamond, Crown, RotateCcw, Download, Upload, ChevronDown, ChevronRight, CheckCircle2, Circle, ExternalLink } from 'lucide-react';
 import { useProgress } from '../hooks/useProgress';
 import { gameData, getSectionItemIds, getTotalItems } from '../data/gameData';
 import { ARMOUR_SETS } from '../data/armour';
 import { WEAPONS } from '../data/weapons';
 import ProgressBar from '../components/ProgressBar';
 
-const iconMap = { BookOpen, Sword, Shield, Gem, Flame, Sparkles, Map, Palette, Diamond };
+const iconMap = { BookOpen, Sword, Shield, Gem, Flame, Sparkles, Map, Palette, Diamond, Crown };
 
 // Lookup maps built once at module level
 const armourLookup = {};
@@ -202,11 +202,15 @@ function DualCheckItem({ item, isChecked, toggle }) {
 
 function SingleCheckItem({ item, isChecked, toggle }) {
   const checked = isChecked(item.id);
-  const wikiSlug = encodeURIComponent(item.name).replace(/%20/g, '_');
+  // `item.wiki` points items without their own wiki page (e.g. Epithets) at a shared one.
+  const wikiSlug = encodeURIComponent(item.wiki || item.name).replace(/%20/g, '_');
   return (
     <label className={`flex items-center gap-3 px-3 py-1.5 rounded cursor-pointer transition-colors group ${checked ? 'text-sf-muted' : 'text-sf-text hover:bg-sf-hover'}`}>
       <input type="checkbox" checked={checked} onChange={() => toggle(item.id)} />
-      <span className={`flex-1 text-sm ${checked ? 'line-through opacity-50' : ''}`}>{item.name}</span>
+      <span className={`flex-1 text-sm ${checked ? 'line-through opacity-50' : ''}`}>
+        {item.name}
+        {item.desc && <span className="block text-[11px] text-sf-muted">{item.desc}</span>}
+      </span>
       <a href={`https://wiki.avakot.org/${wikiSlug}`} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="text-sf-dim hover:text-sf-bright transition-opacity sm:opacity-0 sm:group-hover:opacity-100" title="View on Wiki"><ExternalLink size={12} /></a>
     </label>
   );

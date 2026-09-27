@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Dices, Sword, Shield, CheckSquare, Wrench } from 'lucide-react';
+import { Dices, Sword, Swords, Shield, CheckSquare, Wrench } from 'lucide-react';
 
 const tools = [
-  { path: '/build', label: 'Build Planner', desc: 'Plan your build with virtue calculations, weapon DPS, armour defense, totems, runes, and joineries.', icon: Wrench, color: 'from-amber-900/40 to-sf-card' },
-  { path: '/checklist', label: 'Checklist', desc: 'Track your journey through Midrath. Check off fables, weapons, armour, pacts, runes, and cosmetics.', icon: CheckSquare, color: 'from-green-900/40 to-sf-card' },
-  { path: '/weapons', label: 'Weapon Reference', desc: 'Browse all weapons with full stats including damage, attack speed, attunement, and virtue requirements.', icon: Sword, color: 'from-red-900/40 to-sf-card' },
+  { path: '/build', label: 'Build Planner', desc: 'Plan your build with virtue calculations, weapon damage, Craftwork and Tempers, armour defense, totems, runes, and joineries.', icon: Wrench, color: 'from-amber-900/40 to-sf-card' },
+  { path: '/checklist', label: 'Checklist', desc: 'Track your journey through Midrath. Check off fables, weapons, armour, talismans, pacts, runes, totems, locations, cosmetics, and Legendary Epithets.', icon: CheckSquare, color: 'from-green-900/40 to-sf-card' },
+  { path: '/weapons', label: 'Weapon Reference', desc: 'Browse all weapons with full stats including damage, stagger, smite chance, attunement, and virtue requirements.', icon: Sword, color: 'from-red-900/40 to-sf-card' },
+  { path: '/compare', label: 'Weapon Compare', desc: 'Put two weapons head-to-head, each with its own virtues, rank, Craftwork, and Tempers.', icon: Swords, color: 'from-orange-900/40 to-sf-card' },
   { path: '/armour', label: 'Armour Reference', desc: 'View all armour pieces with physical, magick, and stability defense values plus attunement details.', icon: Shield, color: 'from-blue-900/40 to-sf-card' },
-  { path: '/random', label: 'Loadout Randomizer', desc: 'Generate random Soulframe loadouts with filters for prisms, weapons, pacts, and armour.', icon: Dices, color: 'from-purple-900/40 to-sf-card' },
+  { path: '/random', label: 'Loadout Randomizer', desc: 'Generate random Soulframe loadouts with filters for virtue focus, pacts, weapons, armour, and runes.', icon: Dices, color: 'from-purple-900/40 to-sf-card' },
 ];
 
 export default function Home() {

@@ -13,7 +13,7 @@ import {
   calculateTotalLife, calculateTotalDefense,
   calculateCooldownReduction, calculateCraftworkDamage,
 } from '../data/calculations';
-import { CRAFTWORK_TIERS } from '../data/crafting';
+import { CRAFTWORK_TIERS, TEMPER_BY_NAME, MAX_TEMPER_STACK, STRIKING, getPossibleTempers } from '../data/crafting';
 
 function VirtueBar({ label, value, max, color, icon, bonus }) {
   const pct = max > 0 ? Math.min((value / max) * 100, 100) : 0;
@@ -59,6 +59,78 @@ function SelectField({ label, value, onChange, children }) {
   );
 }
 
+// One select per Temper slot the Craftwork allows. A Temper already on the weapon twice
+// (Double-Stacked) is disabled in the other slots. Empty slots are allowed — Striking (P16)
+// can fill them later.
+function TemperSlots({ weapon, tier, weaponRank, tempers, setTempers }) {
+  const pool = useMemo(() => getPossibleTempers(weapon), [weapon]);
+  const origins = [weapon.origin, 'Universal'];
+  const filled = tempers.filter(Boolean);
+  const counts = filled.reduce((m, n) => ({ ...m, [n]: (m[n] || 0) + 1 }), {});
+  const chosen = Object.keys(counts).map(n => TEMPER_BY_NAME[n]).filter(Boolean);
+
+  function setSlot(i, name) {
+    setTempers(prev => {
+      const next = Array.from({ length: tier.maxTempers }, (_, j) => prev[j] || '');
+      next[i] = name;
+      return next;
+    });
+  }
+
+  return (
+    <div className="mt-2">
+      <label className="block text-[10px] text-sf-muted uppercase mb-1">Tempers ({filled.length}/{tier.maxTempers})</label>
+      <div className="grid grid-cols-2 gap-1.5">
+        {Array.from({ length: tier.maxTempers }, (_, i) => {
+          const current = tempers[i] || '';
+          return (
+            <select key={i} value={current} onChange={e => setSlot(i, e.target.value)} className="w-full bg-sf-bg border border-sf-border rounded px-2 py-1.5 text-xs text-sf-text focus:outline-none focus:border-sf-accent cursor-pointer">
+              <option value="">Empty slot</option>
+              {origins.map(origin => {
+                const group = pool.filter(t => t.origin === origin);
+                if (!group.length) return null;
+                return (
+                  <optgroup key={origin} label={origin}>
+                    {group.map(t => {
+                      const full = (counts[t.name] || 0) - (current === t.name ? 1 : 0) >= MAX_TEMPER_STACK;
+                      return <option key={t.name} value={t.name} disabled={full}>{t.name}{full ? ' (stacked)' : ''}</option>;
+                    })}
+                  </optgroup>
+                );
+              })}
+            </select>
+          );
+        })}
+      </div>
+      {filled.length < tier.minTempers && (
+        <p className="mt-1 text-[10px] text-sf-muted">{tier.name} weapons carry at least {tier.minTempers} Temper{tier.minTempers === 1 ? '' : 's'}.</p>
+      )}
+      {filled.length > 0 && weaponRank < STRIKING.weaponLevel && (
+        <p className="mt-1 text-[10px] text-sf-muted">Striking needs a Level {STRIKING.weaponLevel} weapon; below that you only have the Tempers it dropped with.</p>
+      )}
+      {chosen.length > 0 && (
+        <div className="mt-2 space-y-1.5">
+          {chosen.map(t => {
+            const doubled = counts[t.name] >= 2;
+            return (
+              <div key={t.name} className="bg-sf-bg/50 rounded p-2 border border-sf-border/40">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-xs font-medium text-sf-bright">{t.name}{doubled && <span className="ml-1.5 text-[10px] text-amber-300">×2</span>}</span>
+                  <span className="text-[9px] text-sf-muted">{t.origin}</span>
+                </div>
+                <p className="text-[10px] text-sf-muted leading-snug">{t.description}</p>
+                {t.effects.map(e => (
+                  <p key={e.effect} className="text-[10px] text-amber-300/80">{e.effect}: {doubled ? e.double : e.single}{e.approx ? ' (approx.)' : ''}</p>
+                ))}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function DamageTypeIcon({ type }) {
   const icons = { Sharp: <Sword size={14} className="text-gray-300" />, Blunt: <Shield size={14} className="text-yellow-400" />, Arcanic: <Sparkles size={14} className="text-purple-400" />, Flame: <Flame size={14} className="text-orange-400" />, Voltaic: <Zap size={14} className="text-cyan-400" /> };
   return <span className="inline-flex items-center gap-1 text-xs">{icons[type] || null}<span>{type}</span></span>;
@@ -84,6 +156,9 @@ export default function BuildPlanner() {
   const [sidearmWeaponRank, setSidearmWeaponRank] = useState(30);
   const [primaryCraftwork, setPrimaryCraftwork] = useState(0); // CRAFTWORK_TIERS order (0=Stock)
   const [sidearmCraftwork, setSidearmCraftwork] = useState(0);
+  // Temper names per slot ('' = empty slot), length ≤ the Craftwork's maxTempers.
+  const [primaryTempers, setPrimaryTempers] = useState([]);
+  const [sidearmTempers, setSidearmTempers] = useState([]);
   const [primaryJoineryIdx, setPrimaryJoineryIdx] = useState(-1);
   const [primaryJoineryTier, setPrimaryJoineryTier] = useState(0);
   const [sidearmJoineryIdx, setSidearmJoineryIdx] = useState(-1);
@@ -162,7 +237,7 @@ export default function BuildPlanner() {
   const maxVirtue = Math.max(virtues.courage, virtues.spirit, virtues.grace, 1);
 
   function exportBuild() {
-    const build = { envoyRank, directCourage, directSpirit, directGrace, selectedPactIdx, selectedHelmIdx, selectedCuirassIdx, selectedLeggingsIdx, selectedPrimaryIdx, selectedSidearmIdx, selectedPrimaryRuneIdx, selectedSidearmRuneIdx, selectedTotems, selectedTalismanIdx, courageArtRank, spiritArtRank, graceArtRank, primaryWeaponRank, sidearmWeaponRank, primaryCraftwork, sidearmCraftwork, primaryJoineryIdx, primaryJoineryTier, primaryBlessedPip, sidearmJoineryIdx, sidearmJoineryTier, sidearmBlessedPip, fable1Virtue, fable2Virtue };
+    const build = { envoyRank, directCourage, directSpirit, directGrace, selectedPactIdx, selectedHelmIdx, selectedCuirassIdx, selectedLeggingsIdx, selectedPrimaryIdx, selectedSidearmIdx, selectedPrimaryRuneIdx, selectedSidearmRuneIdx, selectedTotems, selectedTalismanIdx, courageArtRank, spiritArtRank, graceArtRank, primaryWeaponRank, sidearmWeaponRank, primaryCraftwork, sidearmCraftwork, primaryTempers, sidearmTempers, primaryJoineryIdx, primaryJoineryTier, primaryBlessedPip, sidearmJoineryIdx, sidearmJoineryTier, sidearmBlessedPip, fable1Virtue, fable2Virtue };
     return btoa(JSON.stringify(build));
   }
 
@@ -185,6 +260,9 @@ export default function BuildPlanner() {
       if (build.selectedTalismanIdx != null) setSelectedTalismanIdx(build.selectedTalismanIdx);
       if (build.primaryCraftwork != null) setPrimaryCraftwork(build.primaryCraftwork);
       if (build.sidearmCraftwork != null) setSidearmCraftwork(build.sidearmCraftwork);
+      const cleanTempers = list => list.slice(0, 8).map(n => (TEMPER_BY_NAME[n] ? n : ''));
+      if (Array.isArray(build.primaryTempers)) setPrimaryTempers(cleanTempers(build.primaryTempers));
+      if (Array.isArray(build.sidearmTempers)) setSidearmTempers(cleanTempers(build.sidearmTempers));
       if (build.courageArtRank != null) setCourageArtRank(build.courageArtRank);
       if (build.spiritArtRank != null) setSpiritArtRank(build.spiritArtRank);
       if (build.graceArtRank != null) setGraceArtRank(build.graceArtRank);
@@ -231,6 +309,11 @@ export default function BuildPlanner() {
   }
   function handleImportBuild() { const code = prompt('Paste your build code:'); if (code && !importBuild(code.trim())) alert('Invalid build code.'); }
 
+  function temperSummary(tempers) {
+    const filled = tempers.filter(Boolean);
+    return filled.length ? `${filled.length} slotted` : 'None';
+  }
+
   function toggleTotem(name) {
     setSelectedTotems(prev => prev.includes(name) ? prev.filter(n => n !== name) : [...prev, name]);
   }
@@ -262,12 +345,12 @@ export default function BuildPlanner() {
     );
   }
 
-  function WeaponSection({ label, weapons, selectedIdx, setSelectedIdx, selectedRuneIdx, setSelectedRuneIdx, runes, rune, weaponRank, setWeaponRank, craftwork, setCraftwork, craftworkDmg, joineries, joineryIdx, setJoineryIdx, joineryTier, setJoineryTier, joinery, isBlessed, blessedPip, setBlessedPip, calc, charged, iconColor }) {
+  function WeaponSection({ label, weapons, selectedIdx, setSelectedIdx, selectedRuneIdx, setSelectedRuneIdx, runes, rune, weaponRank, setWeaponRank, craftwork, setCraftwork, craftworkDmg, tempers, setTempers, joineries, joineryIdx, setJoineryIdx, joineryTier, setJoineryTier, joinery, isBlessed, blessedPip, setBlessedPip, calc, charged, iconColor }) {
     const weapon = weapons[selectedIdx] || weapons[0];
     const craftworkTier = CRAFTWORK_TIERS[craftwork] || CRAFTWORK_TIERS[0];
     return (
       <SectionCard title={label} icon={<Sword size={20} className={iconColor} />}>
-        <SelectField label="Weapon" value={selectedIdx} onChange={e => { setSelectedIdx(Number(e.target.value)); setSelectedRuneIdx(-1); setJoineryIdx(-1); setJoineryTier(0); }}>
+        <SelectField label="Weapon" value={selectedIdx} onChange={e => { setSelectedIdx(Number(e.target.value)); setSelectedRuneIdx(-1); setJoineryIdx(-1); setJoineryTier(0); setTempers([]); }}>
           {weapons.map((w, i) => <option key={w.name} value={i}>{w.name} ({w.combatArt})</option>)}
         </SelectField>
         <div className="mt-3 flex items-center gap-3">
@@ -276,10 +359,11 @@ export default function BuildPlanner() {
         </div>
         <div className="mt-2">
           <label className="block text-[10px] text-sf-muted uppercase mb-1">Craftwork ({craftworkTier.minTempers}–{craftworkTier.maxTempers} Tempers)</label>
-          <select value={craftwork} onChange={e => setCraftwork(Number(e.target.value))} className="w-full bg-sf-bg border border-sf-border rounded px-2 py-1.5 text-xs text-sf-text focus:outline-none focus:border-sf-accent cursor-pointer">
+          <select value={craftwork} onChange={e => { const order = Number(e.target.value); setCraftwork(order); setTempers(prev => prev.slice(0, CRAFTWORK_TIERS[order].maxTempers)); }} className="w-full bg-sf-bg border border-sf-border rounded px-2 py-1.5 text-xs text-sf-text focus:outline-none focus:border-sf-accent cursor-pointer">
             {CRAFTWORK_TIERS.map(t => <option key={t.id} value={t.order}>{t.name}{t.dmgBonus ? ` (+${t.dmgBonus} Atk)` : ''}</option>)}
           </select>
         </div>
+        <TemperSlots weapon={weapon} tier={craftworkTier} weaponRank={weaponRank} tempers={tempers} setTempers={setTempers} />
         <div className="mt-2 grid grid-cols-2 gap-2">
           <div>
             <label className="block text-[10px] text-sf-muted uppercase mb-1">Joinery</label>
@@ -301,7 +385,7 @@ export default function BuildPlanner() {
         <div className="mt-3 pt-3 border-t border-sf-border/50">
           <h4 className="text-xs uppercase tracking-wider text-sf-muted mb-2">Rune</h4>
           <select value={selectedRuneIdx} onChange={e => setSelectedRuneIdx(Number(e.target.value))} className="w-full bg-sf-bg border border-sf-border rounded-lg px-3 py-2 text-sm text-sf-text focus:outline-none focus:border-sf-accent cursor-pointer"><option value={-1}>None</option>{runes.map((r, i) => <option key={i} value={i}>{r.name}</option>)}</select>
-          {rune && <div className="mt-2 bg-sf-bg/50 rounded p-2.5 border border-sf-accent/20"><p className="text-xs font-medium text-sf-bright">{rune.effect}</p><p className="text-[10px] text-sf-muted mt-1">{rune.description}</p></div>}
+          {rune && <div className="mt-2 bg-sf-bg/50 rounded p-2.5 border border-sf-accent/20"><p className="text-xs font-medium text-sf-bright">{rune.effect}</p><p className="text-[10px] text-sf-muted mt-1">{rune.description}</p><p className="text-[10px] text-sf-muted mt-1">Unlocks a 4th Totem slot attuned to {rune.totemSlotVirtue}.</p></div>}
         </div>
       </SectionCard>
     );
@@ -311,7 +395,7 @@ export default function BuildPlanner() {
     return (
       <SectionCard title="Totems" icon={<Sparkles size={20} className="text-sf-bright" />}>
         <p className="text-xs text-sf-muted mb-3 font-sans">
-          P15 totems are a build-wide pool of Rune / Pull&nbsp;Smite / Smite effects (max rank shown). Select any you plan to run — they trigger in combat and aren&apos;t folded into the Attack summary.
+          Totems are a pool of Rune / Pull&nbsp;Smite / Smite effects (max rank shown). Select any you plan to run — they trigger in combat and aren&apos;t folded into the Attack summary. Since P16 a Totem only works while the weapon it&apos;s slotted in is drawn.
           <span className="text-sf-bright"> {selectedTotems.length} selected.</span>
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
@@ -498,8 +582,8 @@ export default function BuildPlanner() {
 
       {/* Row 2: Weapons side by side (2-col on lg) */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <WeaponSection label="Primary" weapons={primaryWeapons} selectedIdx={selectedPrimaryIdx} setSelectedIdx={setSelectedPrimaryIdx} selectedRuneIdx={selectedPrimaryRuneIdx} setSelectedRuneIdx={setSelectedPrimaryRuneIdx} runes={primaryRunes} rune={primaryRune} weaponRank={primaryWeaponRank} setWeaponRank={setPrimaryWeaponRank} craftwork={primaryCraftwork} setCraftwork={setPrimaryCraftwork} craftworkDmg={primaryCraftworkDmg} joineries={primaryJoineries} joineryIdx={primaryJoineryIdx} setJoineryIdx={setPrimaryJoineryIdx} joineryTier={primaryJoineryTier} setJoineryTier={setPrimaryJoineryTier} joinery={primaryJoinery} isBlessed={primaryIsBlessed} blessedPip={primaryBlessedPip} setBlessedPip={setPrimaryBlessedPip} calc={primaryCalc} charged={primaryCharged} iconColor="text-sf-bright" />
-        <WeaponSection label="Sidearm" weapons={sidearmWeapons} selectedIdx={selectedSidearmIdx} setSelectedIdx={setSelectedSidearmIdx} selectedRuneIdx={selectedSidearmRuneIdx} setSelectedRuneIdx={setSelectedSidearmRuneIdx} runes={sidearmRunes} rune={sidearmRune} weaponRank={sidearmWeaponRank} setWeaponRank={setSidearmWeaponRank} craftwork={sidearmCraftwork} setCraftwork={setSidearmCraftwork} craftworkDmg={sidearmCraftworkDmg} joineries={sidearmJoineries} joineryIdx={sidearmJoineryIdx} setJoineryIdx={setSidearmJoineryIdx} joineryTier={sidearmJoineryTier} setJoineryTier={setSidearmJoineryTier} joinery={sidearmJoinery} isBlessed={sidearmIsBlessed} blessedPip={sidearmBlessedPip} setBlessedPip={setSidearmBlessedPip} calc={sidearmCalc} charged={sidearmCharged} iconColor="text-grace" />
+        <WeaponSection label="Primary" weapons={primaryWeapons} selectedIdx={selectedPrimaryIdx} setSelectedIdx={setSelectedPrimaryIdx} selectedRuneIdx={selectedPrimaryRuneIdx} setSelectedRuneIdx={setSelectedPrimaryRuneIdx} runes={primaryRunes} rune={primaryRune} weaponRank={primaryWeaponRank} setWeaponRank={setPrimaryWeaponRank} craftwork={primaryCraftwork} setCraftwork={setPrimaryCraftwork} craftworkDmg={primaryCraftworkDmg} tempers={primaryTempers} setTempers={setPrimaryTempers} joineries={primaryJoineries} joineryIdx={primaryJoineryIdx} setJoineryIdx={setPrimaryJoineryIdx} joineryTier={primaryJoineryTier} setJoineryTier={setPrimaryJoineryTier} joinery={primaryJoinery} isBlessed={primaryIsBlessed} blessedPip={primaryBlessedPip} setBlessedPip={setPrimaryBlessedPip} calc={primaryCalc} charged={primaryCharged} iconColor="text-sf-bright" />
+        <WeaponSection label="Sidearm" weapons={sidearmWeapons} selectedIdx={selectedSidearmIdx} setSelectedIdx={setSelectedSidearmIdx} selectedRuneIdx={selectedSidearmRuneIdx} setSelectedRuneIdx={setSelectedSidearmRuneIdx} runes={sidearmRunes} rune={sidearmRune} weaponRank={sidearmWeaponRank} setWeaponRank={setSidearmWeaponRank} craftwork={sidearmCraftwork} setCraftwork={setSidearmCraftwork} craftworkDmg={sidearmCraftworkDmg} tempers={sidearmTempers} setTempers={setSidearmTempers} joineries={sidearmJoineries} joineryIdx={sidearmJoineryIdx} setJoineryIdx={setSidearmJoineryIdx} joineryTier={sidearmJoineryTier} setJoineryTier={setSidearmJoineryTier} joinery={sidearmJoinery} isBlessed={sidearmIsBlessed} blessedPip={sidearmBlessedPip} setBlessedPip={setSidearmBlessedPip} calc={sidearmCalc} charged={sidearmCharged} iconColor="text-grace" />
       </div>
 
       {/* Row 2.5: Totems (full width, build-wide pool) */}
@@ -518,7 +602,7 @@ export default function BuildPlanner() {
         <div className="mt-4 pt-3 border-t border-sf-border/50">
           <h4 className="text-xs uppercase tracking-wider text-sf-muted mb-2">Build Details</h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-1.5 text-xs">
-            {[['Virtues', `${directCourage}C / ${directSpirit}S / ${directGrace}G`], ['Pact', pact.name], ['Helm', helm.name], ['Cuirass', cuirass.name], ['Leggings', leggings.name], ['Talisman', talisman ? talisman.name : 'None'], ['Primary', primary.name], ['Primary Rune', primaryRune ? primaryRune.name : '—'], ['Sidearm', sidearm.name], ['Sidearm Rune', sidearmRune ? sidearmRune.name : '—'], ['Totems', selectedTotems.length ? `${selectedTotems.length} equipped` : 'None']].map(([l, v]) => (
+            {[['Virtues', `${directCourage}C / ${directSpirit}S / ${directGrace}G`], ['Pact', pact.name], ['Helm', helm.name], ['Cuirass', cuirass.name], ['Leggings', leggings.name], ['Talisman', talisman ? talisman.name : 'None'], ['Primary', primary.name], ['Primary Rune', primaryRune ? primaryRune.name : '—'], ['Primary Tempers', temperSummary(primaryTempers)], ['Sidearm', sidearm.name], ['Sidearm Rune', sidearmRune ? sidearmRune.name : '—'], ['Sidearm Tempers', temperSummary(sidearmTempers)], ['Totems', selectedTotems.length ? `${selectedTotems.length} equipped` : 'None']].map(([l, v]) => (
               <div key={l} className="flex justify-between"><span className="text-sf-muted">{l}</span><span className="text-sf-text">{v}</span></div>
             ))}
             <div className="flex justify-between"><span className="text-sf-muted">Virtues</span><span><span className="text-courage">{virtues.courage}C</span> / <span className="text-spirit">{virtues.spirit}S</span> / <span className="text-grace">{virtues.grace}G</span></span></div>

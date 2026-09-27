@@ -1,9 +1,13 @@
 // Preludes 15 "Gods & Ghosts" — Loot & Crafting Rework.
 // Weapons drop fully built with a Craftwork tier + Tempers + Origin, and are
 // refined at Tuvalkane (Nightfold) using Chordstones (forged from Lampyrites).
+// Preludes 16 "Of Hook & Hound" renamed Refine to "Enhance Craftwork" and added
+// Temper Striking (see STRIKING).
 //
 // Authoritative data sourced from the Soulframe Wiki "Crafting" page
 // (soulframewiki / wikitide). Numbers not yet confirmed are marked TODO[P15].
+
+import { POSSIBLE_TEMPERS } from './weaponTempers.js';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // CRAFTWORK TIERS
@@ -27,12 +31,14 @@ export const CRAFTWORK_TIERS = [
 export const CRAFTWORK_DAMAGE_PER_RANK = 4;
 
 // ─────────────────────────────────────────────────────────────────────────────
-// REFINEMENT (Tuvalkane → "Refine" tab; unlocked by The Steelsinger Fable)
+// REFINEMENT (Tuvalkane → "Enhance Craftwork" tab, called "Refine" before P16;
+// unlocked by The Steelsinger Fable)
 // Raises a Weapon's Craftwork one tier and grants Tempers. Costs miscellaneous
 // Materials (varying by the Weapon's Origin) plus the matching Chordstone.
 //   - Refining grants at least 2 Tempers (if under the new tier's Temper cap).
 //   - Refining to Legendary always grants the full 8 Tempers.
-//   - Re-rolling Tempers on Legendary weapons is planned for a future update.
+//   - P16: enhancing to Legendary prompts for an Epithet (a weapon name earned by
+//     feats around Alca; renameable any time via "Name Weapon").
 export const REFINEMENT_CHAIN = [
   { from: 'stock',     to: 'military',  chordstone: 'hushed' },
   { from: 'military',  to: 'officer',   chordstone: 'whispering' },
@@ -43,11 +49,11 @@ export const REFINEMENT_CHAIN = [
 
 export const REFINEMENT_NOTES = {
   station: 'Tuvalkane',
-  tab: 'Refine',
+  tab: 'Enhance Craftwork',
   unlock: 'Complete The Steelsinger (Ancestor Fable) to unlock Tuvalkane.',
   grantsAtLeast: 2,
   legendaryGrants: 8,
-  reroll: 'Re-rolling Tempers on Legendary-Craftwork weapons is planned for a future update.',
+  reroll: 'Individual Tempers can be replaced or added by Striking (P16) — see STRIKING.',
   costNote: 'Refining costs miscellaneous Materials that vary by the weapon’s Origin, plus the matching Chordstone.',
 };
 
@@ -91,83 +97,134 @@ export const ORIGINS = [
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TEMPERS — "unique modifiers granting augmented properties," rolled randomly when
-// a weapon drops/is crafted (count by Craftwork) and added by Refinement. The pool
-// is gated by two axes: `origin` ('Universal' = any) and `weaponType`
-// ('Any' | 'Melee' | 'Bow' | 'Magick'). Up to TWO of the same Temper can roll
-// ("Double-Stacked" — 2× effect, 2 slots). Tempers have no per-rank numeric values.
-// Source: wiki.avakot.org/Tempers (Index of Tempers), Preludes 15.
-export const TEMPER_WEAPON_TYPES = ['Any', 'Melee', 'Bow', 'Magick'];
+// a weapon drops/is crafted (count by Craftwork) and, since P16, Struck on by Tuvalkane (see
+// STRIKING below). Which Tempers a weapon can hold is per weapon — see weaponTempers.js and
+// getPossibleTempers(). `origin` is the Temper's frame ('Universal' = any Origin);
+// `weaponType` is the wiki's own label for its reach, for display only.
+// Up to TWO of the same Temper can sit on a weapon ("Double-Stacked" / "amped" — 2× effect,
+// 2 slots). `effects` holds the published single- and double-stack values; effects the
+// wiki has no numbers for are omitted, and `approx` marks values it flags as approximate.
+// Source: wiki.avakot.org Module:Data/Tempers, Preludes 16 "Of Hook & Hound".
+//
+// P16 renamed six P15 Tempers (the wiki follows the in-game names): Venger → Vengeance,
+// Fleet Fling → Streamlined, Dual Cast → Duplicate, Afflicted Lurgy → Sickness, and the two
+// P15 placeholders resolved to Arcane Barrage (Heavy Cast) and Clam's Foot (Cassid parry).
+// P16 added six: Grounding Spell, Conjuration, Severed Root, Hollowed, Well Woven, Invader.
+// The data module has no numbers for those yet; Conjuration, Hollowed and Well Woven values come
+// from their own wiki pages (Conjuration and Hollowed are marked WIP there, hence approx), and
+// Grounding Spell's from the patch notes. Severed Root and Invader are still unpublished.
 export const TEMPER_ORIGINS = ['Universal', 'Cassid', 'Dendrit', 'Feykin', 'Mendicant', "Ode'n"];
 
 export const TEMPERS = [
-  // === UNIVERSAL — Any weapon ===
-  { name: 'Cowp',            origin: 'Universal', weaponType: 'Any', description: 'Grants chance for doubled Stagger damage.' },
-  { name: 'Follow Up',       origin: 'Universal', weaponType: 'Any', description: 'Increased weapon damage on consecutive attacks following a Heavy Attack.' },
-  { name: 'Fortified',       origin: 'Universal', weaponType: 'Any', description: 'Take less Stagger damage when blocking.' },
-  { name: 'From Above',      origin: 'Universal', weaponType: 'Any', description: 'Increased weapon damage from Aerial Attacks.' },
-  { name: 'Heightened Parry', origin: 'Universal', weaponType: 'Any', description: 'Increased parry window.' },
-  { name: 'Sullying Force',  origin: 'Universal', weaponType: 'Any', description: 'Increased chance of Smite.' },
-  { name: 'Swooning Blow',   origin: 'Universal', weaponType: 'Any', description: 'Increased Stagger while attacking.' },
-  { name: 'Unencumbered',    origin: 'Universal', weaponType: 'Any', description: 'Increased weapon damage while no sidearm is equipped.' },
-  { name: 'Venger',          origin: 'Universal', weaponType: 'Any', description: 'Increased Riposte Damage.' },
-  // === UNIVERSAL — Melee ===
-  { name: 'Bounding Swipe',  origin: 'Universal', weaponType: 'Melee', description: 'Increased Damage and Stagger while Sprinting.' },
-  { name: 'Breakneck',       origin: 'Universal', weaponType: 'Melee', description: 'Heavy Attacks charge more quickly.' },
-  { name: 'Fleet Fling',     origin: 'Universal', weaponType: 'Melee', description: 'Increased Throw Speed.' },
-  { name: 'Full Force',      origin: 'Universal', weaponType: 'Melee', description: 'Increased Damage and Stagger during Heavy Attacks.' },
-  { name: 'Hale and Hearty', origin: 'Universal', weaponType: 'Melee', description: 'Increased weapon damage at full Life.' },
-  { name: 'Rejoinder',       origin: 'Universal', weaponType: 'Melee', description: 'Increased Damage and Stagger during dodge attacks.' },
-  { name: 'Swift Strike',    origin: 'Universal', weaponType: 'Melee', description: 'Increased weapon attack speed.' },
-  // === UNIVERSAL — Bow ===
-  { name: 'Quick Draw',      origin: 'Universal', weaponType: 'Bow', description: 'Bows charge more quickly.' },
-  { name: 'Rupture',         origin: 'Universal', weaponType: 'Bow', description: 'Increased Shatter and Stagger damage.' },
-  // === UNIVERSAL — Magick ===
-  { name: 'Arcane Alacrity', origin: 'Universal', weaponType: 'Magick', description: 'Magick Heavy Attacks charge more quickly.' },
-  { name: 'Arcane Rebound',  origin: 'Universal', weaponType: 'Magick', description: 'Deflected Magick projectiles deal increased damage.' },
-  { name: 'Heavy Cast Force', origin: 'Universal', weaponType: 'Magick', description: 'Increased Damage and Stagger during Heavy Cast Attacks.', pendingName: true /* wiki shows placeholder name */ },
-
-  // === CASSID — Melee ===
-  { name: 'Afflicted Lurgy', origin: 'Cassid', weaponType: 'Melee', description: 'Chance to apply poison on hit.' },
-  { name: 'First Strike',    origin: 'Cassid', weaponType: 'Melee', description: 'Increased weapon damage against foes with full Life.' },
-  { name: 'Cassid Riposte',  origin: 'Cassid', weaponType: 'Melee', description: 'Increased Stagger damage on parry.', pendingName: true /* wiki shows placeholder name */ },
-
-  // === DENDRIT — Any ===
-  { name: 'Enkindled',       origin: 'Dendrit', weaponType: 'Any', description: 'Chance to add fire damage on hit.' },
-  { name: 'Renewed Slayer',  origin: 'Dendrit', weaponType: 'Any', description: 'Restore Life upon slaying a foe.' },
-  // === DENDRIT — Melee ===
-  { name: "Hunter's Relish", origin: 'Dendrit', weaponType: 'Melee', description: 'Increased Life recovery when attacking during regain.' },
-
-  // === FEYKIN — Any ===
-  { name: 'Aftershock',      origin: 'Feykin', weaponType: 'Any', description: 'Chance to add Arcanic damage on hit.' },
-  { name: 'Sympathy Pang',   origin: 'Feykin', weaponType: 'Any', description: 'Damage inflicted from attacks will spread to another.' },
-  // === FEYKIN — Magick ===
-  { name: 'Dual Cast',       origin: 'Feykin', weaponType: 'Magick', description: 'Chance for a second projectile to be cast.' },
-
-  // === MENDICANT — Any ===
-  { name: 'Savagery',        origin: 'Mendicant', weaponType: 'Any', description: 'Chance to add Bleed damage on hit.' },
-  { name: 'Unnerving Blow',  origin: 'Mendicant', weaponType: 'Any', description: 'Chance to inflict fear on foes when hit.' },
-  // === MENDICANT — Melee ===
-  { name: 'Sinister Volley', origin: 'Mendicant', weaponType: 'Melee', description: 'Chance to inflict fear to foes when thrown weapon hits.' },
-
-  // === ODE'N — Any ===
-  { name: 'Bypass',          origin: "Ode'n", weaponType: 'Any', description: 'Enemy defense reduced on first hit.' },
-  { name: 'Galvanic Strike', origin: "Ode'n", weaponType: 'Any', description: 'Adds Voltaic damage to weapon, staggering enemies in area of effect when it discharges.' },
-  { name: "Slinger's Tempo", origin: "Ode'n", weaponType: 'Any', description: 'Chance for Stagger to become Knockdown.' },
+  // === UNIVERSAL ===
+  { name: 'Arcane Alacrity', origin: 'Universal', weaponType: 'Magick', description: 'Increases charging speed of Magick Heavy Attacks.', effects: [{ effect: 'Heavy Attack Charge Rate', single: '10%', double: '20%' }] },
+  { name: 'Arcane Barrage', origin: 'Universal', weaponType: 'Magick', description: 'Increases Damage and Stagger during Heavy Attacks.', effects: [{ effect: 'Heavy Cast Damage', single: '10 Damage', double: '20 Damage' }] },
+  { name: 'Arcane Rebound', origin: 'Universal', weaponType: 'Magick', description: 'Increases damage inflicted through deflected Magick projectiles.', effects: [{ effect: 'Deflected Projectile Damage', single: '~20%', double: '~40%', approx: true }] },
+  { name: 'Bounding Swipe', origin: 'Universal', weaponType: 'Non-Bow', description: 'Increases Damage and Stagger while Sprinting.', effects: [{ effect: 'Sprint Attack Damage', single: '12 Damage', double: '24 Damage' }] },
+  { name: 'Breakneck', origin: 'Universal', weaponType: 'Melee / Flyblade', description: 'Reduces charging time for Heavy Attacks.', effects: [{ effect: 'Heavy Attack Charge Rate', single: '15%', double: '30%' }] },
+  { name: 'Conjuration', origin: 'Universal', weaponType: 'Magick', description: 'Increases Heavy Cast Damage at full Grounded stacks.', effects: [{ effect: 'Heavy Cast Damage when fully Grounded', single: '+30 Damage', double: '+60 Damage', approx: true }] },
+  { name: 'Cowp', origin: 'Universal', weaponType: 'Any', description: 'Grants chance for doubled Stagger.', effects: [{ effect: 'Double Stagger Chance', single: '10%', double: '20%' }] },
+  { name: 'Follow Up', origin: 'Universal', weaponType: 'Melee / Magick', description: 'Increases Weapon Damage on consecutive attacks following a Heavy Attack.', effects: [{ effect: 'Post Heavy Consecutive Light Damage', single: '7 Damage per Hit, 28 Maximum', double: '14 Damage per Hit, 56 Maximum' }] },
+  { name: 'Fortified', origin: 'Universal', weaponType: 'Any', description: 'Reduces Stagger when Blocking.', effects: [] },
+  { name: 'From Above', origin: 'Universal', weaponType: 'Any', description: 'Increases Weapon Damage during Aerial Attacks.', effects: [{ effect: 'Aerial Attack Damage', single: '10 Damage', double: '20 Damage' }] },
+  { name: 'Full Force', origin: 'Universal', weaponType: 'Heavy Melee', description: 'Increases Damage and Stagger during Heavy Attacks.', effects: [{ effect: 'Heavy Attack Damage', single: '15 Damage', double: '30 Damage' }] },
+  { name: 'Grounding Spell', origin: 'Universal', weaponType: 'Magick', description: 'Remain Grounded while Dodging.', effects: [{ effect: 'Grounded Dodges', single: '1', double: '2' }] },
+  { name: 'Hale and Hearty', origin: 'Universal', weaponType: 'Light Melee / Flyblade', description: 'Increases Weapon Damage at full Life.', effects: [{ effect: 'Full Envoy Life Damage', single: '12 Damage', double: '24 Damage' }] },
+  { name: 'Heightened Parry', origin: 'Universal', weaponType: 'Light Melee / Bow / Flyblade', description: 'Increases Parry window.', effects: [] },
+  { name: 'Quick Draw', origin: 'Universal', weaponType: 'Bow', description: 'Increases charging speed of Bow Charged Shots.', effects: [{ effect: 'Bow Charge Rate', single: '~12.5%', double: '~25%', approx: true }] },
+  { name: 'Rejoinder', origin: 'Universal', weaponType: 'Non-Bow', description: 'Increases Damage and Stagger during Dodge Attacks.', effects: [{ effect: 'Dodge Attack Base Damage', single: '10 Base Damage', double: '20 Base Damage' }] },
+  { name: 'Rupture', origin: 'Universal', weaponType: 'Bow', description: 'Increases Stagger and Shatter Damage.', effects: [{ effect: 'Splintered Embedded Arrow Damage', single: '8 Damage', double: '16 Damage' }, { effect: 'Bow Stagger Damage', single: 'Unknown', double: 'Unknown', approx: true }] },
+  { name: 'Severed Root', origin: 'Universal', weaponType: 'Bow', description: 'Increases Stagger during leg shots.', effects: [] },
+  { name: 'Streamlined', origin: 'Universal', weaponType: 'Melee', description: 'Increases Throw Speed.', effects: [{ effect: 'Throw Speed', single: '20%', double: '40%' }] },
+  { name: 'Sullying Force', origin: 'Universal', weaponType: 'Any', description: 'Increases chance of Smite.', effects: [{ effect: 'Smite Proc Chance', single: '3%', double: '6%' }] },
+  { name: 'Swift Strike', origin: 'Universal', weaponType: 'Melee / Flyblade', description: 'Increases Weapon attack speed.', effects: [{ effect: 'Weapon Attack Speed', single: '15%', double: '30%' }] },
+  { name: 'Swooning Blow', origin: 'Universal', weaponType: 'Any', description: 'Increases Stagger while attacking.', effects: [{ effect: 'Hit Stagger Damage', single: '12 Stagger Damage', double: '24 Stagger Damage' }] },
+  { name: 'Unencumbered', origin: 'Universal', weaponType: 'Light Primaries', description: 'Increases Weapon Damage while no sidearm is wielded.', effects: [{ effect: 'No Sidearm Weapon Damage', single: '14 Damage', double: '28 Damage' }] },
+  { name: 'Vengeance', origin: 'Universal', weaponType: 'Non-Magick', description: 'Increases Riposte Damage.', effects: [{ effect: 'Riposte Base Damage', single: '15 Base Damage', double: '30 Base Damage' }] },
+  // === CASSID ===
+  { name: "Clam's Foot", origin: 'Cassid', weaponType: 'Light Melee', description: 'Increases Stagger on Parry.', effects: [] },
+  { name: 'First Strike', origin: 'Cassid', weaponType: 'Light Melee', description: 'Increased weapon damage against foes with full Life.', effects: [{ effect: 'Full Life Target Damage', single: '20 Damage', double: '40 Damage' }] },
+  { name: 'Invader', origin: 'Cassid', weaponType: 'Light Melee', description: 'Increases Damage on foes below 30% Life.', effects: [] },
+  { name: 'Sickness', origin: 'Cassid', weaponType: 'Light Melee', description: 'Grants chance to inflict Poison on hit.', effects: [{ effect: 'Poison Proc Chance', single: '10%', double: '20%' }] },
+  // === DENDRIT ===
+  { name: 'Enkindled', origin: 'Dendrit', weaponType: 'Any', description: 'Grants chance to inflict Flame Damage on hit.', effects: [{ effect: 'Ablaze Proc Chance', single: '10%', double: '20%', approx: true }, { effect: 'Ablaze Damage Over Time', single: '35% Hit Damage per Second', double: '35% Hit Damage per Second' }, { effect: 'Ablaze Enemy Armour Reduction', single: 'Up to 50%', double: 'Up to 50%', approx: true }] },
+  { name: "Hunter's Relish", origin: 'Dendrit', weaponType: 'Melee', description: 'Increases Life recovery when attacking during Regain.', effects: [{ effect: 'Regain Hit Life Recovery', single: '10%', double: '20%' }] },
+  { name: 'Renewed Slayer', origin: 'Dendrit', weaponType: 'Any', description: 'Restores Life on slaying a foe.', effects: [{ effect: 'Kill Life Regeneration', single: '5 Life per Second for 4 Seconds', double: '10 Life per Second for 4 Seconds' }] },
+  { name: 'Well Woven', origin: 'Dendrit', weaponType: 'Melee', description: 'Increases the duration of time before Regain potential starts to decay.', effects: [{ effect: 'Regain hold before decay (base 5 s; none during The Cogah)', single: '10 s', double: '15 s' }] },
+  // === FEYKIN ===
+  { name: 'Aftershock', origin: 'Feykin', weaponType: 'Any', description: 'Grants chance to inflict Arcanic Damage on hit.', effects: [{ effect: 'Arcanic Proc Chance', single: '10%', double: '20%' }, { effect: 'Arcanic Damage Over Time', single: '100% Hit Damage', double: '100% Hit Damage' }] },
+  { name: 'Duplicate', origin: 'Feykin', weaponType: 'Magick', description: 'Grants chance for a second projectile to be cast.', effects: [{ effect: 'Duplicate Projectile Chance', single: '9%', double: '18%' }] },
+  { name: 'Sympathy Pang', origin: 'Feykin', weaponType: 'Any', description: 'Damage inflicted from attacks will spread to another.', effects: [{ effect: 'Nearby Foe Damage Spread', single: '10%', double: '20%' }] },
+  // === MENDICANT ===
+  { name: 'Hollowed', origin: 'Mendicant', weaponType: 'Any', description: 'Reduces Damage taken from foes.', effects: [{ effect: 'Chance on hit to cut Damage taken by 20% for 8 s', single: '10%', double: '20%', approx: true }] },
+  { name: 'Savagery', origin: 'Mendicant', weaponType: 'Any', description: 'Grants chance to inflict Bleed Damage on hit.', effects: [{ effect: 'Bleed Proc Chance', single: '10%', double: '20%' }, { effect: 'Bleed Damage Over Time', single: '20% Attack Damage per Tick', double: '20% Attack Damage per Tick' }] },
+  { name: 'Sinister Volley', origin: 'Mendicant', weaponType: 'Melee', description: 'Grants chance to inflict Fear on foes when a thrown weapon hits.', effects: [] },
+  { name: 'Unnerving Blow', origin: 'Mendicant', weaponType: 'Magick', description: 'Grants chance to inflict Fear on foes when hit.', effects: [] },
+  // === ODE'N ===
+  { name: 'Bypass', origin: "Ode'n", weaponType: 'Any', description: 'Reduces foe Defence on first hit.', effects: [{ effect: 'Enemy Armour Reduction', single: '10 Armour on First Hit', double: '10 Armour on First Two Hits', approx: true }] },
+  { name: 'Galvanic Strike', origin: "Ode'n", weaponType: 'Any', description: 'Applies Voltaic Damage to weapon and Staggers enemies in area of effect when it discharges.', effects: [{ effect: 'Voltaic Proc Chance', single: '10%', double: '20%' }] },
+  { name: "Slinger's Tempo", origin: "Ode'n", weaponType: 'Any', description: 'Grants chance for Stagger to become Knockdown.', effects: [{ effect: 'Stagger To Knockdown Chance', single: '10%', double: '20%' }] },
 ];
 
-// "Double-Stacked": up to 2 copies of the same Temper may roll on one weapon,
-// doubling its effect and consuming two Temper slots (flashing frame + icon).
+export const TEMPER_BY_NAME = Object.fromEntries(TEMPERS.map(t => [t.name, t]));
+
+// The Tempers a weapon can roll or be Struck with, Origin-specific ones first.
+export function getPossibleTempers(weapon) {
+  const names = POSSIBLE_TEMPERS[weapon.name] || [];
+  return names
+    .map(n => TEMPER_BY_NAME[n])
+    .filter(Boolean)
+    .sort((a, b) => (a.origin === 'Universal') - (b.origin === 'Universal') || a.name.localeCompare(b.name));
+}
+
+// Max copies of one Temper on a weapon (Double-Stacked).
+export const MAX_TEMPER_STACK = 2;
+
 export const TEMPER_NOTES = {
-  doubleStack: 'Up to two of the same Temper can roll on a weapon ("Double-Stacked"): twice the effect, two slots.',
+  doubleStack: 'Up to two of the same Temper can sit on a weapon ("Double-Stacked"): twice the effect, two slots.',
   noFlyblade: 'There are no Flyblade-specific Tempers (the only Combat Art without weapon-specific Tempers).',
 };
 
 // ─────────────────────────────────────────────────────────────────────────────
+// STRIKING (P16) — Tuvalkane's "Strike" tab. Replace a Temper, fill an empty slot, or amp
+// an existing Temper to its double by Striking it over another slot. Permanent, never fails.
+// A Temper must first be LEARNED by dismantling weapons that carry it.
+// Source: Preludes 16 patch notes (wiki.avakot.org/Preludes_16).
+export const STRIKING = {
+  station: 'Tuvalkane',
+  tab: 'Strike',
+  weaponLevel: 30,
+  tuvalkaneRank: 3,
+  learnPoints: 10,
+  cost: [
+    { name: 'Glow Lampyrite', qty: 1 },
+    { name: 'Amber Lampyrite', qty: 1 },
+    { name: 'Faer Lampyrite', qty: 1 },
+  ],
+  lampyriteStackMax: 99,
+  rules: [
+    'The Steelsinger must be finished — Tempers dismantled before then are not learned retroactively.',
+    'Each Temper takes 10 points to learn. Every dismantle (from the Inventory or the ground) gives 1 point towards each Temper on the weapon; a Double-Stacked Temper gives 2.',
+    'Weapons must be Level 30 and Tuvalkane Rank 3.',
+    'Tempers can only be Struck onto weapons they suit: Bow Tempers onto Bows, Origin Tempers onto weapons of that Origin.',
+    'Striking a Temper the weapon already has amps it to Double-Stacked.',
+    'Empty slots can be filled, up to the Craftwork\'s maximum. Any Temper works at full strength on any Craftwork.',
+    'Each Strike costs 1 Glow, 1 Amber and 1 Faer Lampyrite, and cannot fail.',
+  ],
+};
+
+// P16 loot changes that affect which Craftwork you find weapons at.
+export const CRAFTWORK_DROP_NOTES = [
+  'Weapons from Rare Chests drop at Military Craftwork or better.',
+  'Weapons offered by Enclaves are Officer Craftwork (lowered from Sovereign in P16 Hotfix 3).',
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
 // CRAFTING RANK (Bond with Tuvalkane) — gates which recipes/refinements unlock.
-//   Rank 1: base crafting. Rank 2: unlocks Reforging (Joineries). Rank 4: current
-//   cap. XP from first-time crafts and the first time a weapon type reaches each
+//   Rank 1: base crafting. Rank 2: unlocks Reforging (Joineries). Rank 3: unlocks
+//   Temper Striking (P16). Rank 4: current cap. XP from first-time crafts and the first time a weapon type reaches each
 //   new Craftwork tier (none once that type hits its max tier or the cap is hit).
-export const CRAFTING_RANK = { max: 4, reforgeUnlocksAt: 2 };
+export const CRAFTING_RANK = { max: 4, reforgeUnlocksAt: 2, strikeUnlocksAt: 3 };
 
 // ─────────────────────────────────────────────────────────────────────────────
 // HARMONY — currency used to upgrade Totems and Runes (rarity + effectiveness),

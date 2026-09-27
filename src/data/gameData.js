@@ -97,6 +97,7 @@ export const gameData = {
         items: [
           { id: "wep-orst-iii", name: "Orst-III" },
           { id: "wep-vrusht-ix", name: "Vrusht-IX" },
+          { id: "wep-wreath", name: "Wreath" },
         ],
       },
       longBladesSwords: {
@@ -133,6 +134,7 @@ export const gameData = {
         label: "Staves",
         items: [
           { id: "wep-gwylen", name: "Gwylen" },
+          { id: "wep-gystalt", name: "Gystalt" },
           { id: "wep-seathorn", name: "Seathorn" },
           { id: "wep-silistavf", name: "Silistavf" },
           { id: "wep-the-alder", name: "The Alder" },
@@ -190,6 +192,7 @@ export const gameData = {
         items: [
           { id: "wep-clivers", name: "Clivers" },
           { id: "wep-cobladh", name: "Cobladh" },
+          { id: "wep-grimana", name: "Grimana" },
           { id: "wep-grinn", name: "Grinn" },
           { id: "wep-nettle", name: "Nettle" },
           { id: "wep-virdigris", name: "Virdigris" },
@@ -215,6 +218,7 @@ export const gameData = {
       oscelda: { label: "Oscelda Set", items: [{ id: "arm-oscelda-blues", name: "Oscelda's Blues" }, { id: "arm-oscelda-diadem", name: "Oscelda's Diadem" }, { id: "arm-oscelda-featherbinds", name: "Oscelda's Featherbinds" }] },
       regent: { label: "Regent Set", items: [{ id: "arm-regent-drapery", name: "Regent's Drapery" }, { id: "arm-regent-shell", name: "Regent's Shell" }, { id: "arm-regent-veil", name: "Regent's Veil" }] },
       sirin: { label: "Sirin Set", items: [{ id: "arm-sirin-plainhide", name: "Sirin's Plainhide" }, { id: "arm-sirin-shroud", name: "Sirin's Shroud" }, { id: "arm-sirin-stalks", name: "Sirin's Stalks" }] },
+      sleeve: { label: "The Sleeve Set", items: [{ id: "arm-sleeve-coronal", name: "Coronal of The Sleeve" }, { id: "arm-sleeve-gilet", name: "Gilet of The Sleeve" }, { id: "arm-sleeve-buskins", name: "Buskins of The Sleeve" }] },
       steelsinger: { label: "Steelsinger Set", items: [{ id: "arm-steelsinger-circlet", name: "Steelsinger's Circlet" }, { id: "arm-steelsinger-shreds", name: "Steelsinger's Shreds" }, { id: "arm-steelsinger-stithywicks", name: "Steelsinger's Stithywicks" }] },
       tempest: { label: "Tempest Set", items: [{ id: "arm-tempest-braes", name: "Tempest Braes" }, { id: "arm-tempest-leathers", name: "Tempest Leathers" }, { id: "arm-tempest-visard", name: "Tempest Visard" }] },
       tethren: { label: "Tethren Set", items: [{ id: "arm-tethren-cap", name: "Tethren's Cap" }, { id: "arm-tethren-roots", name: "Tethren's Roots" }, { id: "arm-tethren-tunic", name: "Tethren's Tunic" }] },
@@ -235,7 +239,7 @@ export const gameData = {
       talismans: {
         label: "Talismans",
         items: [
-          { id: "acc-bloomin-bodkin", name: "Bloomin' Bodkin" }, { id: "acc-cardinal-charm", name: "Cardinal Charm" }, { id: "acc-dawn-pendant", name: "Dawn Pendant" }, { id: "acc-direskull", name: "Direskull" }, { id: "acc-dusk-pendant", name: "Dusk Pendant" }, { id: "acc-medallion-mora", name: "Medallion of Mora" }, { id: "acc-midnight-pendant", name: "Midnight Pendant" }, { id: "acc-molten-mora", name: "Molten Mora" }, { id: "acc-orengalls-fang", name: "Orengall's Fang" }, { id: "acc-paragon-periapt", name: "Paragon Periapt" }, { id: "acc-prelude-honour", name: "Prelude Honour" }, { id: "acc-roses-bodkin", name: "Rose's Bodkin" }, { id: "acc-sproutfolk-seed", name: "Sproutfolk Seed" }, { id: "acc-sproutfolk-shoot", name: "Sproutfolk Shoot" }, { id: "acc-synods-bell-jar", name: "Synod's Bell Jar" }, { id: "acc-cogah-creutair", name: "The Cogah Creutair" }, { id: "acc-cogah-grod", name: "The Cogah Grod" }, { id: "acc-cogah-lorcaan", name: "The Cogah Lorcaan" }, { id: "acc-triune-talisman", name: "Triune Talisman" }, { id: "acc-wazzards-wish", name: "Wazzard's Wish" }, { id: "acc-wyldings-heart", name: "Wylding's Heart" }, { id: "acc-wyldings-hilt", name: "Wylding's Hilt" }, { id: "acc-wyldings-hush", name: "Wylding's Hush" },
+          { id: "acc-bloomin-bodkin", name: "Bloomin' Bodkin" }, { id: "acc-cardinal-charm", name: "Cardinal Charm" }, { id: "acc-dawn-pendant", name: "Dawn Pendant" }, { id: "acc-direskull", name: "Direskull" }, { id: "acc-dusk-pendant", name: "Dusk Pendant" }, { id: "acc-medallion-mora", name: "Medallion of Mora" }, { id: "acc-midnight-pendant", name: "Midnight Pendant" }, { id: "acc-molten-mora", name: "Molten Mora" }, { id: "acc-orengalls-fang", name: "Orengall's Fang" }, { id: "acc-paragon-periapt", name: "Paragon Periapt" }, { id: "acc-packbloods-tribute", name: "Packblood's Tribute" }, { id: "acc-prelude-honour", name: "Prelude Honour" }, { id: "acc-roses-bodkin", name: "Rose's Bodkin" }, { id: "acc-sproutfolk-seed", name: "Sproutfolk Seed" }, { id: "acc-sproutfolk-shoot", name: "Sproutfolk Shoot" }, { id: "acc-synods-bell-jar", name: "Synod's Bell Jar" }, { id: "acc-cogah-creutair", name: "The Cogah Creutair" }, { id: "acc-cogah-grod", name: "The Cogah Grod" }, { id: "acc-cogah-lorcaan", name: "The Cogah Lorcaan" }, { id: "acc-triune-talisman", name: "Triune Talisman" }, { id: "acc-wazzards-wish", name: "Wazzard's Wish" }, { id: "acc-wyldings-heart", name: "Wylding's Heart" }, { id: "acc-wyldings-hilt", name: "Wylding's Hilt" }, { id: "acc-wyldings-hush", name: "Wylding's Hush" },
         ],
       },
     },
@@ -255,7 +259,8 @@ export const gameData = {
     categories: {
       bowRunes: { label: "Bow Runes", items: [{ id: "rune-alcas-breath", name: "Alca's Breath" }, { id: "rune-the-torrent", name: "The Torrent" }] },
       flybladeRunes: { label: "Flyblade Runes", items: [{ id: "rune-hurlwind", name: "Hurlwind" }, { id: "rune-picktrix", name: "Picktrix" }] },
-      heavyRunes: { label: "Heavy Runes", items: [{ id: "rune-everflame-gs", name: "Everflame (Heavy)" }, { id: "rune-treefell", name: "Treefell" }] },
+      // Cindermore keeps its old "rune-everflame-gs" id (it was mislabelled Everflame) so saved progress survives.
+      heavyRunes: { label: "Heavy Runes", items: [{ id: "rune-everflame-gs", name: "Cindermore" }, { id: "rune-treefell", name: "Treefell" }] },
       longBladeRunes: { label: "Long Blade Runes", items: [{ id: "rune-everflame-lb", name: "Everflame (Long Blade)" }, { id: "rune-the-mistgale", name: "The Mistgale" }] },
       magickRunes: { label: "Magick Runes", items: [{ id: "rune-archstorm", name: "Archstorm" }, { id: "rune-the-hollowing", name: "The Hollowing" }] },
       polearmRunes: { label: "Polearm Runes", items: [{ id: "rune-splitbolt", name: "Splitbolt" }, { id: "rune-torcheternal", name: "Torcheternal" }] },
@@ -300,6 +305,102 @@ export const gameData = {
       rabbit: { label: "Rabbit", items: [{ id: "totem-binky-kick", name: "Binky Kick" }, { id: "totem-dewclawer", name: "Dewclawer" }, { id: "totem-hare-harms", name: "Hare Harms" }, { id: "totem-sprout-spring", name: "Sprout Spring" }] },
       rat: { label: "Rat", items: [{ id: "totem-arcanic-gnaws", name: "Arcanic Gnaws" }, { id: "totem-bandicota-blast", name: "Bandicota Blast" }, { id: "totem-lingering-litter", name: "Lingering Litter" }, { id: "totem-noble-nestling", name: "Noble Nestling" }] },
       squirrel: { label: "Squirrel", items: [{ id: "totem-blinding-bite", name: "Blinding Bite" }, { id: "totem-quick-drey", name: "Quick Drey" }, { id: "totem-spreading-sploot", name: "Spreading Sploot" }, { id: "totem-voltaic-scurry", name: "Voltaic Scurry" }] },
+    },
+  },
+  // P16 Legendary Epithets — names for a Legendary weapon, earned by feats around Alca.
+  // Source: Preludes 16 patch notes; Star Mortar was removed in Hotfix 1 (unearnable).
+  epithets: {
+    label: "Legendary Epithets",
+    icon: "Crown",
+    categories: {
+      enemyMastery: {
+        label: "Enemy Mastery",
+        items: [
+          { id: "epi-catacrux", name: "Catacrux", desc: "Defeat 100 Mendicant foes.", wiki: "Epithets" },
+          { id: "epi-curer-of-sin", name: "Curer of Sin", desc: "Defeat 100 Ode'n foes.", wiki: "Epithets" },
+          { id: "epi-ichor-scab", name: "Ichor Scab", desc: "Defeat 100 Vadagar foes.", wiki: "Epithets" },
+        ],
+      },
+      gripMastery: {
+        label: "Grip Type Mastery",
+        items: [
+          { id: "epi-the-longest-blade", name: "The Longest Blade", desc: "Defeat 500 foes with Long Blades.", wiki: "Epithets" },
+          { id: "epi-murkplume", name: "Murkplume", desc: "Defeat 500 foes with Short Blades.", wiki: "Epithets" },
+          { id: "epi-doppelhander", name: "Doppelhänder", desc: "Defeat 500 foes with Heavy Weapons.", wiki: "Epithets" },
+          { id: "epi-hethensith", name: "Hethensith", desc: "Defeat 500 foes with Bows.", wiki: "Epithets" },
+          { id: "epi-gandura", name: "Gandura", desc: "Defeat 500 foes with Magick Weapons.", wiki: "Epithets" },
+          { id: "epi-hunter-s-aegis", name: "Hunter's Aegis", desc: "Defeat 500 foes with Shield Weapons.", wiki: "Epithets" },
+          { id: "epi-winged-ruin", name: "Wingèd Ruin", desc: "Defeat 500 foes with Flyblades.", wiki: "Epithets" },
+          { id: "epi-denary-pole", name: "Denary Pole", desc: "Defeat 500 foes with Polearms.", wiki: "Epithets" },
+          { id: "epi-abscurica", name: "Abscurica", desc: "Defeat 1000 foes with Sidearms.", wiki: "Epithets" },
+        ],
+      },
+      cogahMastery: {
+        label: "Cogah Mastery",
+        items: [
+          { id: "epi-of-the-sleeve", name: "Of The Sleeve", desc: "Defeat 10 Cogah Agari.", wiki: "Epithets" },
+          { id: "epi-grimwish", name: "Grimwish", desc: "Defeat the \"Flayed Reaper\" Agari.", wiki: "Epithets" },
+          { id: "epi-carver", name: "Carver", desc: "Defeat the \"Kabocha\" Agari.", wiki: "Epithets" },
+          { id: "epi-felling-axe", name: "Felling Axe", desc: "Defeat the \"Fore-Feller Hewyl\" Agari.", wiki: "Epithets" },
+          { id: "epi-barb-of-benefice", name: "Barb of Benefice", desc: "Defeat the \"Sinecure-errant Vella\" Agari.", wiki: "Epithets" },
+          { id: "epi-blade-errant", name: "Blade-Errant", desc: "Defeat the \"Sinecure-errant Gawth\" Agari.", wiki: "Epithets" },
+          { id: "epi-regencide", name: "Regencide", desc: "Defeat the \"Mendicant King\" Agari.", wiki: "Epithets" },
+          { id: "epi-chivalrazor", name: "Chivalrazor", desc: "Defeat the \"Knell Knight\" Agari.", wiki: "Epithets" },
+          { id: "epi-destrier", name: "Destrier", desc: "Defeat the \"Mendicant Reinbreaker\" Agari.", wiki: "Epithets" },
+          { id: "epi-twicefelled", name: "Twicefelled", desc: "Defeat the \"Mendicant Knights\" Agari.", wiki: "Epithets" },
+          { id: "epi-mimikeris", name: "Mimikeris", desc: "Defeat the \"Thrice-Bound Impidh\" Agari.", wiki: "Epithets" },
+          { id: "epi-insullied", name: "Insullied", desc: "Defeat the \"Discharged Nimrod\" Agari.", wiki: "Epithets" },
+          { id: "epi-tormenatus", name: "Tormenatus", desc: "Defeat the \"Gruul-Seeker Ruthos\" Agari.", wiki: "Epithets" },
+          { id: "epi-swatter", name: "Swatter", desc: "Defeat the \"Etheldred The Weaver\" Agari.", wiki: "Epithets" },
+          { id: "epi-wraith-waster", name: "Wraith Waster", desc: "Defeat the \"Wraith of Wastes\" Agari.", wiki: "Epithets" },
+        ],
+      },
+      mechanicMastery: {
+        label: "Movement & Mechanic Mastery",
+        items: [
+          { id: "epi-soul-bibber", name: "Soul-Bibber", desc: "Perform 100 Pull Smites.", wiki: "Epithets" },
+          { id: "epi-mistbrand", name: "Mistbrand", desc: "Perform 100 Parries.", wiki: "Epithets" },
+          { id: "epi-the-talus", name: "The Talus", desc: "Defeat 100 foes with Heavy Attacks.", wiki: "Epithets" },
+          { id: "epi-wrakedom", name: "Wrakedom", desc: "Defeat 100 foes with Ripostes.", wiki: "Epithets" },
+          { id: "epi-silvernsent", name: "Silvernsent", desc: "Defeat 100 foes with Headshots.", wiki: "Epithets" },
+          { id: "epi-rattling-death", name: "Rattling Death", desc: "Defeat 100 foes with Finishers.", wiki: "Epithets" },
+          { id: "epi-perdurant", name: "Perdurant", desc: "Defeat 100 foes with less than 50% of your Life.", wiki: "Epithets" },
+          { id: "epi-unweaver", name: "Unweaver", desc: "Defeat 100 foes while having maximum Rune charges.", wiki: "Epithets" },
+        ],
+      },
+      eventMastery: {
+        label: "Event Mastery",
+        items: [
+          { id: "epi-madabane", name: "Madabane", desc: "Complete 10 encounters of The Collector.", wiki: "Epithets" },
+          { id: "epi-laudanum", name: "Laudanum", desc: "Complete 10 encounters of The Organ.", wiki: "Epithets" },
+          { id: "epi-besetn-t", name: "Besetn't", desc: "Complete 5 Sieges.", wiki: "Epithets" },
+          { id: "epi-folksblade", name: "Folksblade", desc: "Complete 10 Votives.", wiki: "Epithets" },
+        ],
+      },
+      ancestors: {
+        label: "Ancestors",
+        items: [
+          { id: "epi-kane-s-revenant", name: "Kane's Revenant", desc: "Forge 9 Armour pieces.", wiki: "Epithets" },
+          { id: "epi-sung-of-steel", name: "Sung of Steel", desc: "Hone 6 Weapons to Legendary.", wiki: "Epithets" },
+          { id: "epi-stirring-stick", name: "Stirring Stick", desc: "Brew 9 Elixirs.", wiki: "Epithets" },
+        ],
+      },
+      dungeonMastery: {
+        label: "Dungeon & World Mastery",
+        items: [
+          { id: "epi-jotar-s-promise", name: "Jotar's Promise", desc: "Complete The Dermak Undercity 25 times.", wiki: "Epithets" },
+          { id: "epi-gladen-scythe", name: "Gladen Scythe", desc: "Complete the Glades of Andurin 25 times.", wiki: "Epithets" },
+          { id: "epi-arbearer-s-roots", name: "Arbearer's Roots", desc: "Complete the Neath'uns 25 times.", wiki: "Epithets" },
+          { id: "epi-circadian", name: "Circadian", desc: "Complete the Crypt of the Circade 10 times.", wiki: "Epithets" },
+        ],
+      },
+      collections: {
+        label: "Collections",
+        items: [
+          { id: "epi-coffee-cracker", name: "Coffee Cracker", desc: "Open 100 Rare Chests.", wiki: "Epithets" },
+          { id: "epi-hoard-warden", name: "Hoard-Warden", desc: "Collect 10,000 Dracs.", wiki: "Epithets" },
+        ],
+      },
     },
   },
 };

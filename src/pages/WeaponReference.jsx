@@ -4,7 +4,7 @@ import { WEAPONS, COMBAT_ARTS } from '../data/weapons';
 import { calculateChargedAttack } from '../data/calculations';
 import { DAMAGE_TYPES, UNDOCUMENTED_DAMAGE_TYPE_COUNT } from '../data/damageTypes';
 import { FINISHERS, FINISHER_NOTES, COMBAT_MULTIPLIERS, GROUND_FINISHERS, HEAVY_ATTACK_FORMULAS, SMITE } from '../data/combat';
-import { CRAFTWORK_TIERS, REFINEMENT_CHAIN, CHORDSTONES, REFINEMENT_NOTES, TEMPERS, TEMPER_NOTES } from '../data/crafting';
+import { CRAFTWORK_TIERS, REFINEMENT_CHAIN, CHORDSTONES, REFINEMENT_NOTES, TEMPERS, TEMPER_NOTES, STRIKING, CRAFTWORK_DROP_NOTES } from '../data/crafting';
 
 const COLUMNS = [
   { key: 'name', label: 'Name', align: 'left', sortable: true },
@@ -343,14 +343,14 @@ export default function WeaponReference() {
           className="flex items-center gap-2 text-sm text-sf-bright hover:text-sf-text transition-colors font-sans"
         >
           <Info size={15} />
-          <span className="uppercase tracking-wider">Craftwork, Refinement &amp; Tempers</span>
+          <span className="uppercase tracking-wider">Craftwork, Enhancing &amp; Tempers</span>
           {showCraftInfo ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
         </button>
         {showCraftInfo && (
           <div className="mt-4 space-y-6">
             <div>
               <h3 className="text-xs uppercase tracking-wider text-sf-green mb-2">Craftwork Tiers</h3>
-              <p className="text-[10px] text-sf-muted mb-3 font-sans">In P15 every weapon drops with a Craftwork tier, which sets its Temper count and adds a flat Damage bonus (+4 per rank; Dual Blades get half).</p>
+              <p className="text-[10px] text-sf-muted mb-3 font-sans">In P15 every weapon drops with a Craftwork tier, which sets its Temper count and adds a flat Damage bonus (+4 per rank; Dual Blades get half). {CRAFTWORK_DROP_NOTES.join(' ')}</p>
               <div className="overflow-x-auto">
                 <table className="w-full text-xs font-sans">
                   <thead>
@@ -374,8 +374,8 @@ export default function WeaponReference() {
             </div>
 
             <div>
-              <h3 className="text-xs uppercase tracking-wider text-sf-green mb-2">Refinement</h3>
-              <p className="text-[10px] text-sf-muted mb-3 font-sans">Refine at {REFINEMENT_NOTES.station} to raise a weapon one Craftwork tier using the matching Chordstone. Refining grants at least {REFINEMENT_NOTES.grantsAtLeast} Tempers; reaching Legendary always grants {REFINEMENT_NOTES.legendaryGrants}.</p>
+              <h3 className="text-xs uppercase tracking-wider text-sf-green mb-2">Enhance Craftwork</h3>
+              <p className="text-[10px] text-sf-muted mb-3 font-sans">Use {REFINEMENT_NOTES.station}&apos;s {REFINEMENT_NOTES.tab} tab (called Refine before P16) to raise a weapon one Craftwork tier using the matching Chordstone. Refining grants at least {REFINEMENT_NOTES.grantsAtLeast} Tempers; reaching Legendary always grants {REFINEMENT_NOTES.legendaryGrants}.</p>
               <div className="flex flex-wrap gap-2">
                 {REFINEMENT_CHAIN.map(step => {
                   const cs = chordstoneById[step.chordstone];
@@ -392,16 +392,27 @@ export default function WeaponReference() {
             </div>
 
             <div>
+              <h3 className="text-xs uppercase tracking-wider text-sf-green mb-2">Temper Striking (P16)</h3>
+              <p className="text-[10px] text-sf-muted mb-3 font-sans">{STRIKING.station}&apos;s {STRIKING.tab} tab replaces, adds or amps individual Tempers on a Level {STRIKING.weaponLevel} weapon. Cost per Strike: {STRIKING.cost.map(c => `${c.qty} ${c.name}`).join(', ')}.</p>
+              <ul className="space-y-1 text-[11px] text-sf-text font-sans list-disc pl-4">
+                {STRIKING.rules.map(r => <li key={r}>{r}</li>)}
+              </ul>
+            </div>
+
+            <div>
               <h3 className="text-xs uppercase tracking-wider text-sf-green mb-2">Tempers ({TEMPERS.length})</h3>
               <p className="text-[10px] text-sf-muted mb-3 font-sans">{TEMPER_NOTES.doubleStack} {TEMPER_NOTES.noFlyblade}</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                 {TEMPERS.map(t => (
                   <div key={t.name} className="bg-sf-card border border-sf-border rounded-lg p-2.5">
                     <div className="flex items-center justify-between mb-0.5">
-                      <span className="text-xs font-semibold text-sf-bright">{t.name}{t.pendingName && <span className="text-sf-dim font-normal italic"> (wiki placeholder)</span>}</span>
+                      <span className="text-xs font-semibold text-sf-bright">{t.name}</span>
                       <span className="text-[9px] text-sf-muted">{t.origin}{t.weaponType !== 'Any' ? ` · ${t.weaponType}` : ''}</span>
                     </div>
                     <p className="text-[10px] text-sf-text leading-snug">{t.description}</p>
+                    {t.effects.map(e => (
+                      <p key={e.effect} className="text-[10px] text-amber-300/80 leading-snug">{e.effect}: {e.single} / ×2 {e.double}{e.approx ? ' (approx.)' : ''}</p>
+                    ))}
                   </div>
                 ))}
               </div>

@@ -5,8 +5,13 @@
 // single effect that triggers on Rune-unleash, Pull Smite, or Smite. Effects scale Rank 0→3;
 // `effect` is the 4 rank strings [R0, R1, R2, R3]. The UI shows the max rank (index 3).
 //
-// The wiki's Totems main page (which would document how many totems a build may equip) is
-// still WIP, so the Build Planner treats them as a flat, build-wide selectable pool.
+// The Build Planner treats them as a flat, build-wide selectable pool. In game each weapon has
+// four Totem slots, and since P16 a Totem only works while the weapon it sits on is drawn.
+//
+// P16 rebalance (values from wiki.avakot.org Module:Data/Totems): Smiting Stag's Smite chance
+// cut to 0.5–2%, Spreading Sploot's reach cut to 5–7 m (and it now keys off Pull Smite), damage
+// Totem radii reduced (Binky Kick, Hare Harms), Thunder Tail's Stagger lowered, Stocky Lodge's
+// Armour raised. Blinding Bite is a flat 8 m at every rank.
 
 export const TOTEM_ANIMALS = ['Beaver', 'Duck', 'Fawn', 'Rabbit', 'Rat', 'Squirrel'];
 
@@ -31,16 +36,16 @@ export const TOTEMS = [
     'Restore +20 Life per second for 8 seconds upon unleashing a Rune',
   ] },
   { name: 'Stocky Lodge', animal: 'Beaver', effect: [
-    '+8 Armour upon unleashing Rune',
-    '+9 Armour upon unleashing Rune',
-    '+10 Armour upon unleashing Rune',
     '+12 Armour upon unleashing Rune',
+    '+15 Armour upon unleashing Rune',
+    '+18 Armour upon unleashing Rune',
+    '+22 Armour upon unleashing Rune',
   ] },
   { name: 'Thunder Tail', animal: 'Beaver', effect: [
-    'Unleashing a Rune deals +100 Stagger damage within 5 m',
-    'Unleashing a Rune deals +150 Stagger damage within 6 m',
-    'Unleashing a Rune deals +175 Stagger damage within 8 m',
-    'Unleashing a Rune deals +200 Stagger damage within 10 m',
+    'Unleashing a Rune deals +70 Stagger damage within 5 m',
+    'Unleashing a Rune deals +90 Stagger damage within 6 m',
+    'Unleashing a Rune deals +110 Stagger damage within 8 m',
+    'Unleashing a Rune deals +130 Stagger damage within 10 m',
   ] },
 
   // ========== DUCK (Pull Smite sustain / range) ==========
@@ -89,10 +94,10 @@ export const TOTEMS = [
     'Drag enemies towards the Envoy on Pull Smite dealing +80 damage',
   ] },
   { name: 'Smiting Stag', animal: 'Fawn', effect: [
+    'Increase Smite Chance by 0.5% per Rune Charge',
+    'Increase Smite Chance by 1% per Rune Charge',
+    'Increase Smite Chance by 1.5% per Rune Charge',
     'Increase Smite Chance by 2% per Rune Charge',
-    'Increase Smite Chance by 3% per Rune Charge',
-    'Increase Smite Chance by 4% per Rune Charge',
-    'Increase Smite Chance by 5% per Rune Charge',
   ] },
   { name: 'Turn Tusk', animal: 'Fawn', effect: [
     'Temporarily turn enemies into allies for 2 seconds on Pull Smite',
@@ -103,10 +108,10 @@ export const TOTEMS = [
 
   // ========== RABBIT (Pull Smite explosions / Rune damage) ==========
   { name: 'Binky Kick', animal: 'Rabbit', effect: [
-    'Pull Smite causes a +50 damage explosion 5 m around the Envoy',
-    'Pull Smite causes a +75 damage explosion 7 m around the Envoy',
-    'Pull Smite causes a +100 damage explosion 9 m around the Envoy',
-    'Pull Smite causes a +125 damage explosion 10 m around the Envoy',
+    'Pull Smite causes a +50 damage explosion 4 m around the Envoy',
+    'Pull Smite causes a +75 damage explosion 5 m around the Envoy',
+    'Pull Smite causes a +100 damage explosion 6 m around the Envoy',
+    'Pull Smite causes a +125 damage explosion 7 m around the Envoy',
   ] },
   { name: 'Dewclawer', animal: 'Rabbit', effect: [
     'Runes deal 5% additional damage',
@@ -117,8 +122,8 @@ export const TOTEMS = [
   { name: 'Hare Harms', animal: 'Rabbit', effect: [
     'Pull Smite causes +30 damage explosion 5 m around the Enemy',
     'Pull Smite causes +40 damage explosion 6 m around the Enemy',
-    'Pull Smite causes +50 damage explosion 8 m around the Enemy',
-    'Pull Smite causes +80 damage explosion 12 m around the Enemy',
+    'Pull Smite causes +50 damage explosion 7 m around the Enemy',
+    'Pull Smite causes +80 damage explosion 8 m around the Enemy',
   ] },
   { name: 'Sprout Spring', animal: 'Rabbit', effect: [
     'Effects of Pull Smite has a 20% chance of spreading to all allies',
@@ -155,10 +160,10 @@ export const TOTEMS = [
 
   // ========== SQUIRREL (Smite spread / speed / Voltaic) ==========
   { name: 'Blinding Bite', animal: 'Squirrel', effect: [
-    'Create a bright flash that blinds enemies in a 4 m radius',
-    'Create a bright flash that blinds enemies in a 5 m radius',
-    'Create a bright flash that blinds enemies in a 5 m radius',
-    'Create a bright flash that blinds enemies in a 6 m radius',
+    'Create a bright flash that blinds enemies in a 8 m radius',
+    'Create a bright flash that blinds enemies in a 8 m radius',
+    'Create a bright flash that blinds enemies in a 8 m radius',
+    'Create a bright flash that blinds enemies in a 8 m radius',
   ] },
   { name: 'Quick Drey', animal: 'Squirrel', effect: [
     'Increase attack speed by 10% on Pull Smite',
@@ -167,15 +172,15 @@ export const TOTEMS = [
     'Increase attack speed by 16% on Pull Smite',
   ] },
   { name: 'Spreading Sploot', animal: 'Squirrel', effect: [
-    '10% chance to Smite other enemies within 10 m of Smite',
-    '12.5% chance to Smite other enemies within 12 m of Smite',
-    '16.7% chance to Smite other enemies within 17 m of Smite',
-    '20% chance to Smite other enemies within 20 m of Smite',
+    '10% chance to Smite another enemy within 5 m of Pull Smite',
+    '12.5% chance to Smite another enemy within 6 m of Pull Smite',
+    '16.7% chance to Smite another enemy within 6 m of Pull Smite',
+    '20% chance to Smite another enemy within 7 m of Pull Smite',
   ] },
   { name: 'Voltaic Scurry', animal: 'Squirrel', effect: [
-    'Increase Voltaic Damage by +5 on Smite enemies',
-    'Increase Voltaic Damage by +15 on Smite enemies',
-    'Increase Voltaic Damage by +20 on Smite enemies',
-    'Increase Voltaic Damage by +25 on Smite enemies',
+    'Increase Voltaic Damage by +5 on Smitten enemies',
+    'Increase Voltaic Damage by +15 on Smitten enemies',
+    'Increase Voltaic Damage by +20 on Smitten enemies',
+    'Increase Voltaic Damage by +25 on Smitten enemies',
   ] },
 ];

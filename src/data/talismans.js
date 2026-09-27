@@ -39,6 +39,8 @@ export const TALISMANS = [
 
   // === Unique ===
   { name: 'Cardinal Charm', set: 'Unique', rarity: 'Common', stats: { courage: 1, grace: 1, spirit: 2 } },
+  // P16 (unannounced): reach the Soulbound bond rank with your Wolfpup. Equipped, it auto-summons the Pup.
+  { name: "Packblood's Tribute", set: 'Unique', rarity: 'Common', stats: { courage: 2, grace: 4, spirit: 3 } },
   { name: 'Prelude Honour', set: 'Unique', rarity: 'Common', stats: { courage: 1, grace: 1, spirit: 1 } },
   { name: "Synod's Bell Jar", set: 'Unique', rarity: 'Common', stats: { courage: 4, grace: 1, spirit: 1 } },
   { name: "Wazzard's Wish", set: 'Unique', rarity: 'Common', stats: { spirit: 1 } },

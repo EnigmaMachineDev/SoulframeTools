@@ -1,25 +1,8 @@
 import { useState, useMemo, useEffect } from 'react';
 import { Swords, Sword, Zap, Target, Shield, Sparkles, Flame, ChevronDown, ChevronUp, Info } from 'lucide-react';
 import { WEAPONS } from '../data/weapons';
-import { CRAFTWORK_TIERS, TEMPERS } from '../data/crafting';
+import { CRAFTWORK_TIERS, getPossibleTempers } from '../data/crafting';
 import { calculateWeaponAttunement, calculateChargedAttack, calculateCraftworkDamage } from '../data/calculations';
-
-// Map a weapon's Combat Art to the Temper weaponType family used for pool filtering.
-// Flyblade has no weapon-specific Tempers, so it only ever matches 'Any'.
-function temperFamily(combatArt) {
-  if (combatArt === 'Bow') return 'Bow';
-  if (combatArt === 'Magick') return 'Magick';
-  if (combatArt === 'Flyblade') return 'Flyblade';
-  return 'Melee';
-}
-
-function availableTempers(weapon) {
-  const fam = temperFamily(weapon.combatArt);
-  return TEMPERS.filter(t =>
-    (t.origin === 'Universal' || t.origin === weapon.origin) &&
-    (t.weaponType === 'Any' || t.weaponType === fam)
-  );
-}
 
 // Everything needed to drive one side of the comparison — including its own
 // independent Virtue allocation, so two different builds can be compared head-to-head.
@@ -38,9 +21,9 @@ function useWeaponState(defaultIdx, defaultVirtues) {
   }
 
   // Trim temper selection if a lower Craftwork tier reduces the cap, and drop any
-  // tempers no longer in the (origin/type-filtered) pool when the weapon changes.
+  // tempers the new weapon can't hold when the weapon changes.
   useEffect(() => {
-    const pool = new Set(availableTempers(weapon).map(t => t.name));
+    const pool = new Set(getPossibleTempers(weapon).map(t => t.name));
     setTempers(prev => prev.filter(n => pool.has(n)).slice(0, tier.maxTempers));
   }, [idx, craftwork]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -128,7 +111,7 @@ export default function WeaponCompare() {
 
       <p className="text-[10px] text-sf-muted mt-3 font-sans flex items-start gap-1.5">
         <Info size={12} className="mt-0.5 shrink-0" />
-        <span>Tempers are selectable (capped by Craftwork) but their effects are not yet folded into these numbers — they’ll be added once the wiki’s per-Temper values are confirmed. Craftwork damage uses the full +4/rank; Dual Blades take half (not auto-detected).</span>
+        <span>Tempers are selectable (capped by Craftwork) but their effects are not folded into these numbers — most are conditional (sprinting, full Life, aerial, on proc). See the Build Planner for per-Temper values. Craftwork damage uses the full +4/rank; Dual Blades take half (not auto-detected).</span>
       </p>
     </main>
   );
@@ -136,7 +119,7 @@ export default function WeaponCompare() {
 
 function WeaponColumn({ side, accent, badge }) {
   const [showTempers, setShowTempers] = useState(false);
-  const pool = availableTempers(side.weapon);
+  const pool = getPossibleTempers(side.weapon);
   const max = side.tier.maxTempers;
 
   function toggleTemper(name) {

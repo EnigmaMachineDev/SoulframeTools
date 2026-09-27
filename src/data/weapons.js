@@ -1,4 +1,5 @@
-// Weapon data sourced from wiki.avakot.org/Weapons (Preludes 15 "Gods & Ghosts").
+// Weapon data sourced from wiki.avakot.org/Weapons (Preludes 15 "Gods & Ghosts"; P16
+// "Of Hook & Hound" additions — Grimana, Wreath, Gystalt — from Module:Data/Weapons).
 // baseDamage = Rank 30 Attack, rank0Damage = Rank 0 Attack (= wiki tooltip Damage).
 // staggerDamage = Rank 30 Stagger. smiteChance = Smite Percent.
 // Rank scaling: Attack_at_rank = rank0 + floor(rank * (baseDamage - rank0) / 30)
@@ -8,10 +9,18 @@
 // Rarity (Common / Uncommon / Rare) fields. Origin gates which Origin-Specific Tempers a
 // weapon can roll (see crafting.js TEMPERS), so it is build-relevant, not just flavour.
 //
-// Farilwyd does not yet have Lvl 30 stats published on the wiki — its baseDamage/staggerDamage
-// are null and rendered as "—". calculations.js falls back to rank0Damage (flat, no rank
-// scaling) when baseDamage is null. Its attunement (C3 G2) and virtueReq (C12 S10) are read
-// from an in-game rank-0 card; attuneCap remains unpublished (null).
+// Farilwyd's virtueReq is C12 G10 per the wiki. An earlier in-game card reading gave S10, but that
+// would make it the only weapon requiring a virtue it has no attunement pips in, so the Spirit
+// icon was most likely misread. attuneCap remains unpublished (null).
+//
+// Post-P15 wiki corrections (Aug 2026): Navalha 43→97 and The Erstroot 42→90 ("P15 shadowbuff"),
+// Skílter smite 4%, and Silistavf Voltaic — its in-game tooltip saying Arcanic is a display bug.
+//
+// P16 weapons have no Attunement published on the wiki yet, so `attunement` is null (rendered
+// "—", treated as no pips by calculations.js). Gystalt's low Attack is not a typo: it is a
+// staff with a unique continuous-zap moveset (Fully Charged Cast is 54 → 102 on the wiki).
+// `baseDamage` null still means "Lvl 30 unpublished" — calculations.js then falls back to
+// rank0Damage with no rank scaling.
 
 export const COMBAT_ARTS = [
   'Bow', 'Flyblade', 'Heavy', 'Long Blade', 'Magick', 'Polearm', 'Shield', 'Short Blade'
@@ -31,7 +40,7 @@ export const WEAPONS = [
 
   // === FLYBLADES (Sidearm) ===
   { name: 'Precklies', combatArt: 'Flyblade', origin: 'Dendrit', rarity: 'Common', damageType: 'Sharp', rank0Damage: 31, baseDamage: 79, smiteChance: 4, staggerDamage: 34, attunement: { courage: 0, spirit: 0, grace: 1 }, virtueReq: {}, attuneCap: 25, slot: 'Sidearm', location: 'Collector Crate, Banneret, Hunter, Nimrod, Kith of Kings faction shop' },
-  { name: 'Skílter', combatArt: 'Flyblade', origin: "Ode'n", rarity: 'Common', damageType: 'Sharp', rank0Damage: 33, baseDamage: 81, smiteChance: 3, staggerDamage: 36, attunement: { courage: 2, spirit: 0, grace: 2 }, virtueReq: { courage: 7, grace: 6 }, attuneCap: 19, slot: 'Sidearm', location: 'Collector Crate, Ode Chest, Gruul Seeker Ruthos, Flayed Reaper, Wares of Zenith' },
+  { name: 'Skílter', combatArt: 'Flyblade', origin: "Ode'n", rarity: 'Common', damageType: 'Sharp', rank0Damage: 33, baseDamage: 81, smiteChance: 4, staggerDamage: 36, attunement: { courage: 2, spirit: 0, grace: 2 }, virtueReq: { courage: 7, grace: 6 }, attuneCap: 19, slot: 'Sidearm', location: 'Collector Crate, Ode Chest, Gruul Seeker Ruthos, Flayed Reaper, Wares of Zenith' },
   { name: 'Thrice Spurns', combatArt: 'Flyblade', origin: 'Feykin', rarity: 'Uncommon', damageType: 'Sharp', rank0Damage: 32, baseDamage: 80, smiteChance: 3, staggerDamage: 36, attunement: { courage: 2, spirit: 0, grace: 0 }, virtueReq: { courage: 7 }, attuneCap: 21, slot: 'Sidearm', location: 'Wyld Tethren / Paragon Founders Pack' },
 
   // === HEAVY (Primary) — Greatswords + Maces ===
@@ -39,11 +48,12 @@ export const WEAPONS = [
   { name: 'Needleseye', combatArt: 'Heavy', origin: 'Dendrit', rarity: 'Uncommon', damageType: 'Sharp', rank0Damage: 66, baseDamage: 120, smiteChance: 5, staggerDamage: 134, attunement: { courage: 3, spirit: 0, grace: 0 }, virtueReq: { courage: 18 }, attuneCap: 43, slot: 'Primary', location: 'Collector Crate, Dendrit Chest, Enclave Tales Tier 2–3, Avakot Favour, Wares of Zenith' },
   { name: 'Purity', combatArt: 'Heavy', origin: 'Mendicant', rarity: 'Rare', damageType: 'Sharp', rank0Damage: 68, baseDamage: 122, smiteChance: 6, staggerDamage: 126, attunement: { courage: 3, spirit: 2, grace: 0 }, virtueReq: { courage: 17 }, attuneCap: 36, slot: 'Primary', location: 'The Mendicant King, Collector Crate, Wares of Zenith' },
   { name: 'The Paragon', combatArt: 'Heavy', origin: 'Feykin', rarity: 'Rare', damageType: 'Sharp', rank0Damage: 64, baseDamage: 118, smiteChance: 7, staggerDamage: 134, attunement: { courage: 2, spirit: 2, grace: 2 }, virtueReq: {}, attuneCap: 134, slot: 'Primary', location: 'Paragon Founders Pack' },
+  { name: 'Wreath', combatArt: 'Heavy', origin: 'Mendicant', rarity: 'Uncommon', damageType: 'Blunt', rank0Damage: 63, baseDamage: 117, smiteChance: 5, staggerDamage: 134, attunement: null, virtueReq: { courage: 18 }, attuneCap: null, slot: 'Primary', location: 'Mendicant Knights (incl. Cleaver, Mace, King & Ruins variants), Ode Chest (Rovgot) (P16)' },
   { name: 'Orst-III', combatArt: 'Heavy', origin: "Ode'n", rarity: 'Uncommon', damageType: 'Blunt', rank0Damage: 76, baseDamage: 130, smiteChance: 2, staggerDamage: 134, attunement: { courage: 2, spirit: 0, grace: 0 }, virtueReq: { courage: 12 }, attuneCap: null, slot: 'Primary', location: 'Gruul Seeker Sontaro, Sinecure Knight (Mace), Sinecure Officer, Sinecure-errant Gawth' },
 
   // === RAPIERS / Duelo Blades (Cassid Long Blade, Primary) ===
   { name: 'Espadarte', combatArt: 'Long Blade', origin: 'Cassid', rarity: 'Uncommon', damageType: 'Sharp', rank0Damage: 46, baseDamage: 100, smiteChance: 2, staggerDamage: 86, attunement: { courage: 2, spirit: 0, grace: 2 }, virtueReq: { courage: 6, grace: 8 }, attuneCap: null, slot: 'Primary', location: 'Mirifuir Siege, Wares of Zenith' },
-  { name: 'Navalha', combatArt: 'Long Blade', origin: 'Cassid', rarity: 'Uncommon', damageType: 'Sharp', rank0Damage: 39, baseDamage: 93, smiteChance: 5, staggerDamage: 86, attunement: { courage: 0, spirit: 0, grace: 3 }, virtueReq: { grace: 14 }, attuneCap: null, slot: 'Primary', location: 'The Wreck of Mestra Carmo, Wares of Zenith' },
+  { name: 'Navalha', combatArt: 'Long Blade', origin: 'Cassid', rarity: 'Uncommon', damageType: 'Sharp', rank0Damage: 43, baseDamage: 97, smiteChance: 5, staggerDamage: 86, attunement: { courage: 0, spirit: 0, grace: 3 }, virtueReq: { grace: 14 }, attuneCap: null, slot: 'Primary', location: 'The Wreck of Mestra Carmo, Wares of Zenith' },
 
   // === LONG BLADES (Primary) ===
   { name: 'Ilverac', combatArt: 'Long Blade', origin: "Ode'n", rarity: 'Common', damageType: 'Sharp', rank0Damage: 52, baseDamage: 106, smiteChance: 8, staggerDamage: 94, attunement: { courage: 3, spirit: 0, grace: 0 }, virtueReq: { courage: 12 }, attuneCap: null, slot: 'Primary', location: "Ode'n drop (P15)" },
@@ -64,8 +74,9 @@ export const WEAPONS = [
   { name: 'Gwylen', combatArt: 'Magick', origin: 'Dendrit', rarity: 'Common', damageType: 'Arcanic', rank0Damage: 40, baseDamage: 88, smiteChance: 6, staggerDamage: 38, attunement: { courage: 0, spirit: 1, grace: 0 }, virtueReq: {}, attuneCap: 32, slot: 'Primary', location: 'Starter weapon (Oscelda pact) — Kith of Kings, Silent Rose faction shops' },
   { name: 'Seathorn', combatArt: 'Magick', origin: 'Dendrit', rarity: 'Rare', damageType: 'Arcanic', rank0Damage: 44, baseDamage: 92, smiteChance: 2, staggerDamage: 46, attunement: { courage: 0, spirit: 3, grace: 2 }, virtueReq: { spirit: 18 }, attuneCap: 22, slot: 'Primary', location: 'Enclave Tales Tier 3 (all enclaves)' },
   { name: 'The Alder', combatArt: 'Magick', origin: 'Feykin', rarity: 'Uncommon', damageType: 'Arcanic', rank0Damage: 41, baseDamage: 89, smiteChance: 6, staggerDamage: 42, attunement: { courage: 0, spirit: 2, grace: 0 }, virtueReq: { spirit: 7 }, attuneCap: 27, slot: 'Primary', location: 'Wyld Oscelda / Paragon Founders Pack' },
-  { name: 'The Erstroot', combatArt: 'Magick', origin: 'Mendicant', rarity: 'Uncommon', damageType: 'Arcanic', rank0Damage: 40, baseDamage: 88, smiteChance: 6, staggerDamage: 42, attunement: { courage: 0, spirit: 3, grace: 0 }, virtueReq: { spirit: 16 }, attuneCap: 27, slot: 'Primary', location: 'Collector Crate, Wraith of Wastes, The Organ, Wares of Zenith' },
-  { name: 'Silistavf', combatArt: 'Magick', origin: "Ode'n", rarity: 'Uncommon', damageType: 'Arcanic', rank0Damage: 47, baseDamage: 95, smiteChance: 3, staggerDamage: 46, attunement: { courage: 2, spirit: 2, grace: 0 }, virtueReq: { courage: 8, spirit: 15 }, attuneCap: null, slot: 'Primary', location: 'Mirifuir Siege, Wares of Zenith' },
+  { name: 'The Erstroot', combatArt: 'Magick', origin: 'Mendicant', rarity: 'Uncommon', damageType: 'Arcanic', rank0Damage: 42, baseDamage: 90, smiteChance: 6, staggerDamage: 42, attunement: { courage: 0, spirit: 3, grace: 0 }, virtueReq: { spirit: 16 }, attuneCap: 27, slot: 'Primary', location: 'Collector Crate, Wraith of Wastes, The Organ, Wares of Zenith' },
+  { name: 'Gystalt', combatArt: 'Magick', origin: "Ode'n", rarity: 'Uncommon', damageType: 'Voltaic', rank0Damage: 12, baseDamage: 60, smiteChance: 2, staggerDamage: 34, attunement: null, virtueReq: { spirit: 11 }, attuneCap: null, slot: 'Primary', location: "Ode'n Starcaster, Elite Ode'n Starcaster, Ode'n Conductor, Knell Knight (Cogah), Mendicant Knight Duo (Cogah), Ode Chest, Ode Drone Rare Chest (P16)" },
+  { name: 'Silistavf', combatArt: 'Magick', origin: "Ode'n", rarity: 'Uncommon', damageType: 'Voltaic', rank0Damage: 47, baseDamage: 95, smiteChance: 3, staggerDamage: 46, attunement: { courage: 2, spirit: 2, grace: 0 }, virtueReq: { courage: 8, spirit: 15 }, attuneCap: null, slot: 'Primary', location: 'Mirifuir Siege, Wares of Zenith' },
 
   // === MAGICK - Wristcasters (Sidearm) ===
   { name: "Basker's Wrest", combatArt: 'Magick', origin: 'Dendrit', rarity: 'Uncommon', damageType: 'Arcanic', rank0Damage: 34, baseDamage: 82, smiteChance: 4, staggerDamage: 40, attunement: { courage: 2, spirit: 2, grace: 0 }, virtueReq: { courage: 7, spirit: 8 }, attuneCap: 21, slot: 'Sidearm', location: 'Kith of Kings Tale Tier 3 / faction shop, Kabocha, Wraith of Wastes' },
@@ -77,7 +88,7 @@ export const WEAPONS = [
   { name: 'Gathannan', combatArt: 'Polearm', origin: 'Feykin', rarity: 'Rare', damageType: 'Sharp', rank0Damage: 69, baseDamage: 123, smiteChance: 4, staggerDamage: 112, attunement: { courage: 3, spirit: 2, grace: 0 }, virtueReq: { courage: 19 }, attuneCap: 35, slot: 'Primary', location: 'Vadagar Stag, Wares of Zenith' },
   { name: 'Rook', combatArt: 'Polearm', origin: 'Dendrit', rarity: 'Uncommon', damageType: 'Blunt', rank0Damage: 65, baseDamage: 119, smiteChance: 2, staggerDamage: 120, attunement: { courage: 2, spirit: 2, grace: 0 }, virtueReq: { courage: 11 }, attuneCap: 40, slot: 'Primary', location: 'Silent Rose Tale Tier 3 / faction shop, Wares of Zenith' },
   { name: 'Vasp-IV', combatArt: 'Polearm', origin: "Ode'n", rarity: 'Common', damageType: 'Sharp', rank0Damage: 65, baseDamage: 119, smiteChance: 5, staggerDamage: 106, attunement: { courage: 3, spirit: 0, grace: 0 }, virtueReq: { courage: 13 }, attuneCap: 58, slot: 'Primary', location: 'Ode Chest, Banneret, Knight, Nimrod, Wares of Zenith' },
-  { name: 'Farilwyd', combatArt: 'Polearm', origin: 'Mendicant', rarity: 'Rare', damageType: 'Sharp', rank0Damage: 68, baseDamage: null, smiteChance: 5, staggerDamage: null, attunement: { courage: 3, spirit: 0, grace: 2 }, virtueReq: { courage: 12, spirit: 10 }, attuneCap: null, slot: 'Primary', location: null },
+  { name: 'Farilwyd', combatArt: 'Polearm', origin: 'Mendicant', rarity: 'Rare', damageType: 'Sharp', rank0Damage: 68, baseDamage: 122, smiteChance: 5, staggerDamage: 112, attunement: { courage: 3, spirit: 0, grace: 2 }, virtueReq: { courage: 12, grace: 10 }, attuneCap: null, slot: 'Primary', location: 'Mendicant Reinbreaker (Agaric Mushroom); very rarely Knell Knight, Mendicant Knight Duo, Sinecure-errant Vella' },
   { name: 'Veilk', combatArt: 'Polearm', origin: "Ode'n", rarity: 'Uncommon', damageType: 'Sharp', rank0Damage: 59, baseDamage: 113, smiteChance: 5, staggerDamage: 120, attunement: { courage: 3, spirit: 0, grace: 0 }, virtueReq: { courage: 13 }, attuneCap: null, slot: 'Primary', location: 'Sinecure Elite Soldier (P15)' },
 
   // === SHIELDS (Primary) ===
@@ -90,6 +101,9 @@ export const WEAPONS = [
   { name: 'Rostrum', combatArt: 'Short Blade', origin: 'Dendrit', rarity: 'Uncommon', damageType: 'Sharp', rank0Damage: 41, baseDamage: 95, smiteChance: 5, staggerDamage: 86, attunement: { courage: 0, spirit: 2, grace: 2 }, virtueReq: { grace: 12 }, attuneCap: 25, slot: 'Primary', location: 'Banneret, Kabocha, Knell Knight, Thawtide Hunter, The Mendicant King' },
   { name: 'The Royal Tines', combatArt: 'Short Blade', origin: 'Feykin', rarity: 'Uncommon', damageType: 'Sharp', rank0Damage: 26, baseDamage: 53, smiteChance: 6, staggerDamage: 73, attunement: { courage: 0, spirit: 2, grace: 2 }, virtueReq: { grace: 10 }, attuneCap: 17, slot: 'Primary', location: 'Collector Crate, Vadagar Stag, Wares of Zenith' },
   { name: 'Unsula', combatArt: 'Short Blade', origin: "Ode'n", rarity: 'Common', damageType: 'Sharp', rank0Damage: 26, baseDamage: 53, smiteChance: 5, staggerDamage: 73, attunement: { courage: 2, spirit: 0, grace: 2 }, virtueReq: { grace: 10 }, attuneCap: 17, slot: 'Primary', location: 'Ode Chest, Banneret, Nimrod, Fore-Feller Hewyl, Gruul Seeker Sontaro, Sinecure-errant, Fort Sieges, Wares of Zenith' },
+
+  // === SHORT BLADES - Rapier moveset (Sidearm) ===
+  { name: 'Grimana', combatArt: 'Short Blade', origin: 'Feykin', rarity: 'Rare', damageType: 'Sharp', rank0Damage: 45, baseDamage: 99, smiteChance: 5, staggerDamage: 92, attunement: null, virtueReq: { courage: 10, grace: 12 }, attuneCap: null, slot: 'Sidearm', location: 'Crafted from 3 Fragments — Dendrit Chests in Level 25+ Glades (P16)' },
 
   // === SHORT BLADES - Dual Blades (Sidearm) ===
   { name: 'Clivers', combatArt: 'Short Blade', origin: 'Dendrit', rarity: 'Common', damageType: 'Sharp', rank0Damage: 25, baseDamage: 52, smiteChance: 5, staggerDamage: 75, attunement: { courage: 2, spirit: 0, grace: 2 }, virtueReq: { grace: 12 }, attuneCap: 25, slot: 'Sidearm', location: 'Etheldred The Weaver, Flayed Reaper, The Organ' },
