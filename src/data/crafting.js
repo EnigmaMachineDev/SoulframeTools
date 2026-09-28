@@ -166,6 +166,55 @@ export const TEMPERS = [
   { name: "Slinger's Tempo", origin: "Ode'n", weaponType: 'Any', description: 'Grants chance for Stagger to become Knockdown.', effects: [{ effect: 'Stagger To Knockdown Chance', single: '10%', double: '20%' }] },
 ];
 
+// One-line, player-facing summaries for pickers (Build Planner dropdowns, Weapon Compare).
+// Numbers are for a single copy; Double-Stacking doubles them. Written from the effects above —
+// update alongside them. Tempers with no published numbers get a plain-language line.
+const TEMPER_SUMMARIES = {
+  'Arcane Alacrity': '+10% Magick Heavy Attack charge speed',
+  'Arcane Barrage': '+10 Heavy Cast damage, more Stagger',
+  'Arcane Rebound': '~+20% damage from deflected projectiles',
+  'Bounding Swipe': '+12 damage and more Stagger while sprinting',
+  'Breakneck': '+15% Heavy Attack charge speed',
+  'Conjuration': '+30 Heavy Cast damage when fully Grounded',
+  'Cowp': '10% chance to double Stagger',
+  'Follow Up': '+7 damage per hit after a Heavy Attack (max 28)',
+  'Fortified': 'Take less Stagger while blocking',
+  'From Above': '+10 damage on aerial attacks',
+  'Full Force': '+15 damage and more Stagger on Heavy Attacks',
+  'Grounding Spell': 'Dodge once without losing Grounded',
+  'Hale and Hearty': '+12 damage while at full Life',
+  'Heightened Parry': 'Wider parry window',
+  'Quick Draw': '~12.5% faster Bow charge',
+  'Rejoinder': '+10 damage and more Stagger on dodge attacks',
+  'Rupture': '+8 shatter damage, more Bow Stagger',
+  'Severed Root': 'More Stagger on leg shots',
+  'Streamlined': '+20% throw speed',
+  'Sullying Force': '+3% Smite chance',
+  'Swift Strike': '+15% attack speed',
+  'Swooning Blow': '+12 Stagger per hit',
+  'Unencumbered': '+14 damage with no Sidearm equipped',
+  'Vengeance': '+15 Riposte damage',
+  "Clam's Foot": 'More Stagger on parry',
+  'First Strike': '+20 damage against foes at full Life',
+  'Invader': 'More damage against foes below 30% Life',
+  'Sickness': '10% chance to Poison on hit',
+  'Enkindled': '10% chance to set foes ablaze on hit',
+  "Hunter's Relish": '+10% Life recovered by hits during Regain',
+  'Renewed Slayer': 'Heal 5 Life/s for 4 s on each kill',
+  'Well Woven': 'Regain holds 10 s before decaying (base 5 s)',
+  'Aftershock': '10% chance to deal Arcanic damage over time',
+  'Duplicate': '9% chance to cast a second projectile',
+  'Sympathy Pang': '10% of damage spreads to a nearby foe',
+  'Hollowed': '10% chance on hit to take 20% less damage for 8 s',
+  'Savagery': '10% chance to inflict Bleed on hit',
+  'Sinister Volley': 'Thrown hits can Fear foes',
+  'Unnerving Blow': 'Hits can Fear foes',
+  'Bypass': '−10 foe Armour on your first hit',
+  'Galvanic Strike': '10% chance of a Voltaic discharge that Staggers nearby foes',
+  "Slinger's Tempo": '10% chance for Stagger to become Knockdown',
+};
+for (const t of TEMPERS) t.summary = TEMPER_SUMMARIES[t.name] || t.description;
+
 export const TEMPER_BY_NAME = Object.fromEntries(TEMPERS.map(t => [t.name, t]));
 
 // The Tempers a weapon can roll or be Struck with, Origin-specific ones first.

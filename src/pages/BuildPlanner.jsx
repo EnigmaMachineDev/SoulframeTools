@@ -80,7 +80,8 @@ function TemperSlots({ weapon, tier, weaponRank, tempers, setTempers }) {
   return (
     <div className="mt-2">
       <label className="block text-[10px] text-sf-muted uppercase mb-1">Tempers ({filled.length}/{tier.maxTempers})</label>
-      <div className="grid grid-cols-2 gap-1.5">
+      <p className="text-[10px] text-sf-muted mb-1.5">Values are for one copy — picking the same Temper twice (Double-Stacked) doubles them.</p>
+      <div className="grid grid-cols-1 gap-1.5">
         {Array.from({ length: tier.maxTempers }, (_, i) => {
           const current = tempers[i] || '';
           return (
@@ -93,7 +94,7 @@ function TemperSlots({ weapon, tier, weaponRank, tempers, setTempers }) {
                   <optgroup key={origin} label={origin}>
                     {group.map(t => {
                       const full = (counts[t.name] || 0) - (current === t.name ? 1 : 0) >= MAX_TEMPER_STACK;
-                      return <option key={t.name} value={t.name} disabled={full}>{t.name}{full ? ' (stacked)' : ''}</option>;
+                      return <option key={t.name} value={t.name} disabled={full}>{t.name} — {t.summary}{full ? ' (stacked)' : ''}</option>;
                     })}
                   </optgroup>
                 );

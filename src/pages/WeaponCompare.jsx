@@ -180,7 +180,7 @@ function WeaponColumn({ side, accent, badge }) {
                 className={`w-full text-left rounded px-2 py-1.5 border text-[11px] transition-colors ${on ? 'bg-sf-accent/20 border-sf-accent text-sf-text' : blocked ? 'bg-sf-bg border-sf-border/40 text-sf-dim cursor-not-allowed' : 'bg-sf-bg border-sf-border text-sf-muted hover:border-sf-accent/50'}`}>
                 <span className="font-medium">{t.name}</span>
                 <span className="text-[9px] text-sf-dim ml-1">{t.origin}{t.weaponType !== 'Any' ? ` · ${t.weaponType}` : ''}</span>
-                <div className="text-[10px] text-sf-muted leading-snug">{t.description}</div>
+                <div className="text-[10px] text-sf-muted leading-snug">{t.summary}</div>
               </button>
             );
           })}
