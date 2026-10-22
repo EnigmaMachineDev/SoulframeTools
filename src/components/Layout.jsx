@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation } from 'react-router-dom';
 import { Menu, X, Sword, Swords, Shield, Dices, CheckSquare, Wrench, Home } from 'lucide-react';
+import ThemeToggle from './ThemeToggle.jsx';
 
 const GA_ID = 'G-7SRRYRESDV';
 
@@ -58,13 +59,17 @@ export default function Layout() {
             })}
           </nav>
 
-          {/* Mobile menu button */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden p-2 text-sf-muted hover:text-sf-bright transition-colors"
-          >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+          <div className="flex items-center gap-1">
+            <ThemeToggle className="p-2 rounded-lg text-sf-muted hover:text-sf-bright hover:bg-sf-hover transition-colors" />
+
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="lg:hidden p-2 text-sf-muted hover:text-sf-bright transition-colors"
+            >
+              {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile nav */}
