@@ -2,6 +2,96 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Theme tokens as space-separated RGB channels (tailwind.config.js wraps them
+ * in rgb(var(--x) / <alpha-value>)). :root is the light theme; the original
+ * dark green applies under [data-theme="dark"], which public/theme.js sets
+ * from the saved preference or the system setting before the first paint.
+ */
+:root {
+  color-scheme: light;
+  --sf-bg: 244 248 243;
+  --sf-panel: 255 255 255;
+  --sf-card: 255 255 255;
+  --sf-border: 207 222 203;
+  --sf-hover: 225 236 223;
+  --sf-accent: 74 138 70;
+  --sf-green: 61 125 61;
+  --sf-bright: 42 122 42;
+  --sf-text: 20 36 20;
+  --sf-muted: 88 116 88;
+  --sf-dim: 138 163 138;
+  --courage: 212 93 93;
+  --courage-light: 159 47 47;
+  --spirit: 76 159 82;
+  --spirit-light: 46 107 51;
+  --grace: 92 107 192;
+  --grace-light: 54 65 143;
+  --tw-red-300: 185 28 28;
+  --tw-red-400: 220 38 38;
+  --tw-amber-300: 180 83 9;
+  --tw-amber-400: 217 119 6;
+  --tw-yellow-400: 161 98 7;
+  --tw-green-400: 21 128 61;
+  --tw-emerald-300: 4 120 87;
+  --tw-blue-300: 29 78 216;
+  --tw-purple-300: 126 34 206;
+  --tw-purple-400: 147 51 234;
+  --tw-gray-300: 55 65 81;
+  --tw-orange-300: 194 65 12;
+  --tw-orange-400: 234 88 12;
+  --tw-cyan-400: 14 116 144;
+  --tw-red-900: 252 165 165;
+  --tw-orange-900: 253 186 116;
+  --tw-amber-900: 252 211 77;
+  --tw-green-900: 134 239 172;
+  --tw-blue-900: 147 197 253;
+  --tw-purple-900: 216 180 254;
+  --sf-on-accent: 255 255 255;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --sf-bg: 10 15 10;
+  --sf-panel: 15 26 15;
+  --sf-card: 20 32 20;
+  --sf-border: 30 58 30;
+  --sf-hover: 26 46 26;
+  --sf-accent: 45 90 45;
+  --sf-green: 74 140 74;
+  --sf-bright: 106 191 106;
+  --sf-text: 200 230 200;
+  --sf-muted: 122 159 122;
+  --sf-dim: 58 90 58;
+  --courage: 229 115 115;
+  --courage-light: 255 205 210;
+  --spirit: 129 199 132;
+  --spirit-light: 200 230 201;
+  --grace: 121 134 203;
+  --grace-light: 197 202 233;
+  --tw-red-300: 252 165 165;
+  --tw-red-400: 248 113 113;
+  --tw-amber-300: 252 211 77;
+  --tw-amber-400: 251 191 36;
+  --tw-yellow-400: 250 204 21;
+  --tw-green-400: 74 222 128;
+  --tw-emerald-300: 110 231 183;
+  --tw-blue-300: 147 197 253;
+  --tw-purple-300: 216 180 254;
+  --tw-purple-400: 192 132 252;
+  --tw-gray-300: 209 213 219;
+  --tw-orange-300: 253 186 116;
+  --tw-orange-400: 251 146 60;
+  --tw-cyan-400: 34 211 238;
+  --tw-red-900: 127 29 29;
+  --tw-orange-900: 124 45 18;
+  --tw-amber-900: 120 53 15;
+  --tw-green-900: 20 83 45;
+  --tw-blue-900: 30 58 138;
+  --tw-purple-900: 88 28 135;
+  --sf-on-accent: 200 230 200;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -10,8 +100,8 @@
 
 body {
   font-family: 'Inter', sans-serif;
-  background-color: #0a0f0a;
-  color: #c8e6c8;
+  background-color: rgb(var(--sf-bg));
+  color: rgb(var(--sf-text));
   min-height: 100vh;
 }
 
@@ -24,16 +114,16 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 ::-webkit-scrollbar-track {
-  background: #0a0f0a;
+  background: rgb(var(--sf-bg));
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e3a1e;
+  background: rgb(var(--sf-border));
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2d5a2d;
+  background: rgb(var(--sf-accent));
 }
 
 input[type="checkbox"] {
@@ -41,9 +131,9 @@ input[type="checkbox"] {
   -webkit-appearance: none;
   width: 18px;
   height: 18px;
-  border: 2px solid #2d5a2d;
+  border: 2px solid rgb(var(--sf-accent));
   border-radius: 3px;
-  background: #0a0f0a;
+  background: rgb(var(--sf-bg));
   cursor: pointer;
   position: relative;
   flex-shrink: 0;
@@ -51,13 +141,13 @@ input[type="checkbox"] {
 }
 
 input[type="checkbox"]:hover {
-  border-color: #4a8c4a;
-  background: #142014;
+  border-color: rgb(var(--sf-green));
+  background: rgb(var(--sf-card));
 }
 
 input[type="checkbox"]:checked {
-  background: #2d5a2d;
-  border-color: #4a8c4a;
+  background: rgb(var(--sf-accent));
+  border-color: rgb(var(--sf-green));
 }
 
 input[type="checkbox"]:checked::after {
@@ -66,7 +156,7 @@ input[type="checkbox"]:checked::after {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #c8e6c8;
+  color: rgb(var(--sf-on-accent));
   font-size: 12px;
   font-weight: bold;
 }

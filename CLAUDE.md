@@ -96,23 +96,27 @@ Fonts are loaded from `@fontsource` npm packages (self-hosted, no Google Fonts C
 
 ## Styling
 
-Dark fantasy color palette — all custom colors are prefixed `sf-` in Tailwind (defined in `tailwind.config.js`):
+Dark fantasy color palette in **light and dark** — all custom colors are prefixed `sf-` in Tailwind. The values are CSS variables (RGB channels) defined in `src/index.css`: `:root` is the light theme, `:root[data-theme="dark"]` the original dark green, and `tailwind.config.js` maps each token with `rgb(var(--x) / <alpha-value>)` so opacity modifiers keep working. Never hardcode a hex for a themed surface — add or reuse a variable.
 
-| Token | Hex | Role |
-|-------|-----|------|
-| `sf-bg` | `#0a0f0a` | Page background |
-| `sf-panel` | `#0f1a0f` | Nav / sidebar panels |
-| `sf-card` | `#142014` | Card backgrounds |
-| `sf-border` | `#1e3a1e` | Borders, dividers |
-| `sf-hover` | `#1a2e1a` | Hover state fills |
-| `sf-accent` | `#2d5a2d` | Active nav, focus rings |
-| `sf-green` | `#4a8c4a` | Secondary accent |
-| `sf-bright` | `#6abf6a` | Highlighted text, links |
-| `sf-text` | `#c8e6c8` | Primary body text |
-| `sf-muted` | `#7a9f7a` | Secondary / placeholder text |
-| `sf-dim` | `#3a5a3a` | Tertiary / disabled |
+**Theme switching:** `public/theme.js` is a plain blocking `<script>` at the top of `index.html`'s `<head>` (so it runs before first paint — no flash). It reads the preference (`system` default, `light`, `dark`) from `localStorage['theme']`, resolves `system` with `prefers-color-scheme` (and follows OS changes live), and sets `<html data-theme="light|dark">`. It exposes `window.siteTheme` (`get` / `set` / `resolved` / `subscribe`); `src/components/ThemeToggle.jsx` in the header cycles Match system → Light → Dark. It is served from `'self'`, so the CSP needs no change.
 
-Three virtue colours also defined for stat indicators:
+The stock Tailwind shades used as accent text (`text-amber-300`, `text-red-400`, …) are pale tints that vanish on white, so `tailwind.config.js` re-points those specific shades at variables that deepen in light mode; the `-900`s behind tinted washes lighten instead. If you use a new stock shade for text, add it there too.
+
+| Token | Dark | Light | Role |
+|-------|-----|-----|------|
+| `sf-bg` | `#0a0f0a` | `#f4f8f3` | Page background |
+| `sf-panel` | `#0f1a0f` | `#ffffff` | Nav / sidebar panels |
+| `sf-card` | `#142014` | `#ffffff` | Card backgrounds |
+| `sf-border` | `#1e3a1e` | `#cfdecb` | Borders, dividers |
+| `sf-hover` | `#1a2e1a` | `#e1ecdf` | Hover state fills |
+| `sf-accent` | `#2d5a2d` | `#4a8a46` | Active nav, focus rings |
+| `sf-green` | `#4a8c4a` | `#3d7d3d` | Secondary accent |
+| `sf-bright` | `#6abf6a` | `#2a7a2a` | Highlighted text, links |
+| `sf-text` | `#c8e6c8` | `#142414` | Primary body text |
+| `sf-muted` | `#7a9f7a` | `#587458` | Secondary / placeholder text |
+| `sf-dim` | `#3a5a3a` | `#8aa38a` | Tertiary / disabled |
+
+Three virtue colours also defined for stat indicators (CSS variables too; the `-light` text variants turn dark in the light theme):
 - `courage` / `courage-light` — red (`#e57373` / `#ffcdd2`)
 - `spirit` / `spirit-light` — green (`#81c784` / `#c8e6c9`)
 - `grace` / `grace-light` — indigo (`#7986cb` / `#c5cae9`)
