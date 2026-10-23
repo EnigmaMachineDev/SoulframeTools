@@ -123,7 +123,7 @@ export const PACTS = [
     name: 'Duelo',
     type: 'Normal',
     alignedVirtue: 'grace',
-    bonusLife: 110, // TBD — assumed from wiki pending in-game confirmation
+    bonusLife: 109, // in-game Oct 2026: 238 Life at 7C / 41S / 4G = 2 + 70 + 41 + 16 + 109
     bonusVirtue: null,
     unarmedDmg: null, // TBD
     physicalDefense: null, // TBD
@@ -249,12 +249,14 @@ export const PACT_ART_VIRTUE_VALUES = [1, 3, 6];
 //   Voided   → Forestall (cheat death)
 // Per wiki Pact_Arts (Oct 2026): Physic is +1 Life Elixir per point; Wingspan is 2 ranks of
 // +7 / +14 s before a forced revive; Rooted cuts Stagger taken by ~50% at max rank.
+// Max ranks read off the in-game Duelo tree (Oct 2026): Rooted 4, Physic / Stalwart / Forestall /
+// Wingspan 2 each.
 // TODO: Rooted's per-rank values, and Stalwart / Forestall's chances, are untested on the wiki —
 // their `values` are still placeholders.
 export const GENERAL_ARTS = [
-  { name: 'Physic', description: 'Survival graces the well-prepared. Increase the amount of Life Elixirs you can carry.', values: [1, 2, 3, 4], maxRank: 4 },
+  { name: 'Physic', description: 'Survival graces the well-prepared. Increase the amount of Life Elixirs you can carry.', values: [1, 2], maxRank: 2 },
   { name: 'Rooted', description: 'Defence against Stagger is heightened.', values: [1, 2, 3, 4], maxRank: 4 },
-  { name: 'Stalwart', description: 'Stand tall. Gain a chance to resist being knocked down.', values: [1, 2, 3, 4], maxRank: 4 },
-  { name: 'Forestall', description: 'Cheat death once more. Gain a chance to survive where otherwise you would die.', values: [1, 2, 3, 4], maxRank: 4 },
+  { name: 'Stalwart', description: 'Stand tall. Gain a chance to resist being knocked down.', values: [1, 2], maxRank: 2 },
+  { name: 'Forestall', description: 'Cheat death once more. Gain a chance to survive where otherwise you would die.', values: [1, 2], maxRank: 2 },
   { name: 'Wingspan', description: 'Sparrow Soul has more time to return.', values: [7, 14], maxRank: 2 },
 ];

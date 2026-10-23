@@ -14,8 +14,12 @@
 // Armour raised. Blinding Bite is a flat 8 m at every rank.
 //
 // Oct 2026 wiki re-sync: Arcanic Gnaws and Voltaic Scurry are damage-vulnerability multipliers on
-// the Smitten foe, not flat damage. Noble Nestling's 5/8/10/12 were durations in seconds; only its
-// Rank 3 buff (13%) is published, so lower ranks show "?". P16 Hotfix 4 made Sprout Spring share
+// the Smitten foe, not flat damage. Noble Nestling stays 5/8/10/12% — the wiki module labels those
+// as seconds, but the in-game card reads "Buff Virtue 12% ..." with no duration (a Rank 3 Totem in a
+// "Bonus Applied" slot — so the wiki's 15% slot-bonus figure for Rank 3 doesn't match the game).
+//
+// Slot bonus: a Totem in a matching slot on the weapon's Totem ring shows "Bonus Applied" and uses the
+// wiki's `gripBonusBase` values. The site only lists the base values and doesn't model the bonus yet. P16 Hotfix 4 made Sprout Spring share
 // the Smite with the closest ally only (the wiki module still says "all allies").
 
 export const TOTEM_ANIMALS = ['Beaver', 'Duck', 'Fawn', 'Rabbit', 'Rat', 'Squirrel'];
@@ -157,10 +161,10 @@ export const TOTEMS = [
     'Increase Smite duration by +4 seconds',
   ] },
   { name: 'Noble Nestling', animal: 'Rat', effect: [
-    'Buff the Virtue matching the enemy soul colour by ?% for 5 s on Pull Smite',
-    'Buff the Virtue matching the enemy soul colour by ?% for 8 s on Pull Smite',
-    'Buff the Virtue matching the enemy soul colour by ?% for 10 s on Pull Smite',
-    'Buff the Virtue matching the enemy soul colour by 13% for 12 s on Pull Smite',
+    'Buff Virtue 5% associated with enemy soul colour on Pull Smite',
+    'Buff Virtue 8% associated with enemy soul colour on Pull Smite',
+    'Buff Virtue 10% associated with enemy soul colour on Pull Smite',
+    'Buff Virtue 12% associated with enemy soul colour on Pull Smite',
   ] },
 
   // ========== SQUIRREL (Smite spread / speed / Voltaic) ==========
