@@ -12,6 +12,11 @@
 // cut to 0.5–2%, Spreading Sploot's reach cut to 5–7 m (and it now keys off Pull Smite), damage
 // Totem radii reduced (Binky Kick, Hare Harms), Thunder Tail's Stagger lowered, Stocky Lodge's
 // Armour raised. Blinding Bite is a flat 8 m at every rank.
+//
+// Oct 2026 wiki re-sync: Arcanic Gnaws and Voltaic Scurry are damage-vulnerability multipliers on
+// the Smitten foe, not flat damage. Noble Nestling's 5/8/10/12 were durations in seconds; only its
+// Rank 3 buff (13%) is published, so lower ranks show "?". P16 Hotfix 4 made Sprout Spring share
+// the Smite with the closest ally only (the wiki module still says "all allies").
 
 export const TOTEM_ANIMALS = ['Beaver', 'Duck', 'Fawn', 'Rabbit', 'Rat', 'Squirrel'];
 
@@ -126,18 +131,18 @@ export const TOTEMS = [
     'Pull Smite causes +80 damage explosion 8 m around the Enemy',
   ] },
   { name: 'Sprout Spring', animal: 'Rabbit', effect: [
-    'Effects of Pull Smite has a 20% chance of spreading to all allies',
-    'Effects of Pull Smite has a 33.3% chance of spreading to all allies',
-    'Effects of Pull Smite has a 33.3% chance of spreading to all allies',
-    'Effects of Pull Smite has a 50% chance of spreading to all allies',
+    'Effects of Pull Smite have a 20% chance of spreading to the closest ally',
+    'Effects of Pull Smite have a 33.3% chance of spreading to the closest ally',
+    'Effects of Pull Smite have a 33.3% chance of spreading to the closest ally',
+    'Effects of Pull Smite have a 50% chance of spreading to the closest ally',
   ] },
 
   // ========== RAT (Smite damage / duration / virtue) ==========
   { name: 'Arcanic Gnaws', animal: 'Rat', effect: [
-    'Increases Arcanic damage by +5 on Smite',
-    'Increases Arcanic damage by +15 on Smite',
-    'Increases Arcanic damage by +20 on Smite',
-    'Increases Arcanic damage by +25 on Smite',
+    'Inflicts 1.05x Arcanic Damage Vulnerability on Smitten foes',
+    'Inflicts 1.15x Arcanic Damage Vulnerability on Smitten foes',
+    'Inflicts 1.2x Arcanic Damage Vulnerability on Smitten foes',
+    'Inflicts 1.25x Arcanic Damage Vulnerability on Smitten foes',
   ] },
   { name: 'Bandicota Blast', animal: 'Rat', effect: [
     'Smite creates a blast that Staggers and deals +100 Stagger damage to nearby enemies',
@@ -152,10 +157,10 @@ export const TOTEMS = [
     'Increase Smite duration by +4 seconds',
   ] },
   { name: 'Noble Nestling', animal: 'Rat', effect: [
-    'Buff Virtue 5% associated with enemy soul colour on Pull Smite',
-    'Buff Virtue 8% associated with enemy soul colour on Pull Smite',
-    'Buff Virtue 10% associated with enemy soul colour on Pull Smite',
-    'Buff Virtue 12% associated with enemy soul colour on Pull Smite',
+    'Buff the Virtue matching the enemy soul colour by ?% for 5 s on Pull Smite',
+    'Buff the Virtue matching the enemy soul colour by ?% for 8 s on Pull Smite',
+    'Buff the Virtue matching the enemy soul colour by ?% for 10 s on Pull Smite',
+    'Buff the Virtue matching the enemy soul colour by 13% for 12 s on Pull Smite',
   ] },
 
   // ========== SQUIRREL (Smite spread / speed / Voltaic) ==========
@@ -178,9 +183,9 @@ export const TOTEMS = [
     '20% chance to Smite another enemy within 7 m of Pull Smite',
   ] },
   { name: 'Voltaic Scurry', animal: 'Squirrel', effect: [
-    'Increase Voltaic Damage by +5 on Smitten enemies',
-    'Increase Voltaic Damage by +15 on Smitten enemies',
-    'Increase Voltaic Damage by +20 on Smitten enemies',
-    'Increase Voltaic Damage by +25 on Smitten enemies',
+    'Inflicts 1.05x Voltaic Damage Vulnerability on Smitten foes',
+    'Inflicts 1.15x Voltaic Damage Vulnerability on Smitten foes',
+    'Inflicts 1.2x Voltaic Damage Vulnerability on Smitten foes',
+    'Inflicts 1.25x Voltaic Damage Vulnerability on Smitten foes',
   ] },
 ];

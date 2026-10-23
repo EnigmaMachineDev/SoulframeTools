@@ -247,12 +247,14 @@ export const PACT_ART_VIRTUE_VALUES = [1, 3, 6];
 //   Healer   → Physic    (Life Elixir capacity)
 //   Sympathy → Stalwart  (resist knockdown)
 //   Voided   → Forestall (cheat death)
-// TODO[P15 values]: per-rank values below are pre-P15 placeholders — confirm
-// the new chance/amount values from the wiki/in-game and update `values`.
+// Per wiki Pact_Arts (Oct 2026): Physic is +1 Life Elixir per point; Wingspan is 2 ranks of
+// +7 / +14 s before a forced revive; Rooted cuts Stagger taken by ~50% at max rank.
+// TODO: Rooted's per-rank values, and Stalwart / Forestall's chances, are untested on the wiki —
+// their `values` are still placeholders.
 export const GENERAL_ARTS = [
   { name: 'Physic', description: 'Survival graces the well-prepared. Increase the amount of Life Elixirs you can carry.', values: [1, 2, 3, 4], maxRank: 4 },
   { name: 'Rooted', description: 'Defence against Stagger is heightened.', values: [1, 2, 3, 4], maxRank: 4 },
   { name: 'Stalwart', description: 'Stand tall. Gain a chance to resist being knocked down.', values: [1, 2, 3, 4], maxRank: 4 },
   { name: 'Forestall', description: 'Cheat death once more. Gain a chance to survive where otherwise you would die.', values: [1, 2, 3, 4], maxRank: 4 },
-  { name: 'Wingspan', description: 'Sparrow Soul has more time to return.', values: [1, 2, 3, 4], maxRank: 4 },
+  { name: 'Wingspan', description: 'Sparrow Soul has more time to return.', values: [7, 14], maxRank: 2 },
 ];

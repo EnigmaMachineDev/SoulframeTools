@@ -308,7 +308,11 @@ export const gameData = {
     },
   },
   // P16 Legendary Epithets — names for a Legendary weapon, earned by feats around Alca.
-  // Source: Preludes 16 patch notes; Star Mortar was removed in Hotfix 1 (unearnable).
+  // Source: Preludes 16 patch notes + wiki Module:Data/Epithets; Star Mortar was removed in Hotfix 1
+  // (unearnable). Hotfix 4 added Couleurer, The Steedless, Finnerkin, Harmony and The Scatheless.
+  // Renames keep their old ids so saved checklist progress survives (Rattling Death → Rattling Woe,
+  // Coffee Cracker → Coffer Cracker). The wiki currently swaps The Talus / Doppelhänder's
+  // requirements against their own categories, so ours are kept as they were.
   epithets: {
     label: "Legendary Epithets",
     icon: "Crown",
@@ -363,16 +367,20 @@ export const gameData = {
           { id: "epi-the-talus", name: "The Talus", desc: "Defeat 100 foes with Heavy Attacks.", wiki: "Epithets" },
           { id: "epi-wrakedom", name: "Wrakedom", desc: "Defeat 100 foes with Ripostes.", wiki: "Epithets" },
           { id: "epi-silvernsent", name: "Silvernsent", desc: "Defeat 100 foes with Headshots.", wiki: "Epithets" },
-          { id: "epi-rattling-death", name: "Rattling Death", desc: "Defeat 100 foes with Finishers.", wiki: "Epithets" },
+          { id: "epi-rattling-death", name: "Rattling Woe", desc: "Defeat 100 foes with Finishers.", wiki: "Epithets" },
           { id: "epi-perdurant", name: "Perdurant", desc: "Defeat 100 foes with less than 50% of your Life.", wiki: "Epithets" },
-          { id: "epi-unweaver", name: "Unweaver", desc: "Defeat 100 foes while having maximum Rune charges.", wiki: "Epithets" },
+          { id: "epi-unweaver", name: "Unweaver", desc: "Defeat 100 foes while having a full Rune charge meter.", wiki: "Epithets" },
+          { id: "epi-the-steedless", name: "The Steedless", desc: "Travel 100,000 metres on foot.", wiki: "Epithets" },
+          { id: "epi-finnerkin", name: "Finnerkin", desc: "Swim 1,000 metres.", wiki: "Epithets" },
+          { id: "epi-harmony", name: "Harmony", desc: "Defeat 100 foes with Runes.", wiki: "Epithets" },
+          { id: "epi-the-scatheless", name: "The Scatheless", desc: "Defeat 5 foes without taking damage.", wiki: "Epithets" },
         ],
       },
       eventMastery: {
         label: "Event Mastery",
         items: [
-          { id: "epi-madabane", name: "Madabane", desc: "Complete 10 encounters of The Collector.", wiki: "Epithets" },
-          { id: "epi-laudanum", name: "Laudanum", desc: "Complete 10 encounters of The Organ.", wiki: "Epithets" },
+          { id: "epi-madabane", name: "Madabane", desc: "Complete 5 Collector Operations.", wiki: "Epithets" },
+          { id: "epi-laudanum", name: "Laudanum", desc: "Complete 5 Organ Operations.", wiki: "Epithets" },
           { id: "epi-besetn-t", name: "Besetn't", desc: "Complete 5 Sieges.", wiki: "Epithets" },
           { id: "epi-folksblade", name: "Folksblade", desc: "Complete 10 Votives.", wiki: "Epithets" },
         ],
@@ -383,6 +391,7 @@ export const gameData = {
           { id: "epi-kane-s-revenant", name: "Kane's Revenant", desc: "Forge 9 Armour pieces.", wiki: "Epithets" },
           { id: "epi-sung-of-steel", name: "Sung of Steel", desc: "Hone 6 Weapons to Legendary.", wiki: "Epithets" },
           { id: "epi-stirring-stick", name: "Stirring Stick", desc: "Brew 9 Elixirs.", wiki: "Epithets" },
+          { id: "epi-couleurer", name: "Couleurer", desc: "Gather 3 Figments.", wiki: "Epithets" },
         ],
       },
       dungeonMastery: {
@@ -397,7 +406,7 @@ export const gameData = {
       collections: {
         label: "Collections",
         items: [
-          { id: "epi-coffee-cracker", name: "Coffee Cracker", desc: "Open 100 Rare Chests.", wiki: "Epithets" },
+          { id: "epi-coffee-cracker", name: "Coffer Cracker", desc: "Open 25 Rare Chests.", wiki: "Epithets" },
           { id: "epi-hoard-warden", name: "Hoard-Warden", desc: "Collect 10,000 Dracs.", wiki: "Epithets" },
         ],
       },
