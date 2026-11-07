@@ -32,7 +32,7 @@ No TypeScript — everything is plain `.jsx` / `.js`.
 
 ## Data layer
 
-All game data is **static JS exports** in `src/data/`. There is no database, no API call, no build step that pulls live data. When the game patches, update these files by hand from [wiki.avakot.org](https://wiki.avakot.org).
+All game data is **static JS exports** in `src/data/`. There is no database, no API call, no build step that pulls live data. When the game patches, update these files by hand from [wiki.avakot.org](https://wiki.avakot.org). The wiki now blocks automated requests, so save `?action=raw` pages from a normal browser.
 
 | File | Exports | Notes |
 |------|---------|-------|
@@ -48,6 +48,12 @@ All game data is **static JS exports** in `src/data/`. There is no database, no 
 | `weaponTempers.js` | `POSSIBLE_TEMPERS` | Per-weapon Temper eligibility copied from the wiki's `Module:Data/Weapons` — not derivable from Combat Art + Origin |
 | `gameData.js` | `gameData`, helper functions | Flat checklist registry — weapons/armour/etc. listed by id and name only, no stat data |
 | `calculations.js` | stat formula functions | See below |
+
+**When sources disagree:** use the wiki unless the patch notes say otherwise. An in-game reading already on record outranks both. Record each disagreement and which source won.
+
+**Append new entries, never insert.** Build Planner codes store array positions for Pacts, armour pieces, weapons, Runes and Talismans, so adding an entry mid-list silently changes what old codes load. Add to the end of each array, and of `ARMOUR_SETS`, even when an item belongs in an earlier group. Unpublished stats stay `null`, and the pages show them as "—" or "Unknown".
+
+Open Preludes 17 data gaps are tracked in `P17-OPEN-ITEMS.md`.
 
 When adding a new weapon patch: copy an existing entry in `weapons.js` and update every field. `attuneCap` is the wiki's `VirtueAttuneCap` field — it is **not** an enforced bonus cap in the calculation logic (see the comment at the top of `calculations.js`). Also add the new weapon to `gameData.js` under the appropriate category so it appears in the Checklist. Add its `PossibleTempers` list to `weaponTempers.js` too, or the Build Planner and Weapon Compare will offer it no Tempers.
 

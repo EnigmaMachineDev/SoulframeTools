@@ -66,9 +66,9 @@ export default function WeaponCompare() {
     { label: 'Base Attack', a: statsA.attackAtRank, b: statsB.attackAtRank, fmt: (s) => s.r0 != null ? `${s.r0} → ${s.attackAtRank}` : '—', cmp: (s) => s.attackAtRank },
     { label: 'Attunement', a: statsA.attunement, b: statsB.attunement, fmt: (s) => s.meetsRequirement ? `+${s.attunement}` : 'Req not met', cmp: (s) => s.meetsRequirement ? s.attunement : -1 },
     { label: 'Craftwork', a: statsA.craftworkDmg, b: statsB.craftworkDmg, fmt: (s, side) => `${side.tier.name}${s.craftworkDmg ? ` (+${s.craftworkDmg})` : ''}`, cmp: (s) => s.craftworkDmg, sideAware: true },
-    { label: 'Total Attack', a: statsA.totalAttack, b: statsB.totalAttack, fmt: (s) => s.totalAttack, cmp: (s) => s.totalAttack, key: true },
-    { label: 'Charged Attack', a: statsA.charged, b: statsB.charged, fmt: (s) => s.charged, cmp: (s) => s.charged, key: true },
-    { label: 'Smite Chance', a: statsA.smiteChance, b: statsB.smiteChance, fmt: (s) => `${s.smiteChance}%`, cmp: (s) => s.smiteChance },
+    { label: 'Total Attack', a: statsA.totalAttack, b: statsB.totalAttack, fmt: (s) => s.r0 != null ? s.totalAttack : '—', cmp: (s) => s.r0 != null ? s.totalAttack : -1, key: true },
+    { label: 'Charged Attack', a: statsA.charged, b: statsB.charged, fmt: (s) => s.r0 != null ? s.charged : '—', cmp: (s) => s.r0 != null ? s.charged : -1, key: true },
+    { label: 'Smite Chance', a: statsA.smiteChance, b: statsB.smiteChance, fmt: (s) => s.smiteChance != null ? `${s.smiteChance}%` : '—', cmp: (s) => s.smiteChance ?? -1 },
     { label: 'Stagger', a: statsA.staggerDamage ?? -1, b: statsB.staggerDamage ?? -1, fmt: (s) => s.staggerDamage ?? '—', cmp: (s) => s.staggerDamage ?? -1 },
   ];
 

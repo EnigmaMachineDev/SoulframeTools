@@ -3,6 +3,11 @@
 // Pact Arts tree: 30 points per pact (60 if Wyld variant exists)
 // Virtue Bonuses: Mora's Pride (Courage), Iridis' Favour (Spirit), Saphene's Gift (Grace)
 //   Each costs 1/3/6/10 points and provides 1/2/3/4 virtue points (updated in Preludes 13)
+//
+// P17 cut the cooldowns of 13 Arcanics and weakened other values on them, without publishing
+// numbers, so any figure in those descriptions predates P17. The Wyld variants are not mentioned.
+// Ode Shrike sits at the end of PACTS because Build Planner codes store array positions. Its
+// nulls mean unpublished, so the Build Planner shows them as Unknown.
 
 export const PACTS = [
   {
@@ -36,9 +41,9 @@ export const PACTS = [
     stabilityIncrease: 1,
     description: 'Stealth and subterfuge pact focused on evasion and critical strikes.',
     arcanics: [
-      { name: 'Picktrix Powder', virtue: 'courage', description: 'Throw a blinding powder that disorients enemies.' },
-      { name: 'Trick of the Light', virtue: 'spirit', description: 'Create a decoy that draws enemy attention and explodes.' },
-      { name: 'Glamour', virtue: 'grace', description: 'Become invisible. Next attack from stealth deals bonus damage.' },
+      { name: 'Picktrix Powder', virtue: 'courage', description: 'Throw a blinding powder that disorients enemies. (P17: cooldown reduced, other values weakened; no longer causes fear.)' },
+      { name: 'Trick of the Light', virtue: 'spirit', description: 'Create a decoy that draws enemy attention and explodes. (P17: cooldown reduced, other values weakened; no longer causes fear.)' },
+      { name: 'Glamour', virtue: 'grace', description: 'Become invisible. Next attack from stealth deals bonus damage. (P17: cooldown reduced, other values weakened.)' },
     ],
     passives: ['Shrouded', 'Pickpocket'],
     passiveDescriptions: ['Reduced detection while sneaking.', 'Chance to steal items from enemies on hit.'],
@@ -55,9 +60,9 @@ export const PACTS = [
     stabilityIncrease: null,
     description: 'Nature-themed pact with healing and crowd control abilities.',
     arcanics: [
-      { name: 'Bestone', virtue: 'courage', description: 'Petrify enemies. Damage multiplied by [2 + Courage × 0.02]. Duration: [Spirit + 20]s. AoE scales with Grace.' },
-      { name: 'Elderbloom', virtue: 'spirit', description: 'Plant a healing bloom. Heals ~25 life per tick. Duration: 18s.' },
-      { name: 'Phantom Flock', virtue: 'grace', description: 'Summon phantom songbirds that attack your target. Duration: ~[0.1 × Spirit + 11]s. Transfers on kill.' },
+      { name: 'Bestone', virtue: 'courage', description: 'Petrify enemies. Damage multiplied by [2 + Courage × 0.02]. Duration: [Spirit + 20]s. AoE scales with Grace. (P17: cooldown reduced, other values weakened; no longer causes fear.)' },
+      { name: 'Elderbloom', virtue: 'spirit', description: 'Plant a healing bloom. Heals ~25 life per tick. Duration: 18s. (P17: cooldown reduced, other values weakened.)' },
+      { name: 'Phantom Flock', virtue: 'grace', description: 'Summon phantom songbirds that attack your target. Duration: ~[0.1 × Spirit + 11]s. Transfers on kill. (P17: cooldown reduced, other values weakened; no longer causes fear.)' },
     ],
     passives: ['Tendril', 'Vernal Pool'],
     passiveDescriptions: ['Enemy attacks may trigger creeping Tendrils that slow and damage.', 'Arcanic cooldowns recharge faster when standing in water.'],
@@ -93,12 +98,12 @@ export const PACTS = [
     stabilityIncrease: 1,
     description: 'Fire-themed pact channeling the power of the red sun Mora.',
     arcanics: [
-      { name: 'Ignus Wroth', virtue: 'courage', description: 'Unleash a devastating fire attack that deals massive Flame damage.' },
+      { name: 'Ignus Wroth', virtue: 'courage', description: 'Unleash a devastating fire attack that deals massive Flame damage. (P17: cooldown reduced, other values weakened.)' },
       { name: 'Ember', virtue: 'spirit', description: 'Hurl a fireball that deals Flame damage on impact.' },
-      { name: 'Inferno', virtue: 'grace', description: 'Unleash a wave of flame damage in a cone.' },
+      { name: 'Inferno', virtue: 'grace', description: 'Unleash a wave of flame damage in a cone. (P17: no longer causes fear.)' },
     ],
     passives: ['Hungry Flame', 'Smolder'],
-    passiveDescriptions: ['Melee attacks have a chance to ignite enemies.', 'Fire damage over time on burning enemies.'],
+    passiveDescriptions: ['Melee attacks have a chance to ignite enemies.', 'Flame damage over time on burning enemies.'],
   },
   {
     name: 'Garren Rood',
@@ -112,9 +117,9 @@ export const PACTS = [
     stabilityIncrease: null,
     description: 'Holy warrior pact focused on righteous combat and healing.',
     arcanics: [
-      { name: 'Torment', virtue: 'courage', description: 'Summon the Torment Stag to charge and devastate enemies.' },
-      { name: 'Behest', virtue: 'spirit', description: 'Command allies and bolster their combat effectiveness. Alerts affected enemies. (P14: Sap no longer deals double damage against Agari struck by Behest.)' },
-      { name: 'Stampede', virtue: 'grace', description: 'Charge forward, knocking enemies aside with devastating force.' },
+      { name: 'Torment', virtue: 'courage', description: 'Summon the Torment Stag to charge and devastate enemies. (P17: cooldown reduced, other values weakened.)' },
+      { name: 'Behest', virtue: 'spirit', description: 'Command allies and bolster their combat effectiveness. Alerts affected enemies. (P14: Sap no longer deals double damage against Agari struck by Behest.) (P17: cooldown reduced, other values weakened.)' },
+      { name: 'Stampede', virtue: 'grace', description: 'Charge forward, knocking enemies aside with devastating force. (P17: cooldown reduced, other values weakened.)' },
     ],
     passives: ['Healheart', 'Righteous'],
     passiveDescriptions: ['Passive life regeneration in combat.', 'Bonus damage against corrupted enemies.'],
@@ -131,7 +136,7 @@ export const PACTS = [
     stabilityIncrease: null, // TBD
     description: 'Seafaring fencer pact of Mestra Carmo, the Siren of Coral Graves. Wield the swashbuckling skills of the Blue Ribbon\'s finest swordstress.',
     arcanics: [
-      { name: 'Flintlock', virtue: 'courage', description: 'Break the rules of old. Fire a single shot from your flintlock pistol that pierces enemies and explodes on impact.' },
+      { name: 'Flintlock', virtue: 'courage', description: 'Break the rules of old. Fire a single shot from your flintlock pistol that pierces enemies and explodes on impact. (P17: cooldown reduced, other values weakened; no longer causes fear.)' },
       { name: 'Bravada', virtue: 'spirit', description: 'Invoke The Duelo. Boost allies\' highest virtue while slowing enemies in range.' },
       { name: 'Duo Duelo', virtue: 'grace', description: 'Her past, his future, as one. Spawn a ghostly clone that matches every attack you make.' },
     ],
@@ -151,7 +156,7 @@ export const PACTS = [
     description: 'Tanky pact with high Life and defensive abilities.',
     arcanics: [
       { name: 'Rump Thump', virtue: 'courage', description: 'Powerful ground pound that deals massive AoE stagger damage.' },
-      { name: 'Wevetroot', virtue: 'spirit', description: 'Summon roots from the ground to entangle and damage enemies.' },
+      { name: 'Wevetroot', virtue: 'spirit', description: 'Summon roots from the ground to entangle and damage enemies. (P17: cooldown reduced, other values weakened.)' },
       { name: 'Song of Growth', virtue: 'grace', description: 'Heal yourself and nearby allies over time.' },
     ],
     passives: ['Barkbare', "Canopy's Blessing"],
@@ -169,7 +174,7 @@ export const PACTS = [
     stabilityIncrease: 2,
     description: 'Voltaic-themed pact harnessing Ode technology.',
     arcanics: [
-      { name: 'Seismor', virtue: 'courage', description: 'Slam the ground, dealing AoE Voltaic damage and staggering enemies.' },
+      { name: 'Seismor', virtue: 'courage', description: 'Slam the ground, dealing AoE Voltaic damage and staggering enemies. (P17: cooldown reduced, other values weakened.)' },
       { name: 'Astra Sphere', virtue: 'spirit', description: 'Launch a voltaic projectile that chains between enemies.' },
       { name: 'Atmos Sphere', virtue: 'grace', description: 'Create an electric field that damages nearby enemies.' },
     ],
@@ -233,6 +238,26 @@ export const PACTS = [
     ],
     passives: ['Tendril', 'Vernal Pool'],
     passiveDescriptions: ['Enhanced Tendril proc range.', 'Enhanced water cooldown recharge.'],
+  },
+  // Preludes 17 (appended: see the note at the top of this file)
+  {
+    name: 'Ode Shrike',
+    type: 'Normal',
+    alignedVirtue: null,
+    bonusLife: null,
+    bonusVirtue: null,
+    unarmedDmg: 34,
+    physicalDefense: null,
+    magickDefense: null,
+    stabilityIncrease: null,
+    description: "Ode'n hunter pact of traps and chains. It has no kick: the kick input backdashes and drops an explosive bomb, or just backdashes while the bomb is on cooldown. Crafted from a Fragment earned from the Pigwen Skerry Siphon Votive.",
+    arcanics: [
+      { name: 'Leywiles', virtue: 'courage', description: 'Summon ichorous blades from the ground with every strike of your weapon.' },
+      { name: 'Skyward Swike', virtue: 'spirit', description: 'Fire a Swike that binds an enemy to a skyward lantern, inflicting Damage and leaving them vulnerable to your attacks.' },
+      { name: 'Shacklebolt', virtue: 'grace', description: 'Ensnare enemies with a bolt of shackles. Damaging one shackled enemy inflicts Voltaic Damage on all others in the snare.' },
+    ],
+    passives: ["Poacher's Gambit", 'Guiling Eye'],
+    passiveDescriptions: ['Chance to become firefly invisible each time you are struck by an enemy.', 'Inflicts bonus Poison Damage to enemy weak points.'],
   },
 ];
 

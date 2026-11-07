@@ -40,8 +40,18 @@ export const TALISMANS = [
   // === Unique ===
   { name: 'Cardinal Charm', set: 'Unique', rarity: 'Common', stats: { courage: 1, grace: 1, spirit: 2 } },
   // P16 (unannounced): reach the Soulbound bond rank with your Wolfpup. Equipped, it auto-summons the Pup.
-  { name: "Packblood's Tribute", set: 'Unique', rarity: 'Common', stats: { courage: 2, grace: 4, spirit: 3 } },
+  { name: "Packblood's Tribute", set: 'Companion', rarity: 'Common', stats: { courage: 2, grace: 4, spirit: 3 } },
   { name: 'Prelude Honour', set: 'Unique', rarity: 'Common', stats: { courage: 1, grace: 1, spirit: 1 } },
   { name: "Synod's Bell Jar", set: 'Unique', rarity: 'Common', stats: { courage: 4, grace: 1, spirit: 1 } },
   { name: "Wazzard's Wish", set: 'Unique', rarity: 'Common', stats: { spirit: 1 } },
+
+  // === Preludes 17 (appended: Build Planner codes store this array's positions) ===
+  { name: 'Incubu', set: "Bita's Eve", rarity: 'Uncommon', stats: { courage: 2, spirit: 4 } },
+  { name: 'Selenelion', set: 'Feykin', rarity: 'Uncommon', stats: { courage: 3, grace: 3, spirit: 3 } },
+  { name: 'Feykin Ward', set: 'Feykin', rarity: 'Uncommon', stats: { courage: 5 } },
+  { name: 'Tears of Alora', set: 'Feykin', rarity: 'Uncommon', stats: { grace: 4, spirit: 3 } },
+  { name: 'Heartwood Soams', set: 'Dendrit', rarity: 'Uncommon', stats: { courage: 4, spirit: 3 } },
+  { name: "Faidh's Harpling", set: 'Dendrit', rarity: 'Uncommon', stats: { grace: 3, spirit: 4 } },
+  { name: 'Featherfife', set: 'Dendrit', rarity: 'Uncommon', stats: { grace: 5 } },
+  { name: 'Mandragora', set: 'Dendrit', rarity: 'Uncommon', stats: { spirit: 5 } },
 ];

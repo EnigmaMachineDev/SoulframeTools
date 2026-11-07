@@ -9,7 +9,7 @@ import { TOTEMS, TOTEM_ANIMALS } from '../data/totems';
 import { TALISMANS } from '../data/talismans';
 import { JOINERIES, getJoineriesForWeapon, formatJoineryStats } from '../data/joineries';
 import {
-  calculateWeaponAttunement, calculateChargedAttack,
+  calculateWeaponAttunement, calculateChargedAttack, hasAttackStats,
   calculateTotalLife, calculateTotalDefense,
   calculateCooldownReduction, calculateCraftworkDamage,
 } from '../data/calculations';
@@ -322,22 +322,23 @@ export default function BuildPlanner() {
   function WeaponPanel({ weapon, calc, charged, label, craftworkDmg = 0, craftworkName = 'Stock' }) {
     const r0 = weapon.rank0Damage ?? weapon.baseDamage ?? 0;
     const unknownStats = weapon.baseDamage == null;
+    const noAttack = !hasAttackStats(weapon);
     return (
       <div className="bg-sf-bg/50 rounded-lg p-4 border border-sf-border/50">
         <div className="flex items-center justify-between mb-3"><h4 className="font-semibold text-sf-bright font-['Cinzel']">{weapon.name}</h4><span className="text-xs px-2 py-0.5 rounded bg-sf-border text-sf-muted">{label}</span></div>
         <div className="flex items-center gap-3 mb-3 text-xs text-sf-muted"><span>{weapon.combatArt}</span><span>•</span><span>{weapon.origin}</span><span>•</span><DamageTypeIcon type={weapon.damageType} /></div>
         <div className="space-y-1 mb-3">
-          <StatRow label="Base Attack" value={`${r0} → ${calc.attackAtRank}`} icon={<Sword size={14} />} />
+          <StatRow label="Base Attack" value={noAttack ? '—' : `${r0} → ${calc.attackAtRank}`} icon={<Sword size={14} />} />
           {calc.rankScaling > 0 && <StatRow label="Rank Scaling" value={`+${calc.rankScaling}`} icon={<Zap size={14} />} color="text-blue-300" />}
           <StatRow label="Attunement" value={calc.meetsRequirement ? `+${calc.attunement}` : 'Req. not met'} icon={<Sparkles size={14} />} color={calc.meetsRequirement ? 'text-green-400' : 'text-red-400'} />
           <StatRow label="Craftwork" value={craftworkDmg > 0 ? `${craftworkName} (+${craftworkDmg})` : craftworkName} icon={<Flame size={14} />} color="text-amber-300" />
-          <StatRow label="Total Attack" value={`(+${calc.bonus + craftworkDmg}) ${calc.totalAttack + craftworkDmg}`} icon={<Sword size={14} />} color="text-sf-bright" />
-          <StatRow label="Charged Attack" value={charged + craftworkDmg} icon={<Zap size={14} />} color="text-emerald-300" />
-          <StatRow label="Smite Chance" value={`${weapon.smiteChance}%`} icon={<Target size={14} />} />
+          <StatRow label="Total Attack" value={noAttack ? '—' : `(+${calc.bonus + craftworkDmg}) ${calc.totalAttack + craftworkDmg}`} icon={<Sword size={14} />} color="text-sf-bright" />
+          <StatRow label="Charged Attack" value={noAttack ? '—' : charged + craftworkDmg} icon={<Zap size={14} />} color="text-emerald-300" />
+          <StatRow label="Smite Chance" value={weapon.smiteChance != null ? `${weapon.smiteChance}%` : '—'} icon={<Target size={14} />} />
           <StatRow label="Stagger Damage" value={weapon.staggerDamage ?? '—'} icon={<Shield size={14} />} />
         </div>
         {unknownStats && (
-          <div className="mb-2 p-2 bg-sf-bg border border-sf-border/50 rounded text-[10px] text-sf-muted flex items-start gap-1.5"><Info size={12} className="mt-0.5 shrink-0" /><span>Rank 30 stats not yet published on the wiki — figures shown are Rank 0 with no rank scaling.</span></div>
+          <div className="mb-2 p-2 bg-sf-bg border border-sf-border/50 rounded text-[10px] text-sf-muted flex items-start gap-1.5"><Info size={12} className="mt-0.5 shrink-0" /><span>{noAttack ? 'Attack stats not yet published on the wiki, so attack totals are hidden.' : 'Rank 30 stats not yet published on the wiki — figures shown are Rank 0 with no rank scaling.'}</span></div>
         )}
         {!calc.meetsRequirement && (
           <div className="mt-2 p-2 bg-red-900/20 border border-red-800/30 rounded text-xs text-red-300 flex items-start gap-1.5"><Info size={12} className="mt-0.5 shrink-0" /><span>Virtue requirement not met: {Object.entries(weapon.virtueReq).map(([v, val]) => ` ${v} ${val}`).join(',')}</span></div>
@@ -386,7 +387,7 @@ export default function BuildPlanner() {
         <div className="mt-3 pt-3 border-t border-sf-border/50">
           <h4 className="text-xs uppercase tracking-wider text-sf-muted mb-2">Rune</h4>
           <select value={selectedRuneIdx} onChange={e => setSelectedRuneIdx(Number(e.target.value))} className="w-full bg-sf-bg border border-sf-border rounded-lg px-3 py-2 text-sm text-sf-text focus:outline-none focus:border-sf-accent cursor-pointer"><option value={-1}>None</option>{runes.map((r, i) => <option key={i} value={i}>{r.name}</option>)}</select>
-          {rune && <div className="mt-2 bg-sf-bg/50 rounded p-2.5 border border-sf-accent/20"><p className="text-xs font-medium text-sf-bright">{rune.effect}</p><p className="text-[10px] text-sf-muted mt-1">{rune.description}</p><p className="text-[10px] text-sf-muted mt-1">Unlocks a 4th Totem slot attuned to {rune.totemSlotVirtue}.</p></div>}
+          {rune && <div className="mt-2 bg-sf-bg/50 rounded p-2.5 border border-sf-accent/20"><p className="text-xs font-medium text-sf-bright">{rune.effect}</p><p className="text-[10px] text-sf-muted mt-1">{rune.description}</p><p className="text-[10px] text-sf-muted mt-1">Unlocks a 4th Totem slot attuned to {rune.totemSlotVirtue}.</p>{rune.source && <p className="text-[10px] text-sf-muted mt-1">Source: {rune.source}</p>}</div>}
         </div>
       </SectionCard>
     );
@@ -396,7 +397,7 @@ export default function BuildPlanner() {
     return (
       <SectionCard title="Totems" icon={<Sparkles size={20} className="text-sf-bright" />}>
         <p className="text-xs text-sf-muted mb-3 font-sans">
-          Totems are a pool of Rune / Pull&nbsp;Smite / Smite effects (max rank shown). Select any you plan to run — they trigger in combat and aren&apos;t folded into the Attack summary. Since P16 a Totem only works while the weapon it&apos;s slotted in is drawn.
+          Totems are a pool of Rune / Pull&nbsp;Smite / Smite effects (max rank shown). Select any you plan to run — they trigger in combat and aren&apos;t folded into the Attack summary. Since P17 Pull Smite effects need a living target. Since P16 a Totem only works while the weapon it&apos;s slotted in is drawn.
           <span className="text-sf-bright"> {selectedTotems.length} selected.</span>
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4">
@@ -507,8 +508,9 @@ export default function BuildPlanner() {
             <SelectField label="Pact" value={selectedPactIdx} onChange={e => setSelectedPactIdx(Number(e.target.value))}>{PACTS.map((p, i) => <option key={p.name} value={i}>{p.name}{p.type === 'Wyld' ? ' (Wyld)' : ''}</option>)}</SelectField>
             <p className="text-xs text-sf-muted mt-2">{pact.description}</p>
             <div className="mt-3 space-y-1">
-              <StatRow label="Bonus Life" value={`+${pact.bonusLife}`} icon={<Heart size={14} />} color="text-green-400" />
-              <StatRow label="Aligned Virtue" value={pact.alignedVirtue.charAt(0).toUpperCase() + pact.alignedVirtue.slice(1)} icon={<Sparkles size={14} />} />
+              <StatRow label="Bonus Life" value={pact.bonusLife != null ? `+${pact.bonusLife}` : 'Unknown'} icon={<Heart size={14} />} color="text-green-400" />
+              <StatRow label="Aligned Virtue" value={pact.alignedVirtue ? pact.alignedVirtue.charAt(0).toUpperCase() + pact.alignedVirtue.slice(1) : 'Unknown'} icon={<Sparkles size={14} />} />
+              {pact.bonusLife == null && <p className="text-[10px] text-sf-muted">Pact stats not yet published, so Total Life leaves out this Pact&apos;s bonus.</p>}
             </div>
             <div className="mt-4 pt-3 border-t border-sf-border/50">
               <h4 className="text-xs uppercase tracking-wider text-sf-muted mb-3">Pact Art Virtue Bonuses</h4>
@@ -593,8 +595,8 @@ export default function BuildPlanner() {
       {/* Row 3: Build Summary (full width) */}
       <SectionCard title="Build Summary" icon={<Target size={20} className="text-sf-bright" />} className="bg-gradient-to-br from-sf-card to-sf-bg">
         <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">
-          <div className="bg-sf-bg/70 rounded-lg p-3 text-center border border-sf-accent/20"><p className="text-[10px] text-sf-muted uppercase mb-1">Primary Atk</p><p className="text-2xl font-bold text-sf-bright">{primaryCalc.totalAttack + primaryCraftworkDmg}</p><p className="text-[10px] text-sf-muted">{primary.name}</p></div>
-          <div className="bg-sf-bg/70 rounded-lg p-3 text-center border border-grace/20"><p className="text-[10px] text-sf-muted uppercase mb-1">Sidearm Atk</p><p className="text-2xl font-bold text-grace">{sidearmCalc.totalAttack + sidearmCraftworkDmg}</p><p className="text-[10px] text-sf-muted">{sidearm.name}</p></div>
+          <div className="bg-sf-bg/70 rounded-lg p-3 text-center border border-sf-accent/20"><p className="text-[10px] text-sf-muted uppercase mb-1">Primary Atk</p><p className="text-2xl font-bold text-sf-bright">{hasAttackStats(primary) ? primaryCalc.totalAttack + primaryCraftworkDmg : '—'}</p><p className="text-[10px] text-sf-muted">{primary.name}</p></div>
+          <div className="bg-sf-bg/70 rounded-lg p-3 text-center border border-grace/20"><p className="text-[10px] text-sf-muted uppercase mb-1">Sidearm Atk</p><p className="text-2xl font-bold text-grace">{hasAttackStats(sidearm) ? sidearmCalc.totalAttack + sidearmCraftworkDmg : '—'}</p><p className="text-[10px] text-sf-muted">{sidearm.name}</p></div>
           <div className="bg-sf-bg/70 rounded-lg p-3 text-center border border-red-800/30"><p className="text-[10px] text-sf-muted uppercase mb-1">Total Life</p><p className="text-2xl font-bold text-red-400">{totalLife}</p></div>
           <div className="bg-sf-bg/70 rounded-lg p-3 text-center border border-blue-800/30"><p className="text-[10px] text-sf-muted uppercase mb-1">Stability</p><p className="text-2xl font-bold text-blue-300">{defense.totalStab}</p></div>
           <div className="bg-sf-bg/70 rounded-lg p-3 text-center border border-orange-800/30"><p className="text-[10px] text-sf-muted uppercase mb-1">Phys Armour</p><p className="text-2xl font-bold text-orange-300">{defense.totalPhys}</p></div>

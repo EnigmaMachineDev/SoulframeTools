@@ -172,7 +172,7 @@ export default function WeaponReference() {
                   <td className="py-2 px-2 text-right text-sf-text">{w.rank0Damage ?? '—'}</td>
                   <td className="py-2 px-2 text-right text-sf-bright">{w.baseDamage ?? '—'}</td>
                   <td className="py-2 px-2 text-right text-amber-300">{w.charged ?? '—'}</td>
-                  <td className="py-2 px-2 text-right text-sf-text">{w.smiteChance}%</td>
+                  <td className="py-2 px-2 text-right text-sf-text">{w.smiteChance != null ? `${w.smiteChance}%` : '—'}</td>
                   <td className="py-2 px-2 text-right text-sf-text">{w.staggerDamage ?? '—'}</td>
                   <td className="py-2 px-2 text-right">{pipCell('courage', 'text-courage')}</td>
                   <td className="py-2 px-2 text-right">{pipCell('spirit', 'text-spirit')}</td>

@@ -95,9 +95,16 @@ export const gameData = {
       heavyMaces: {
         label: "Heavy — Maces",
         items: [
+          { id: "wep-creance", name: "Creance" },
           { id: "wep-orst-iii", name: "Orst-III" },
           { id: "wep-vrusht-ix", name: "Vrusht-IX" },
           { id: "wep-wreath", name: "Wreath" },
+        ],
+      },
+      heavyAxes: {
+        label: "Heavy — Axes",
+        items: [
+          { id: "wep-fulkrom", name: "Fulkrom" },
         ],
       },
       longBladesSwords: {
@@ -170,18 +177,21 @@ export const gameData = {
         items: [
           { id: "wep-bog-myrtle", name: "Bog & Myrtle" },
           { id: "wep-lyke-wake", name: "Lyke-Wake" },
+          { id: "wep-nazilk-urytes-iii", name: "Nazilk-Urytes-III" },
           { id: "wep-oryn-umbr", name: "Oryn-Umbr" },
         ],
       },
       shortBladesSingle: {
         label: "Short Blades — Single",
         items: [
+          { id: "wep-loksprik", name: "Loksprik" },
           { id: "wep-rostrum", name: "Rostrum" },
         ],
       },
       shortBladesDual: {
         label: "Short Blades — Dual",
         items: [
+          { id: "wep-dhrullai", name: "Dhrullai" },
           { id: "wep-rivt-ii", name: "Rivt-II" },
           { id: "wep-the-royal-tines", name: "The Royal Tines" },
           { id: "wep-unsula", name: "Unsula" },
@@ -192,6 +202,7 @@ export const gameData = {
         items: [
           { id: "wep-clivers", name: "Clivers" },
           { id: "wep-cobladh", name: "Cobladh" },
+          { id: "wep-goodys-edge", name: "Goody's Edge" },
           { id: "wep-grimana", name: "Grimana" },
           { id: "wep-grinn", name: "Grinn" },
           { id: "wep-nettle", name: "Nettle" },
@@ -208,7 +219,7 @@ export const gameData = {
     categories: {
       arbearer: { label: "Arbearer Set", items: [{ id: "arm-arbearer-braes", name: "Arbearer's Braes" }, { id: "arm-arbearer-mask", name: "Arbearer's Mask" }, { id: "arm-arbearer-pauncher", name: "Arbearer's Pauncher" }] },
       circade: { label: "Circade Set", items: [{ id: "arm-circade-greaves", name: "Circade's Greaves" }, { id: "arm-circade-gutguard", name: "Circade's Gutguard" }, { id: "arm-circade-helm", name: "Circade's Helm of Deceit" }] },
-      cucurbita: { label: "Cucurbita Set", items: [{ id: "arm-crone-cucurbita", name: "Crone Cucurbita Mask" }, { id: "arm-lil-zook", name: "Lil' Zook Mask" }, { id: "arm-poppa-pepo", name: "Poppa Pepo Mask" }] },
+      cucurbita: { label: "Cucurbita Set", items: [{ id: "arm-crone-cucurbita", name: "Crone Cucurbita Mask" }, { id: "arm-lil-zook", name: "Lil' Zook Mask" }, { id: "arm-poppa-pepo", name: "Poppa Pepo Mask" }, { id: "arm-veltruska-mask", name: "Veltruska Mask" }] },
       fireKing: { label: "Fire King Set", items: [{ id: "arm-fireking-kilt", name: "Fire King's Kilt" }, { id: "arm-fireking-plackart", name: "Fire King's Plackart" }, { id: "arm-fireking-helm", name: "Great Helm of The Fire King" }] },
       forgetfire: { label: "Forgetfire Set", items: [{ id: "arm-brazen-lung", name: "Brazen Lung" }, { id: "arm-forgetfire-braes", name: "Forgetfire Braes" }, { id: "arm-forgetfire-leathers", name: "Forgetfire Leathers" }, { id: "arm-forgetfire-visard", name: "Forgetfire Visard" }] },
       garren: { label: "Garren Set", items: [{ id: "arm-garren-hosen", name: "Garren's Cloven Hosen" }, { id: "arm-garren-crown", name: "Garren's Crown of Grace" }, { id: "arm-garren-regalia", name: "Regalia of Garren Rood" }] },
@@ -229,6 +240,9 @@ export const gameData = {
       wyldTethren: { label: "Wyld Tethren Set", items: [{ id: "arm-wyld-tethren-flamefoot", name: "Wyld Tethren Flamefoot" }, { id: "arm-wyld-tethren-solist", name: "Wyld Tethren Solist Shield" }, { id: "arm-wyld-tethren-hornhelm", name: "Wyld Tethren's Hornhelm" }] },
       mestraUniform: { label: "Mestra's Uniform Set", items: [{ id: "arm-duelo-ribbon", name: "Duelo Ribbon" }, { id: "arm-mestras-helm", name: "Mestra's Helm" }, { id: "arm-mestras-furbelow", name: "Mestra's Furbelow" }, { id: "arm-mestras-breeches", name: "Mestra's Breeches" }] },
       pensive: { label: "Pensive Set", items: [{ id: "arm-pensives-bonnet", name: "Pensive's Bonnet" }, { id: "arm-pensives-cloak", name: "Pensive's Cloak" }, { id: "arm-pensives-pantaloons", name: "Pensive's Pantaloons" }] },
+      shrike: { label: "Shrike Set", items: [{ id: "arm-shrikes-lockmaw", name: "Shrike's Lockmaw" }, { id: "arm-shrikes-claes", name: "Shrike's Claes" }, { id: "arm-shrikes-clavisons", name: "Shrike's Clavisons" }] },
+      ceptet: { label: "Ceptet Set", items: [{ id: "arm-ceptets-skullcap", name: "Ceptet's Skullcap" }, { id: "arm-ceptets-carapace", name: "Ceptet's Carapace" }, { id: "arm-ceptets-gaiters", name: "Ceptet's Gaiters" }] },
+      inquisitor: { label: "Inquisitor Set", items: [{ id: "arm-inquisitors-belfry", name: "Inquisitor's Belfry" }, { id: "arm-inquisitors-birze", name: "Inquisitor's Birze" }, { id: "arm-inquisitors-pulpit", name: "Inquisitor's Pulpit" }] },
       underwear: { label: "Underwear Set", items: [{ id: "arm-helmless", name: "Helmless" }, { id: "arm-laid-bare", name: "Laid Bare" }, { id: "arm-forsaken-rags", name: "Forsaken Rags" }] },
     },
   },
@@ -239,7 +253,7 @@ export const gameData = {
       talismans: {
         label: "Talismans",
         items: [
-          { id: "acc-bloomin-bodkin", name: "Bloomin' Bodkin" }, { id: "acc-cardinal-charm", name: "Cardinal Charm" }, { id: "acc-dawn-pendant", name: "Dawn Pendant" }, { id: "acc-direskull", name: "Direskull" }, { id: "acc-dusk-pendant", name: "Dusk Pendant" }, { id: "acc-medallion-mora", name: "Medallion of Mora" }, { id: "acc-midnight-pendant", name: "Midnight Pendant" }, { id: "acc-molten-mora", name: "Molten Mora" }, { id: "acc-orengalls-fang", name: "Orengall's Fang" }, { id: "acc-paragon-periapt", name: "Paragon Periapt" }, { id: "acc-packbloods-tribute", name: "Packblood's Tribute" }, { id: "acc-prelude-honour", name: "Prelude Honour" }, { id: "acc-roses-bodkin", name: "Rose's Bodkin" }, { id: "acc-sproutfolk-seed", name: "Sproutfolk Seed" }, { id: "acc-sproutfolk-shoot", name: "Sproutfolk Shoot" }, { id: "acc-synods-bell-jar", name: "Synod's Bell Jar" }, { id: "acc-cogah-creutair", name: "The Cogah Creutair" }, { id: "acc-cogah-grod", name: "The Cogah Grod" }, { id: "acc-cogah-lorcaan", name: "The Cogah Lorcaan" }, { id: "acc-triune-talisman", name: "Triune Talisman" }, { id: "acc-wazzards-wish", name: "Wazzard's Wish" }, { id: "acc-wyldings-heart", name: "Wylding's Heart" }, { id: "acc-wyldings-hilt", name: "Wylding's Hilt" }, { id: "acc-wyldings-hush", name: "Wylding's Hush" },
+          { id: "acc-bloomin-bodkin", name: "Bloomin' Bodkin" }, { id: "acc-cardinal-charm", name: "Cardinal Charm" }, { id: "acc-dawn-pendant", name: "Dawn Pendant" }, { id: "acc-direskull", name: "Direskull" }, { id: "acc-dusk-pendant", name: "Dusk Pendant" }, { id: "acc-faidhs-harpling", name: "Faidh's Harpling" }, { id: "acc-featherfife", name: "Featherfife" }, { id: "acc-feykin-ward", name: "Feykin Ward" }, { id: "acc-heartwood-soams", name: "Heartwood Soams" }, { id: "acc-incubu", name: "Incubu" }, { id: "acc-mandragora", name: "Mandragora" }, { id: "acc-medallion-mora", name: "Medallion of Mora" }, { id: "acc-midnight-pendant", name: "Midnight Pendant" }, { id: "acc-molten-mora", name: "Molten Mora" }, { id: "acc-orengalls-fang", name: "Orengall's Fang" }, { id: "acc-packbloods-tribute", name: "Packblood's Tribute" }, { id: "acc-paragon-periapt", name: "Paragon Periapt" }, { id: "acc-prelude-honour", name: "Prelude Honour" }, { id: "acc-roses-bodkin", name: "Rose's Bodkin" }, { id: "acc-selenelion", name: "Selenelion" }, { id: "acc-sproutfolk-seed", name: "Sproutfolk Seed" }, { id: "acc-sproutfolk-shoot", name: "Sproutfolk Shoot" }, { id: "acc-synods-bell-jar", name: "Synod's Bell Jar" }, { id: "acc-tears-of-alora", name: "Tears of Alora" }, { id: "acc-cogah-creutair", name: "The Cogah Creutair" }, { id: "acc-cogah-grod", name: "The Cogah Grod" }, { id: "acc-cogah-lorcaan", name: "The Cogah Lorcaan" }, { id: "acc-triune-talisman", name: "Triune Talisman" }, { id: "acc-wazzards-wish", name: "Wazzard's Wish" }, { id: "acc-wyldings-heart", name: "Wylding's Heart" }, { id: "acc-wyldings-hilt", name: "Wylding's Hilt" }, { id: "acc-wyldings-hush", name: "Wylding's Hush" },
         ],
       },
     },
@@ -249,7 +263,7 @@ export const gameData = {
     icon: "Flame",
     trackLevel: true,
     categories: {
-      normalPacts: { label: "Normal Pacts", items: [{ id: "pact-bromius", name: "Bromius" }, { id: "pact-duelo", name: "Duelo" }, { id: "pact-garren-rood", name: "Garren Rood" }, { id: "pact-moras-hand", name: "Mora's Hand" }, { id: "pact-ode-tempest", name: "Ode Tempest" }, { id: "pact-orengall", name: "Orengall" }, { id: "pact-oscelda", name: "Oscelda" }, { id: "pact-sirin", name: "Sirin" }, { id: "pact-tethren", name: "Tethren" }] },
+      normalPacts: { label: "Normal Pacts", items: [{ id: "pact-bromius", name: "Bromius" }, { id: "pact-duelo", name: "Duelo" }, { id: "pact-garren-rood", name: "Garren Rood" }, { id: "pact-moras-hand", name: "Mora's Hand" }, { id: "pact-ode-shrike", name: "Ode Shrike" }, { id: "pact-ode-tempest", name: "Ode Tempest" }, { id: "pact-orengall", name: "Orengall" }, { id: "pact-oscelda", name: "Oscelda" }, { id: "pact-sirin", name: "Sirin" }, { id: "pact-tethren", name: "Tethren" }] },
       wyldPacts: { label: "Wyld Pacts", items: [{ id: "pact-wyld-oscelda", name: "Wyld Oscelda" }, { id: "pact-wyld-sirin", name: "Wyld Sirin" }, { id: "pact-wyld-tethren", name: "Wyld Tethren" }] },
     },
   },
@@ -257,15 +271,15 @@ export const gameData = {
     label: "Runes",
     icon: "Sparkles",
     categories: {
-      bowRunes: { label: "Bow Runes", items: [{ id: "rune-alcas-breath", name: "Alca's Breath" }, { id: "rune-the-torrent", name: "The Torrent" }] },
-      flybladeRunes: { label: "Flyblade Runes", items: [{ id: "rune-hurlwind", name: "Hurlwind" }, { id: "rune-picktrix", name: "Picktrix" }] },
+      bowRunes: { label: "Bow Runes", items: [{ id: "rune-alcas-breath", name: "Alca's Breath" }, { id: "rune-the-torrent", name: "The Torrent" }, { id: "rune-dissever", name: "Dissever" }, { id: "rune-carrionite", name: "Carrionite" }] },
+      flybladeRunes: { label: "Flyblade Runes", items: [{ id: "rune-hurlwind", name: "Hurlwind" }, { id: "rune-picktrix", name: "Picktrix" }, { id: "rune-reaproot", name: "Reaproot" }, { id: "rune-mortrite", name: "Mortrite" }] },
       // Cindermore keeps its old "rune-everflame-gs" id (it was mislabelled Everflame) so saved progress survives.
-      heavyRunes: { label: "Heavy Runes", items: [{ id: "rune-everflame-gs", name: "Cindermore" }, { id: "rune-treefell", name: "Treefell" }] },
-      longBladeRunes: { label: "Long Blade Runes", items: [{ id: "rune-everflame-lb", name: "Everflame (Long Blade)" }, { id: "rune-the-mistgale", name: "The Mistgale" }] },
-      magickRunes: { label: "Magick Runes", items: [{ id: "rune-archstorm", name: "Archstorm" }, { id: "rune-the-hollowing", name: "The Hollowing" }] },
-      polearmRunes: { label: "Polearm Runes", items: [{ id: "rune-splitbolt", name: "Splitbolt" }, { id: "rune-torcheternal", name: "Torcheternal" }] },
-      shieldRunes: { label: "Shield Runes", items: [{ id: "rune-forburn", name: "Forburn" }, { id: "rune-the-durglint", name: "The Durglint" }] },
-      shortBladeRunes: { label: "Short Blade Runes", items: [{ id: "rune-emberaught", name: "Emberaught" }, { id: "rune-the-flitsmoke", name: "The Flitsmoke" }] },
+      heavyRunes: { label: "Heavy Runes", items: [{ id: "rune-everflame-gs", name: "Cindermore" }, { id: "rune-treefell", name: "Treefell" }, { id: "rune-crimsonfell", name: "Crimsonfell" }, { id: "rune-wardwark", name: "Wardwark" }] },
+      longBladeRunes: { label: "Long Blade Runes", items: [{ id: "rune-everflame-lb", name: "Everflame (Long Blade)" }, { id: "rune-the-mistgale", name: "The Mistgale" }, { id: "rune-smeltsquall", name: "Smeltsquall" }, { id: "rune-fortflank", name: "Fortflank" }] },
+      magickRunes: { label: "Magick Runes", items: [{ id: "rune-archstorm", name: "Archstorm" }, { id: "rune-the-hollowing", name: "The Hollowing" }, { id: "rune-vexipare", name: "Vexipare" }, { id: "rune-lunarcure", name: "Lunarcure" }] },
+      polearmRunes: { label: "Polearm Runes", items: [{ id: "rune-splitbolt", name: "Splitbolt" }, { id: "rune-torcheternal", name: "Torcheternal" }, { id: "rune-astralflare", name: "Astralflare" }, { id: "rune-cragprick", name: "Cragprick" }] },
+      shieldRunes: { label: "Shield Runes", items: [{ id: "rune-forburn", name: "Forburn" }, { id: "rune-the-durglint", name: "The Durglint" }, { id: "rune-scarletsling", name: "Scarletsling" }, { id: "rune-soothesayer", name: "Soothesayer" }] },
+      shortBladeRunes: { label: "Short Blade Runes", items: [{ id: "rune-emberaught", name: "Emberaught" }, { id: "rune-the-flitsmoke", name: "The Flitsmoke" }, { id: "rune-flamepitch", name: "Flamepitch" }, { id: "rune-parapelt", name: "Parapelt" }] },
     },
   },
   locations: {
@@ -281,7 +295,7 @@ export const gameData = {
       dungeons: {
         label: "Dungeons",
         items: [
-          { id: "loc-crypt-circade", name: "Crypt of The Circade" }, { id: "loc-dermak-undercity", name: "Dermak Undercity" }, { id: "loc-glades-andurin", name: "Glades of Andurin" }, { id: "loc-neathuns", name: "Neath'uns" }, { id: "loc-rovgot-ruins", name: "Rovgot Ruins" },
+          { id: "loc-carntyne-colliery", name: "Carntyne Colliery" }, { id: "loc-crypt-circade", name: "Crypt of The Circade" }, { id: "loc-dermak-undercity", name: "Dermak Undercity" }, { id: "loc-glades-andurin", name: "Glades of Andurin" }, { id: "loc-neathuns", name: "Neath'uns" }, { id: "loc-rovgot-ruins", name: "Rovgot Ruins" },
         ],
       },
     },

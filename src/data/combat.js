@@ -23,6 +23,7 @@ export const FINISHERS = [
   { combatArt: 'Heavy', variants: [
     { name: 'Greatswords', front: '150% + 200% + 100%', back: '160% + 210%', frontTotal: 450, backTotal: 370 },
     { name: 'Heavy Maces', front: 'TBD', back: 'TBD', frontTotal: null, backTotal: null },
+    { name: 'Heavy Axes', front: 'TBD', back: 'TBD', frontTotal: null, backTotal: null },
   ] },
   { combatArt: 'Long Blade', variants: [
     { name: 'Longswords', front: '150% + 200%', back: '150% + 200%', frontTotal: 350, backTotal: 350 },
@@ -38,6 +39,7 @@ export const FINISHERS = [
   ] },
   { combatArt: 'Shield', variants: [
     { name: 'Shields', front: '150% + 200%', back: '150% + 200%', frontTotal: 350, backTotal: 350 },
+    { name: 'Hammer and Shield', front: 'TBD', back: 'TBD', frontTotal: null, backTotal: null },
   ] },
   { combatArt: 'Short Blade', variants: [
     { name: 'Daggers', front: '150% + 200%', back: '150% + 200%', frontTotal: 350, backTotal: 350 },
@@ -90,9 +92,10 @@ export const WEAPON_LEVELLING = {
   // Per-class exceptions to the Rank-30 Stagger total.
   staggerMinus10: ['Gwylen', 'Nettle', 'Precklies', 'Thistle', 'Wulder'],
   staggerPlus10: ['Avex', 'Cenotaph', 'Dewelion', 'Espadarte', 'Gathannan', "Marrow's Bane", 'Navalha', 'Purity'],
-  // XP to reach a given rank (cumulative, from unranked): Pact = 1000 × rank²; Weapon = half.
+  // XP to reach a given rank (cumulative, from unranked): Pact = 1000 × rank²; Weapon = a quarter.
+  // P17 cut Weapon XP by 50% from the old half-of-Pact curve. The figure is derived, not published.
   // Foe XP scales by 1 + 0.85 × √(foeLevel), floored. See calculations.js for the functions.
-  xpNote: 'Pact total XP to rank N = 1000 × N²; a Weapon needs half. Rank 30 Pact = 900,000 XP, Weapon = 450,000.',
+  xpNote: 'Pact total XP to rank N = 1000 × N²; a Weapon needs a quarter since P17. Rank 30 Pact = 900,000 XP, Weapon = 225,000.',
 };
 
 // === GROUND FINISHERS (wiki.avakot.org/Damage/Data) ===
@@ -155,5 +158,6 @@ export const SMITE = {
     'Total damage is reduced by 50% against Bosses.',
     'Can be increased by Voided Pact Art and Rat-group Totems.',
     'Smite is considered the "Critical Hit" of Soulframe.',
+    'Since P17, Pull Smite effects only work on a living target: wandering Souls grant no bonus.',
   ],
 };

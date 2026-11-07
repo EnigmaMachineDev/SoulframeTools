@@ -353,7 +353,7 @@ export default function LoadoutRandomizer() {
       {result && (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <ResultCard label="Virtue Focus" value={result.focus?.name} sub={result.focus?.description} error={result.focusError} onReroll={() => reroll('focus')} />
-          <ResultCard label="Pact" value={result.pact?.name} sub={result.pact ? `${result.pact.type} — ${result.pact.alignedVirtue}` : null} error={result.pactError} onReroll={() => reroll('pact')} />
+          <ResultCard label="Pact" value={result.pact?.name} sub={result.pact ? `${result.pact.type} — ${result.pact.alignedVirtue ?? 'Unknown'}` : null} error={result.pactError} onReroll={() => reroll('pact')} />
           <ResultCard label="Primary Weapon" value={result.primary?.name} sub={result.primary ? `${result.primary.combatArt} — ${result.primary.damageType}` : null} scaling={result.primary ? weaponScaling(result.primary) : null} extra={result.primaryRune ? `Rune: ${result.primaryRune.name}` : null} error={result.primaryError} onReroll={() => reroll('primary')} />
           <ResultCard label="Sidearm" value={result.sidearm?.name} sub={result.sidearm ? `${result.sidearm.combatArt} — ${result.sidearm.damageType}` : null} scaling={result.sidearm ? weaponScaling(result.sidearm) : null} extra={result.sidearmRune ? `Rune: ${result.sidearmRune.name}` : null} error={result.sidearmError} onReroll={() => reroll('sidearm')} />
           <ResultCard label="Helm" value={result.helm?.name} sub={result.helm?.setName} scaling={result.helm ? armourScaling(result.helm) : null} error={result.helmError} onReroll={() => reroll('helm')} />
