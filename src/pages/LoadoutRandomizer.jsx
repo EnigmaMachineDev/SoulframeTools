@@ -114,8 +114,12 @@ const STORAGE_KEY = 'sf-randomizer-options';
 
 function loadOptions() {
   try {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    return saved ? JSON.parse(saved) : null;
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if (!saved) return null;
+    // Saved options only cover the items that existed when they were saved. Layer them over the
+    // defaults so items added by a game update start enabled and the user's choices are kept.
+    const defaults = buildDefaultOptions();
+    return Object.fromEntries(Object.keys(defaults).map(key => [key, { ...defaults[key], ...saved[key] }]));
   } catch { return null; }
 }
 

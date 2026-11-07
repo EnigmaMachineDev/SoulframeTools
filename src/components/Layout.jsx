@@ -65,6 +65,8 @@ export default function Layout() {
             {/* Mobile menu button */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
+              aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={mobileOpen}
               className="lg:hidden p-2 text-sf-muted hover:text-sf-bright transition-colors"
             >
               {mobileOpen ? <X size={20} /> : <Menu size={20} />}

@@ -19,6 +19,7 @@ import WeaponCompare from './pages/WeaponCompare.jsx'
 import About from './pages/About.jsx'
 import Contact from './pages/Contact.jsx'
 import PrivacyPolicy from './pages/PrivacyPolicy.jsx'
+import NotFound from './pages/NotFound.jsx'
 import './index.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -36,6 +37,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>

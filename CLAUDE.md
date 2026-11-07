@@ -25,6 +25,7 @@ Route → page mapping:
 - `/weapons` → `src/pages/WeaponReference.jsx`
 - `/armour` → `src/pages/ArmourReference.jsx`
 - `/random` → `src/pages/LoadoutRandomizer.jsx`
+- anything else → `src/pages/NotFound.jsx`
 
 `src/components/Layout.jsx` owns the sticky nav, mobile drawer, and footer. Nav items are declared as a `navItems` array at the top of that file — add new routes there alongside adding the `<Route>` in `main.jsx`.
 

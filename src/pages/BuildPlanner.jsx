@@ -434,9 +434,9 @@ export default function BuildPlanner() {
           <h1 className="text-2xl font-bold text-sf-bright tracking-widest">Build Planner</h1>
           <p className="text-xs text-sf-muted font-sans">Data sourced from wiki.avakot.org</p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
           <div className="flex items-center gap-3">
-            <label className="text-sm text-sf-muted">Envoy Rank</label>
+            <label className="text-sm text-sf-muted whitespace-nowrap">Envoy Rank</label>
             <input type="range" min="1" max="30" value={envoyRank} onChange={e => setEnvoyRank(Number(e.target.value))} className="w-24 accent-sf-accent" />
             <span className="text-sm font-bold text-sf-bright w-6 text-center">{envoyRank}</span>
           </div>
