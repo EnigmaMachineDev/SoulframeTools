@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Shield, Search, ExternalLink, ChevronUp, ChevronDown } from 'lucide-react';
 import { ARMOUR_HELMS, ARMOUR_CUIRASSES, ARMOUR_LEGGINGS, ARMOUR_SETS } from '../data/armour';
+import SourceList from '../components/SourceList';
 
 const ALL_PIECES = [...ARMOUR_HELMS, ...ARMOUR_CUIRASSES, ...ARMOUR_LEGGINGS];
 const SET_NAMES = ARMOUR_SETS.map(s => s.name);
@@ -107,7 +108,7 @@ export default function ArmourReference() {
         </select>
       </div>
 
-      <div className="text-xs text-sf-muted mb-3 font-sans">{filtered.length} pieces — click column headers to sort</div>
+      <div className="text-xs text-sf-muted mb-3 font-sans">{filtered.length} {filtered.length === 1 ? 'piece' : 'pieces'} — click column headers to sort</div>
 
       <div className="overflow-x-auto">
         <table className="w-full text-sm font-sans">
@@ -155,7 +156,7 @@ export default function ArmourReference() {
                   <td className="py-2 px-2 text-right">{armPip(p.attSpirit, 'text-spirit')}</td>
                   <td className="py-2 px-2 text-right">{armPip(p.attGrace, 'text-grace')}</td>
                   <td className="py-2 px-2 text-sf-muted text-xs">{reqStr}</td>
-                  <td className="py-2 px-2 text-sf-muted text-xs max-w-[220px]">{p.location || '—'}</td>
+                  <td className="py-2 px-2 text-sf-muted text-xs max-w-[220px]"><SourceList text={p.location} /></td>
                   <td className="py-2 px-1">
                     <a href={`https://wiki.avakot.org/${wikiSlug}`} target="_blank" rel="noopener noreferrer" className="text-sf-dim hover:text-sf-bright transition-colors"><ExternalLink size={12} /></a>
                   </td>

@@ -10,6 +10,12 @@
 // the Bow/Long Blade and Origin examples — so the Build Planner treats this roll pool as the
 // Strike pool too.
 //
+// P17 fixed Unencumbered being unrollable on Rostrum, so it is listed here even though the wiki
+// module has not caught up. A regenerate would drop it: keep it until the module has it.
+//
+// Dhrullai has no wiki list, so it is offered no Tempers. Loksprik's and Goody's Edge's lists are used
+// as the wiki publishes them, though they look wrong for those weapons' Origins (P17-OPEN-ITEMS.md).
+//
 // Regenerate by converting Module:Data/Weapons to JSON and emitting each released weapon's
 // PossibleTempers (see the avakot-wiki skill for how to fetch module source).
 
@@ -61,7 +67,7 @@ export const POSSIBLE_TEMPERS = {
   'Oryn-Umbr': ['Bounding Swipe', 'Breakneck', 'Bypass', 'Follow Up', 'Fortified', 'From Above', 'Galvanic Strike', 'Hale and Hearty', 'Heightened Parry', 'Rejoinder', "Slinger's Tempo", 'Streamlined', 'Sullying Force', 'Swift Strike', 'Swooning Blow', 'Unencumbered', 'Vengeance'],
   'Lyke-Wake': ['Bounding Swipe', 'Breakneck', 'Follow Up', 'Fortified', 'From Above', 'Hale and Hearty', 'Heightened Parry', 'Hollowed', 'Rejoinder', 'Savagery', 'Sinister Volley', 'Streamlined', 'Sullying Force', 'Swift Strike', 'Swooning Blow', 'Unencumbered', 'Vengeance'],
   'Rivt-II': ['Bounding Swipe', 'Breakneck', 'Bypass', 'Follow Up', 'Fortified', 'From Above', 'Galvanic Strike', 'Hale and Hearty', 'Heightened Parry', 'Rejoinder', "Slinger's Tempo", 'Streamlined', 'Sullying Force', 'Swift Strike', 'Swooning Blow', 'Unencumbered', 'Vengeance'],
-  'Rostrum': ['Bounding Swipe', 'Breakneck', 'Enkindled', 'Follow Up', 'Fortified', 'From Above', 'Hale and Hearty', 'Heightened Parry', "Hunter's Relish", 'Rejoinder', 'Renewed Slayer', 'Streamlined', 'Sullying Force', 'Swift Strike', 'Swooning Blow', 'Vengeance', 'Well Woven'],
+  'Rostrum': ['Bounding Swipe', 'Breakneck', 'Enkindled', 'Follow Up', 'Fortified', 'From Above', 'Hale and Hearty', 'Heightened Parry', "Hunter's Relish", 'Rejoinder', 'Renewed Slayer', 'Streamlined', 'Sullying Force', 'Swift Strike', 'Swooning Blow', 'Unencumbered', 'Vengeance', 'Well Woven'],
   'The Royal Tines': ['Aftershock', 'Bounding Swipe', 'Breakneck', 'Follow Up', 'Fortified', 'From Above', 'Hale and Hearty', 'Heightened Parry', 'Rejoinder', 'Streamlined', 'Sullying Force', 'Swift Strike', 'Swooning Blow', 'Sympathy Pang', 'Unencumbered', 'Vengeance'],
   'Unsula': ['Bounding Swipe', 'Breakneck', 'Bypass', 'Follow Up', 'Fortified', 'From Above', 'Galvanic Strike', 'Hale and Hearty', 'Heightened Parry', 'Rejoinder', "Slinger's Tempo", 'Streamlined', 'Sullying Force', 'Swift Strike', 'Swooning Blow', 'Unencumbered', 'Vengeance'],
   'Clivers': ['Bounding Swipe', 'Breakneck', 'Enkindled', 'Follow Up', 'Fortified', 'From Above', 'Hale and Hearty', 'Heightened Parry', "Hunter's Relish", 'Rejoinder', 'Renewed Slayer', 'Streamlined', 'Sullying Force', 'Swift Strike', 'Swooning Blow', 'Vengeance', 'Well Woven'],
@@ -73,4 +79,9 @@ export const POSSIBLE_TEMPERS = {
   'Grimana': ['Aftershock', 'Bounding Swipe', 'Breakneck', 'Follow Up', 'Fortified', 'From Above', 'Hale and Hearty', 'Heightened Parry', 'Rejoinder', 'Streamlined', 'Sullying Force', 'Swift Strike', 'Swooning Blow', 'Sympathy Pang', 'Vengeance'],
   'Wreath': ['Bounding Swipe', 'Breakneck', 'Cowp', 'Follow Up', 'Fortified', 'From Above', 'Full Force', 'Hollowed', 'Rejoinder', 'Savagery', 'Sinister Volley', 'Streamlined', 'Sullying Force', 'Swift Strike', 'Swooning Blow', 'Vengeance'],
   'Gystalt': ['Arcane Alacrity', 'Arcane Barrage', 'Arcane Rebound', 'Bounding Swipe', 'Bypass', 'Conjuration', 'Cowp', 'Follow Up', 'Fortified', 'From Above', 'Galvanic Strike', 'Grounding Spell', 'Rejoinder', "Slinger's Tempo", 'Sullying Force', 'Swooning Blow', 'Unencumbered'],
+  'Nazilk-Urytes-III': ['Bounding Swipe', 'Breakneck', 'Bypass', 'Follow Up', 'Fortified', 'From Above', 'Galvanic Strike', 'Hale and Hearty', 'Heightened Parry', 'Rejoinder', "Slinger's Tempo", 'Streamlined', 'Sullying Force', 'Swift Strike', 'Swooning Blow', 'Unencumbered', 'Vengeance'],
+  'Fulkrom': ['Bounding Swipe', 'Breakneck', 'Cowp', 'Follow Up', 'Fortified', 'From Above', 'Full Force', 'Hollowed', 'Rejoinder', 'Savagery', 'Sinister Volley', 'Streamlined', 'Sullying Force', 'Swift Strike', 'Swooning Blow', 'Vengeance'],
+  'Creance': ['Bounding Swipe', 'Breakneck', 'Bypass', 'Cowp', 'Follow Up', 'Fortified', 'From Above', 'Full Force', 'Galvanic Strike', 'Rejoinder', "Slinger's Tempo", 'Streamlined', 'Sullying Force', 'Swift Strike', 'Swooning Blow', 'Vengeance'],
+  'Loksprik': ['Bounding Swipe', 'Breakneck', 'Bypass', 'Follow Up', 'Fortified', 'From Above', 'Galvanic Strike', 'Hale and Hearty', 'Heightened Parry', 'Rejoinder', "Slinger's Tempo", 'Streamlined', 'Sullying Force', 'Swift Strike', 'Swooning Blow', 'Unencumbered', 'Vengeance'],
+  "Goody's Edge": ['Bounding Swipe', 'Breakneck', 'Follow Up', 'Fortified', 'From Above', 'Hale and Hearty', 'Heightened Parry', 'Rejoinder', 'Streamlined', 'Sullying Force', 'Swift Strike', 'Swooning Blow', 'Unencumbered', 'Vengeance'],
 };

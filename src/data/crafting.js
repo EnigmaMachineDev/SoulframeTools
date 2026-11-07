@@ -122,7 +122,7 @@ export const TEMPERS = [
   { name: 'Arcane Rebound', origin: 'Universal', weaponType: 'Magick', description: 'Increases damage inflicted through deflected Magick projectiles.', effects: [{ effect: 'Deflected Projectile Damage', single: '~20%', double: '~40%', approx: true }] },
   { name: 'Bounding Swipe', origin: 'Universal', weaponType: 'Non-Bow', description: 'Increases Damage and Stagger while Sprinting.', effects: [{ effect: 'Sprint Attack Damage', single: '12 Damage', double: '24 Damage' }] },
   { name: 'Breakneck', origin: 'Universal', weaponType: 'Melee / Flyblade', description: 'Reduces charging time for Heavy Attacks.', effects: [{ effect: 'Heavy Attack Charge Rate', single: '15%', double: '30%' }] },
-  { name: 'Conjuration', origin: 'Universal', weaponType: 'Magick', description: 'Increases Heavy Cast Damage at full Grounded stacks.', effects: [{ effect: 'Heavy Cast Damage when fully Grounded', single: '+30 Damage', double: '+60 Damage', approx: true }] },
+  { name: 'Conjuration', origin: 'Universal', weaponType: 'Magick', description: 'Increases Heavy Cast Damage at full focus stacks.', effects: [{ effect: 'Heavy Cast Damage at full focus stacks', single: '+30 Damage', double: '+60 Damage', approx: true }] },
   { name: 'Cowp', origin: 'Universal', weaponType: 'Any', description: 'Grants chance for doubled Stagger.', effects: [{ effect: 'Double Stagger Chance', single: '10%', double: '20%' }] },
   { name: 'Follow Up', origin: 'Universal', weaponType: 'Melee / Magick', description: 'Increases Weapon Damage on consecutive attacks following a Heavy Attack.', effects: [{ effect: 'Post Heavy Consecutive Light Damage', single: '7 Damage per Hit, 28 Maximum', double: '14 Damage per Hit, 56 Maximum' }] },
   { name: 'Fortified', origin: 'Universal', weaponType: 'Any', description: 'Reduces Stagger when Blocking.', effects: [] },
@@ -175,7 +175,7 @@ const TEMPER_SUMMARIES = {
   'Arcane Rebound': '~+20% damage from deflected projectiles',
   'Bounding Swipe': '+12 damage and more Stagger while sprinting',
   'Breakneck': '+15% Heavy Attack charge speed',
-  'Conjuration': '+30 Heavy Cast damage when fully Grounded',
+  'Conjuration': '+30 Heavy Cast damage at full focus stacks',
   'Cowp': '10% chance to double Stagger',
   'Follow Up': '+7 damage per hit after a Heavy Attack (max 28)',
   'Fortified': 'Take less Stagger while blocking',
@@ -262,10 +262,12 @@ export const STRIKING = {
   ],
 };
 
-// P16 loot changes that affect which Craftwork you find weapons at.
+// P16 and P17 loot changes that affect which Craftwork, and which weapons, you find.
 export const CRAFTWORK_DROP_NOTES = [
   'Weapons from Rare Chests drop at Military Craftwork or better.',
   'Weapons offered by Enclaves are Officer Craftwork (lowered from Sovereign in P16 Hotfix 3).',
+  'Wares of Zenith offers four Weapons a day at Sovereign Craftwork, with set Arc prices and varying Tempers. Offers reset at 00:00 UTC.',
+  "P17 added lower-Rarity Weapons to Rare Chests: Common Ode'n Weapons in Rare Ode Chests and Crypt of the Circade Rare Chests, and Common and Uncommon Dendrit Weapons in Rare Amber Deposits behind puzzles in The Neath'uns.",
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────

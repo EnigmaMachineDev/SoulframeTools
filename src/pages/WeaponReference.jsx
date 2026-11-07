@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Sword, Search, ExternalLink, ChevronUp, ChevronDown, Info } from 'lucide-react';
 import { WEAPONS, COMBAT_ARTS } from '../data/weapons';
 import { calculateChargedAttack } from '../data/calculations';
+import SourceList from '../components/SourceList';
 import { DAMAGE_TYPES, UNDOCUMENTED_DAMAGE_TYPE_COUNT } from '../data/damageTypes';
 import { FINISHERS, FINISHER_NOTES, COMBAT_MULTIPLIERS, GROUND_FINISHERS, HEAVY_ATTACK_FORMULAS, SMITE } from '../data/combat';
 import { CRAFTWORK_TIERS, REFINEMENT_CHAIN, CHORDSTONES, REFINEMENT_NOTES, TEMPERS, TEMPER_NOTES, STRIKING, CRAFTWORK_DROP_NOTES } from '../data/crafting';
@@ -132,7 +133,7 @@ export default function WeaponReference() {
         </select>
       </div>
 
-      <div className="text-xs text-sf-muted mb-3 font-sans">{filtered.length} weapons · <span className="text-sf-dim">Charged = fully-charged, unattuned, no enemy armour (per-Art formula); attunement adds on top in a build</span></div>
+      <div className="text-xs text-sf-muted mb-3 font-sans">{filtered.length} {filtered.length === 1 ? 'weapon' : 'weapons'} · <span className="text-sf-dim">Charged = fully-charged, unattuned, no enemy armour (per-Art formula); attunement adds on top in a build</span></div>
 
       <div className="overflow-x-auto">
         <table className="w-full text-sm font-sans">
@@ -172,13 +173,13 @@ export default function WeaponReference() {
                   <td className="py-2 px-2 text-right text-sf-text">{w.rank0Damage ?? '—'}</td>
                   <td className="py-2 px-2 text-right text-sf-bright">{w.baseDamage ?? '—'}</td>
                   <td className="py-2 px-2 text-right text-amber-300">{w.charged ?? '—'}</td>
-                  <td className="py-2 px-2 text-right text-sf-text">{w.smiteChance}%</td>
+                  <td className="py-2 px-2 text-right text-sf-text">{w.smiteChance != null ? `${w.smiteChance}%` : '—'}</td>
                   <td className="py-2 px-2 text-right text-sf-text">{w.staggerDamage ?? '—'}</td>
                   <td className="py-2 px-2 text-right">{pipCell('courage', 'text-courage')}</td>
                   <td className="py-2 px-2 text-right">{pipCell('spirit', 'text-spirit')}</td>
                   <td className="py-2 px-2 text-right">{pipCell('grace', 'text-grace')}</td>
                   <td className="py-2 px-2 text-sf-muted text-xs">{reqStr}</td>
-                  <td className="py-2 px-2 text-sf-muted text-xs max-w-[220px]">{w.location || '—'}</td>
+                  <td className="py-2 px-2 text-sf-muted text-xs max-w-[220px]"><SourceList text={w.location} /></td>
                   <td className="py-2 px-1">
                     <a href={`https://wiki.avakot.org/${wikiSlug}`} target="_blank" rel="noopener noreferrer" className="text-sf-dim hover:text-sf-bright transition-colors"><ExternalLink size={12} /></a>
                   </td>

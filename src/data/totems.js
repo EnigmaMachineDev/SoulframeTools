@@ -18,6 +18,9 @@
 // as seconds, but the in-game card reads "Buff Virtue 12% ..." with no duration (a Rank 3 Totem in a
 // "Bonus Applied" slot — so the wiki's 15% slot-bonus figure for Rank 3 doesn't match the game).
 //
+// P17: Pull Smite effects only work on a living target, so wandering Souls grant no bonus. No Totem
+// values changed on the wiki. Totem-bearing animals stay hidden until their Veiland is redeemed.
+//
 // Slot bonus: a Totem in a matching slot on the weapon's Totem ring shows "Bonus Applied" and uses the
 // wiki's `gripBonusBase` values. The site only lists the base values and doesn't model the bonus yet. P16 Hotfix 4 made Sprout Spring share
 // the Smite with the closest ally only (the wiki module still says "all allies").

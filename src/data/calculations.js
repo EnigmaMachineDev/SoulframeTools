@@ -98,6 +98,12 @@ export function calculateChargedAttack(weapon, virtues, rank = 30, joineryDamage
   return Math.round(dmg + joineryDamage);
 }
 
+// False for weapons whose Attack is unpublished. Their calculated totals would come out of a base
+// of 0, so pages should show a dash rather than those figures.
+export function hasAttackStats(weapon) {
+  return weapon.rank0Damage != null || weapon.baseDamage != null;
+}
+
 export function calculateTotalLife(pact, virtues) {
   const virtueLife = (virtues.courage || 0) * 10 + (virtues.spirit || 0) * 1 + (virtues.grace || 0) * 4;
   const pactLife = pact ? (pact.bonusLife || 0) : 0;
@@ -168,10 +174,11 @@ export function calculateExperienceMultiplier(foeLevel = 0) {
   return 1 + 0.85 * Math.sqrt(foeLevel);
 }
 
-// Cumulative XP to reach `rank` from unranked. Pact = 1000 × rank²; Weapon = half.
+// Cumulative XP to reach `rank` from unranked. Pact = 1000 × rank²; Weapon = a quarter since P17,
+// which cut Weapon XP by 50% from the old half-of-Pact curve (derived, not a published figure).
 export function xpToRank(rank, type = 'weapon') {
   const pact = 1000 * rank * rank;
-  return type === 'pact' ? pact : pact / 2;
+  return type === 'pact' ? pact : pact / 4;
 }
 
 // === Heavy / Charged attacks & Smite (wiki.avakot.org/Damage/Data, /Stats) ===
